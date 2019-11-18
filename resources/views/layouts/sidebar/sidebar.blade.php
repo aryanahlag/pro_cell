@@ -2,9 +2,9 @@
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
         <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fas fa-laugh-wink"></i>
+            <i class="fa fa-phone-square"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+        <div class="sidebar-brand-text mx-3">Zena<sup>cell</sup></div>
     </a>
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
@@ -12,7 +12,7 @@
     <li class="nav-item active">
         <a class="nav-link {{ $activePage == 'dashboard' ? ' active' : '' }}" href="index.html">
             <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboardssss</span></a>
+            <span>Dashboard</span></a>
     </li>
     <!-- Divider -->
     <hr class="sidebar-divider">
