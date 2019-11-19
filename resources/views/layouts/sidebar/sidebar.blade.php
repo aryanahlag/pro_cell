@@ -1,6 +1,6 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fa fa-phone-square"></i>
         </div>
@@ -10,7 +10,7 @@
     <hr class="sidebar-divider my-0">
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
-        <a class="nav-link {{ $activePage == 'dashboard' ? ' active' : '' }}" href="index.html">
+        <a class="nav-link {{ $activePage == 'dashboard' ? ' active' : '' }}" href="{{ route('dashboard') }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
@@ -29,8 +29,8 @@
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Penjualan:</h6>
-                <a class="collapse-item {{ $activePage == 'penjualan' ? ' active' : '' }}" href="buttons.html">Penualan</a>
-                <a class="collapse-item {{ $activePage == 'laporan-penjualan' ? ' active' : '' }}" href="cards.html">Laporan Penjualan</a>
+                <a class="collapse-item {{ $activePage == 'penjualan' ? ' active' : '' }}" href="">Penualan</a>
+                <a class="collapse-item {{ $activePage == 'laporan-penjualan' ? ' active' : '' }}" href="">Laporan Penjualan</a>
             </div>
         </div>
     </li>
@@ -43,8 +43,8 @@
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Pembelian:</h6>
-                <a class="collapse-item {{ $activePage == 'pembelian' ? ' active' : '' }}" href="utilities-color.html">Pembelian</a>
-                <a class="collapse-item {{ $activePage == 'laporan-pembelian' ? ' active' : '' }}" href="utilities-border.html">Laporan Pembelian</a>
+                <a class="collapse-item {{ $activePage == 'pembelian' ? ' active' : '' }}" href="utilities-">Pembelian</a>
+                <a class="collapse-item {{ $activePage == 'laporan-pembelian' ? ' active' : '' }}" href="utilities-">Laporan Pembelian</a>
             </div>
         </div>
     </li>
@@ -63,19 +63,19 @@
         <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Login Screens:</h6>
-                <a class="collapse-item" href="login.html">Login</a>
-                <a class="collapse-item" href="register.html">Register</a>
-                <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
+                <a class="collapse-item" href="">Login</a>
+                <a class="collapse-item" href="">Register</a>
+                <a class="collapse-item" href="forgot-">Forgot Password</a>
                 <div class="collapse-divider"></div>
                 <h6 class="collapse-header">Other Pages:</h6>
-                <a class="collapse-item" href="404.html">404 Page</a>
-                <a class="collapse-item" href="blank.html">Blank Page</a>
+                <a class="collapse-item" href="">404 Page</a>
+                <a class="collapse-item" href="">Blank Page</a>
             </div>
         </div>
     </li> --}}
     <!-- Nav Item - Charts -->
     <li class="nav-item {{ $activePage == 'service' ? ' active' : '' }}">
-        <a class="nav-link" href="charts.html">
+        <a class="nav-link" href="">
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Service</span></a>
     </li>
@@ -84,17 +84,17 @@
         Lainnya
     </div>
     <li class="nav-item {{ $activePage == 'kategori' ? ' active' : '' }}">
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="">
             <i class="fas fa-fw fa-table"></i>
             <span>Kategori</span></a>
     </li>
     <li class="nav-item {{ $activePage == 'merek' ? ' active' : '' }}">
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="">
             <i class="fas fa-fw fa-table"></i>
             <span>Merek</span></a>
     </li>
     {{-- <li class="nav-item">
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="">
             <i class="fas fa-fw fa-table"></i>
             <span>Kategori</span></a>
     </li> --}}
