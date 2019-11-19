@@ -29,8 +29,8 @@
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Penjualan:</h6>
-                <a class="collapse-item" href="buttons.html">Penualan</a>
-                <a class="collapse-item" href="cards.html">Laporan Penjualan</a>
+                <a class="collapse-item {{ $activePage == 'penjualan' ? ' active' : '' }}" href="buttons.html">Penualan</a>
+                <a class="collapse-item {{ $activePage == 'laporan-penjualan' ? ' active' : '' }}" href="cards.html">Laporan Penjualan</a>
             </div>
         </div>
     </li>
@@ -43,8 +43,8 @@
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Pembelian:</h6>
-                <a class="collapse-item" href="utilities-color.html">Pembelian</a>
-                <a class="collapse-item" href="utilities-border.html">Laporan Pembelian</a>
+                <a class="collapse-item {{ $activePage == 'pembelian' ? ' active' : '' }}" href="utilities-color.html">Pembelian</a>
+                <a class="collapse-item {{ $activePage == 'laporan-pembelian' ? ' active' : '' }}" href="utilities-border.html">Laporan Pembelian</a>
             </div>
         </div>
     </li>
@@ -74,21 +74,21 @@
         </div>
     </li> --}}
     <!-- Nav Item - Charts -->
-    <li class="nav-item">
+    <li class="nav-item {{ $activePage == 'service' ? ' active' : '' }}">
         <a class="nav-link" href="charts.html">
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Service</span></a>
     </li>
     <!-- Nav Item - Tables -->
     <div class="sidebar-heading">
-        --
+        Lainnya
     </div>
-    <li class="nav-item">
+    <li class="nav-item {{ $activePage == 'kategori' ? ' active' : '' }}">
         <a class="nav-link" href="tables.html">
             <i class="fas fa-fw fa-table"></i>
             <span>Kategori</span></a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item {{ $activePage == 'merek' ? ' active' : '' }}">
         <a class="nav-link" href="tables.html">
             <i class="fas fa-fw fa-table"></i>
             <span>Merek</span></a>
