@@ -68,7 +68,7 @@
             </div>
         </div>
     </div> --}}
-
+    @include('layouts.modal._modal')
     <!-- Bootstrap core JavaScript-->
     <script src="{{asset('assets/jquery/jquery.min.js')}}"></script>
     <script src="{{asset('assets/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
