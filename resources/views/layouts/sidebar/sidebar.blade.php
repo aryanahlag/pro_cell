@@ -89,7 +89,7 @@
             <span>Kategori</span></a>
     </li>
     <li class="nav-item {{ $activePage == 'merek' ? ' active' : '' }}">
-        <a class="nav-link" href="">
+        <a class="nav-link" href="{{ route('brand.index') }}">
             <i class="fas fa-fw fa-table"></i>
             <span>Merek</span></a>
     </li>
