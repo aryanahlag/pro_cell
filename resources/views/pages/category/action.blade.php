@@ -1,6 +1,6 @@
-<a class="btn-show" title="{{ $model->name }}" href="{{$url_show}}">
+{{-- <a class="btn-show" title="{{ $model->name }}" href="{{$url_show}}">
 	<i class="fas fa-eye text-inverse"></i>
-</a>
+</a> --}}
 <a class="btn-edit" title="{{ $model->name }}" href="{{$url_edit}}">
 	<i class="fas fa-pen text-success"></i>
 </a>
