@@ -24,3 +24,7 @@ Route::get('/dashboard', function () {
 Route::resource('category', 'CategoryController');
 Route::get('c/data', 'CategoryController@datatables')->name('category.data');
 
+Route::resource('brand', 'BrandController');
+Route::get('b/data', 'BrandController@datatables')->name('brand.data');
+
+
