@@ -84,7 +84,7 @@
         Lainnya
     </div>
     <li class="nav-item {{ $activePage == 'kategori' ? ' active' : '' }}">
-        <a class="nav-link" href="">
+        <a class="nav-link" href="{{ route('category.index') }}">
             <i class="fas fa-fw fa-table"></i>
             <span>Kategori</span></a>
     </li>

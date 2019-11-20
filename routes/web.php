@@ -14,8 +14,13 @@
 Route::get('/', function () {
     return view('pages.dashboard');
 });
+
 Route::get('/dashboard', function () {
     return view('pages.dashboard');
 })->name('dashboard');
 
+
+
+Route::resource('category', 'CategoryController');
+Route::get('c/data', 'CategoryController@datatables')->name('category.data');
 
