@@ -17,18 +17,19 @@ class CreateStocksTable extends Migration
             $table->increments('id');
             $table->string('code', 15);
             $table->string('name');
-            $table->integer('price');
+            $table->integer('price_purchase');
+            $table->integer('price_sell')->nullable();
+            $table->enum('status', ['sold', 'unsold'])->nullable()->default('unsold');
             $table->integer('quantity');
             $table->text('information')->nullable();
             $table->unsignedInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-            // $table->foreign('category_id')->reference('id')->on('categories');
+            $table->unsignedInteger('generation_id');
+            $table->foreign('generation_id')->references('id')->on('generations')->onDelete('cascade');
             $table->unsignedInteger('brand_id');
             $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
-            // $table->foreign('brand_id')->reference('id')->on('brands');
             $table->unsignedInteger('buying_id');
             $table->foreign('buying_id')->references('id')->on('buyings')->onDelete('cascade');
-            // $table->foreign('buying_id')->reference('id')->on('buyings');
             $table->timestamps();
         });
     }

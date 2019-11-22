@@ -17,11 +17,11 @@ class Stock extends Model
 
     public function provider()
     {
-        return $this->belongsTo('App\Provider');
+        return $this->belongsTo('App\Buying');
     }
 
-    public function buying()
+    public function brand()
     {
-        return $this->belongsTo('App\Buying');
+        return $this->belongsTo('App\Brand');
     }
 }

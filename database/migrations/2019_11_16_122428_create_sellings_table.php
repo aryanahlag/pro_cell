@@ -16,17 +16,16 @@ class CreateSellingsTable extends Migration
         Schema::create('sellings', function (Blueprint $table) {
             $table->increments('id');
             $table->dateTime('date');
-            // $table->integer('quantity');
             $table->integer('total_quan'); //cirian
-            // $table->increments('price');
             $table->integer('total_price'); //cirian
-            $table->integer('bill');
+            $table->integer('pay');
+            $table->integer('change');
             $table->unsignedInteger('stock_id');
             $table->foreign('stock_id')->references('id')->on('stocks')->onDelete('cascade');
-            // $table->foreign('stock_id')->references('id')->on('stocks');
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            // $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedInteger('order_id');
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
             $table->timestamps();
         });
     }

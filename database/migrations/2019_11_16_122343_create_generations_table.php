@@ -17,8 +17,6 @@ class CreateGenerationsTable extends Migration
             $table->increments('id');
             $table->date('time');
             $table->enum('status', ["verify", "unverify"])->nullable()->default("unverify");
-            $table->unsignedInteger('buying_id');
-            $table->foreign('buying_id')->references('id')->on('buyings');
             $table->timestamps();
         });
     }

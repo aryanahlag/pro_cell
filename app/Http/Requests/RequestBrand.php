@@ -13,7 +13,7 @@ class RequestBrand extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,14 +21,13 @@ class RequestBrand extends FormRequest
      *
      * @return array
      */
-   public function rules()
+    public function rules()
     {
         if (request()->isMethod('POST')) {
             return [
                 'name' => 'required|min:1',
             ];
-        }
-        else{
+        } else {
             return [
                 'name' => 'required',
             ];
@@ -37,9 +36,9 @@ class RequestBrand extends FormRequest
 
     public function messages()
     {
-        return[
+        return [
             'name.required' => 'Nama Merek Harus Diisi !',
-            'name.min' => 'Nama Merek Minimal 1 Karakkter !',\
+            'name.min' => 'Nama Merek Minimal 1 Karakkter !',
         ];
     }
 }

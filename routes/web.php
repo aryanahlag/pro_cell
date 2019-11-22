@@ -12,19 +12,35 @@
 */
 
 Route::get('/', function () {
-    return view('pages.dashboard');
+    return redirect('/login');
 });
 
-Route::get('/dashboard', function () {
-    return view('pages.dashboard');
-})->name('dashboard');
+// init
+Route::get('/init', 'HomeController@init')->name('init');
+Route::get('/file/{url}', 'HomeController@file')->name('file');
+
+Route::middleware('auth')->group(function () {
+    // admin
+    Route::group(['prefix' => '/admin', 'as' => 'admin.', 'middleware' => 'admin'], function () {
+
+        // dashboard
+        Route::get('/dashboard', 'AdminController@dashboard')->name('dashboard');
+
+        Route::resource('category', 'CategoryController');
+        Route::get('c/data', 'CategoryController@datatables')->name('category.data');
+
+        Route::resource('brand', 'BrandController');
+        Route::get('b/data', 'BrandController@datatables')->name('brand.data');
+    });
+    //employee
+    Route::group(['prefix' => '/employee', 'as' => 'employee.', 'middleware' => 'employee'], function () {
+        //dashboard
+        Route::get('/dashboard', 'EmployeeController@dashboard')->name('dashboard');
+    });
+});
 
 
 
-Route::resource('category', 'CategoryController');
-Route::get('c/data', 'CategoryController@datatables')->name('category.data');
+Auth::routes();
 
-Route::resource('brand', 'BrandController');
-Route::get('b/data', 'BrandController@datatables')->name('brand.data');
-
-
+// Route::get('/home', 'HomeController@index');
