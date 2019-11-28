@@ -15,7 +15,7 @@ class Stock extends Model
         return $this->belongsTo('App\Category');
     }
 
-    public function provider()
+    public function buying()
     {
         return $this->belongsTo('App\Buying');
     }
@@ -23,5 +23,10 @@ class Stock extends Model
     public function brand()
     {
         return $this->belongsTo('App\Brand');
+    }
+
+    public function generation()
+    {
+        return $this->belongsTo('App\Generation');
     }
 }

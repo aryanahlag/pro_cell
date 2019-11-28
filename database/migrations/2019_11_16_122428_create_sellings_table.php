@@ -15,11 +15,11 @@ class CreateSellingsTable extends Migration
     {
         Schema::create('sellings', function (Blueprint $table) {
             $table->increments('id');
-            $table->dateTime('date');
-            $table->integer('total_quan'); //cirian
-            $table->integer('total_price'); //cirian
+            $table->date('date');
+            $table->integer('total_quan')->nullable();
+            $table->integer('total_price')->nullable();
             $table->integer('pay');
-            $table->integer('change');
+            $table->integer('change')->nullable();
             $table->unsignedInteger('stock_id');
             $table->foreign('stock_id')->references('id')->on('stocks')->onDelete('cascade');
             $table->unsignedInteger('user_id');

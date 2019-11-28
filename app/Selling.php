@@ -14,4 +14,14 @@ class Selling extends Model
     {
         return $this->hasMany('App\Stock');
     }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
+    public function order()
+    {
+        return $this->belongsTo('App\Order');
+    }
 }

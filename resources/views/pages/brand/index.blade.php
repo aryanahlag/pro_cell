@@ -8,7 +8,7 @@
             </div>
             <div class="col-md-8 d-flex justify-content-end">
                 {{-- <a href="{{ route('category.create') }}" class="btn btn-primary" id="btn-create"> --}}
-                <button data-url="{{ route('brand.create') }}" class="btn btn-primary" id="btn-create">
+                <button data-url="{{ route('admin.brand.create') }}" class="btn btn-primary" id="btn-create">
                     <i class="fas fa-plus"></i> Tambah Merek
                 </button>
             </div>
@@ -44,7 +44,7 @@ $(document).ready(function() {
         responsive: true,
         processing: true,
         serverSide: true,
-        ajax: "{{ route('brand.data') }}",
+        ajax: "{{ route('admin.brand.data') }}",
         columns: [
             { data: "DT_RowIndex", orderable: false, searchable: false },
             { data: "name" },

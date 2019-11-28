@@ -26,13 +26,14 @@
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-wrench"></i>
+                    <i class="fas fa-fw fa-shopping-cart"></i>
                     <span>Pembelian</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Pembelian:</h6>
-                        <a class="collapse-item {{ $activePage == 'pembelian' ? ' active' : '' }}" href="utilities-">Pembelian</a>
+                        <a class="collapse-item {{ $activePage == 'pembelian' ? ' active' : '' }}" href="{{ route('admin.generation.index') }}">Pembelian</a>
+                        <a class="collapse-item {{ $activePage == 'stok' ? ' active' : '' }}" href="utilities-">Stok</a>
                         <a class="collapse-item {{ $activePage == 'laporan-pembelian' ? ' active' : '' }}" href="utilities-">Laporan Pembelian</a>
                     </div>
                 </div>
@@ -51,11 +52,6 @@
                     <span>Merek</span></a>
             </li>
         @elseif(Auth::user()->role == 'employee')
-        <li class="nav-item {{ $activePage == 'service' ? ' active' : '' }}">
-            <a class="nav-link" href="">
-                <i class="fas fa-fw fa-chart-area"></i>
-                <span>Service</span></a>
-        </li>
         <div class="sidebar-heading">
             Transaksi
         </div>
@@ -67,11 +63,16 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Penjualan:</h6>
+                        <a class="collapse-item {{ $activePage == 'penjualan-employee' ? ' active' : '' }}" href="">Penjualan</a>
                         <a class="collapse-item {{ $activePage == 'laporan-penjualan' ? ' active' : '' }}" href="">Laporan Penjualan</a>
                     </div>
                 </div>
         </li>
-
+        <li class="nav-item {{ $activePage == 'service' ? ' active' : '' }}">
+            <a class="nav-link" href="">
+                <i class="fas fa-fw fa-chart-area"></i>
+            <span>Service</span></a>
+        </li>
         @else
         <li class="nav-item">
             <a class="nav-link" href="">

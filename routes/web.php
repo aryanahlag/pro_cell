@@ -26,6 +26,10 @@ Route::middleware('auth')->group(function () {
         // dashboard
         Route::get('/dashboard', 'AdminController@dashboard')->name('dashboard');
 
+        Route::resource('generation', 'GenerationController');
+
+        Route::resource('/stock-generation/{generation}/stock', 'StockController');
+
         Route::resource('category', 'CategoryController');
         Route::get('c/data', 'CategoryController@datatables')->name('category.data');
 
@@ -43,4 +47,4 @@ Route::middleware('auth')->group(function () {
 
 Auth::routes();
 
-// Route::get('/home', 'HomeController@index');
+Route::get('/home', 'HomeController@index');

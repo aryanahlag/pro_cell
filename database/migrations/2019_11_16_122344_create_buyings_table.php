@@ -15,8 +15,8 @@
         {
             Schema::create('buyings', function (Blueprint $table) {
                 $table->increments('id');
-                $table->integer('total_quan');
-                $table->integer('total_price');
+                $table->integer('total_quan')->nullable();
+                $table->integer('total_price')->nullable();
                 $table->unsignedInteger('user_id');
                 $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
                 $table->timestamps();

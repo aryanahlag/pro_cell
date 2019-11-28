@@ -4,11 +4,11 @@
     <div class="card-header py-3">
         <div class="row">
             <div class="col-md-4">
-                <h4>Kategoro</h4>
+                <h4>Kategori</h4>
             </div>
             <div class="col-md-8 d-flex justify-content-end">
                 {{-- <a href="{{ route('category.create') }}" class="btn btn-primary" id="btn-create"> --}}
-                <button data-url="{{ route('category.create') }}" class="btn btn-primary" id="btn-create">
+                <button data-url="{{ route('admin.category.create') }}" class="btn btn-primary" id="btn-create">
                     <i class="fas fa-plus"></i> Tambah Jenis
                 </button>
             </div>
@@ -44,7 +44,7 @@ $(document).ready(function() {
         responsive: true,
         processing: true,
         serverSide: true,
-        ajax: "{{ route('category.data') }}",
+        ajax: "{{ route('admin.category.data') }}",
         columns: [
             { data: "DT_RowIndex", orderable: false, searchable: false },
             { data: "name" },

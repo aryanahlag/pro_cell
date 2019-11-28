@@ -15,7 +15,8 @@ class CreateGenerationsTable extends Migration
     {
         Schema::create('generations', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('time');
+            $table->year('generation');
+            $table->date('time')->nullable();
             $table->enum('status', ["verify", "unverify"])->nullable()->default("unverify");
             $table->timestamps();
         });
