@@ -4,40 +4,41 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
-use Response;
-use File;
 
 class HomeController extends Controller
 {
-    public function index()
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
     {
-        return view('home');
+        $this->middleware('auth');
     }
 
     public function init()
     {
         if (Auth::guest()) {
-            return redirect()->route('home');
+            return redirect()->route("getLogin");
         } else {
-            if (Auth::user()->role == 'admin') {
-                return redirect()->route('admin.dashboard');
+            if (Auth::user()->role = "admin") {
+                return redirect()->route("admin.dashboard");
+            }else if (Auth::user()->role = "employee") {
+                return redirect()->route("employee.dashboard");
             } else {
-                return redirect()->route('employee.dashboard');
+                return redirect()->route("getLogin");
             }
         }
     }
 
-    public function file($url)
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
     {
-        $url = str_replace('-', '/', $url);
-        $path = storage_path('app/' . $url);
-
-        $file = File::get($path);
-        $type = File::mimeType($path);
-
-        $response = Response::make($file, 200);
-        $response->header('Content-Type', $type);
-
-        return $response;
+        return view('home');
     }
 }

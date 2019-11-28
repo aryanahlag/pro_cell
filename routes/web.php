@@ -14,6 +14,14 @@
 Route::get('/', function () {
     return redirect('/login');
 });
+// custom auth
+Route::get("z/login", "AuthController@getLogin")->name("getLogin")->middleware("guest");
+Route::post("z/p/login", "AuthController@postLogin")->name("postLogin")->middleware("guest");
+
+Route::get("z/reg", "AuthController@getRegister")->name("getRegister")->middleware("guest");
+Route::post("z/p/reg", "AuthController@postRegister")->name("postRegister")->middleware("guest");
+
+Route::get("z/logout", "AuthController@myLogout")->name("myLogout")->middleware("auth");
 
 // init
 Route::get('/init', 'HomeController@init')->name('init');
@@ -47,4 +55,4 @@ Route::middleware('auth')->group(function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+// Route::get('/home', 'HomeController@index');s
