@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return redirect('/login');
+    return redirect('/z/login');
 });
 // custom auth
 Route::get("z/login", "AuthController@getLogin")->name("getLogin")->middleware("guest");
@@ -25,7 +25,6 @@ Route::get("z/logout", "AuthController@myLogout")->name("myLogout")->middleware(
 
 // init
 Route::get('/init', 'HomeController@init')->name('init');
-Route::get('/file/{url}', 'HomeController@file')->name('file');
 
 Route::middleware('auth')->group(function () {
     // admin
@@ -34,9 +33,14 @@ Route::middleware('auth')->group(function () {
         // dashboard
         Route::get('/dashboard', 'AdminController@dashboard')->name('dashboard');
 
+        Route::get('generation/stok', 'StockGenerationController@index')->name('stock-generation.index');
+
         Route::resource('generation', 'GenerationController');
 
-        Route::resource('/stock-generation/{generation}/stock', 'StockController');
+        Route::put('generation/{id}/verify', 'GenerationController@verify')->name('generation.verify');
+
+        Route::resource('generation/{generation}/stock', 'StockController');
+
 
         Route::resource('category', 'CategoryController');
         Route::get('c/data', 'CategoryController@datatables')->name('category.data');
@@ -53,6 +57,6 @@ Route::middleware('auth')->group(function () {
 
 
 
-Auth::routes();
+// Auth::routes();
 
-// Route::get('/home', 'HomeController@index');s
+// Route::get('/home', 'HomeController@index');

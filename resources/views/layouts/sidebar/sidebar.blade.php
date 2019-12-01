@@ -10,7 +10,7 @@
     <hr class="sidebar-divider my-0">
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
-        <a class="nav-link {{ $activePage == 'dashboard' ? ' active' : '' }}" href="{{ route('admin.dashboard') }}">
+        <a class="nav-link {{ $activePage == 'dashboard' ? ' active' : '' }}" href="" aria-disabled="">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
@@ -33,7 +33,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Pembelian:</h6>
                         <a class="collapse-item {{ $activePage == 'pembelian' ? ' active' : '' }}" href="{{ route('admin.generation.index') }}">Pembelian</a>
-                        <a class="collapse-item {{ $activePage == 'stok' ? ' active' : '' }}" href="utilities-">Stok</a>
+                        <a class="collapse-item {{ $activePage == 'stock' ? ' active' : '' }}" href="{{ route('admin.stock-generation.index') }}">Stok</a>
                         <a class="collapse-item {{ $activePage == 'laporan-pembelian' ? ' active' : '' }}" href="utilities-">Laporan Pembelian</a>
                     </div>
                 </div>

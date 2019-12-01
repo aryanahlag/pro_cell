@@ -19,16 +19,18 @@ class HomeController extends Controller
 
     public function init()
     {
+        // dd(Auth::user()->role == "employee");
+        // dd("aksajs");
         if (Auth::guest()) {
             return redirect()->route("getLogin");
         } else {
-            if (Auth::user()->role = "admin") {
+            if (Auth::user()->role == "admin") {
                 return redirect()->route("admin.dashboard");
-            }else if (Auth::user()->role = "employee") {
-                return redirect()->route("employee.dashboard");
-            } else {
-                return redirect()->route("getLogin");
             }
+            if (Auth::user()->role == "employee") {
+                return redirect()->route("employee.dashboard");
+            }
+            return redirect()->route("getLogin");
         }
     }
 

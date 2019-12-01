@@ -15,7 +15,7 @@ class GenerationController extends Controller
      */
     public function index()
     {
-        $generation = Generation::orderBy('time', 'asc')->with(['stock'])->get();
+        $generation = Generation::where('status', 'unverify')->orderBy('time', 'asc')->with(['stock'])->get();
         return view('pages.generation.index', compact('generation'));
     }
 
@@ -55,7 +55,7 @@ class GenerationController extends Controller
     public function show($id)
     {
         $data['generation'] = Generation::where('id', $id)->first();
-        $data['stock'] = Stock::where('generation_id', $id)->with(['buying'])->get();
+        $data['stocks'] = Stock::where('generation_id', $id)->get();
 
         return view('pages.generation.show', $data);
     }
@@ -96,5 +96,12 @@ class GenerationController extends Controller
         $gen->delete();
         // return
         return redirect()->route('admin.generation.index')->with('msg', 'Delete Success');
+    }
+
+    public function verify($id)
+    {
+        Generation::find($id)->update(['status' => 'verify']);
+        // return
+        return redirect()->route('admin.stock-generation.index');
     }
 }

@@ -28,8 +28,6 @@ class CreateStocksTable extends Migration
             $table->foreign('generation_id')->references('id')->on('generations')->onDelete('cascade');
             $table->unsignedInteger('brand_id');
             $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
-            $table->unsignedInteger('buying_id');
-            $table->foreign('buying_id')->references('id')->on('buyings')->onDelete('cascade');
             $table->timestamps();
         });
     }

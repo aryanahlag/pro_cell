@@ -1,4 +1,4 @@
-@extends('layouts.master', ["activePage" => "pembelian", "titlePage" => "Keranjang" ])
+@extends('layouts.master', ["activePage" => "stock", "titlePage" => "Stok Barang" ])
 
 @section('content')
 <div class="card shadow mb-4">
@@ -9,10 +9,6 @@
             </div>
             <div class="col-md-8 d-flex justify-content-end">
                 {{-- <a href="{{ route('category.create') }}" class="btn btn-primary" id="btn-create"> --}}
-                <a href="{{ route('admin.generation.create') }}" class="btn btn-success">
-                    <i class="fa fa-plus"></i>
-                    Tambah Keranjang
-                </a>
             </div>
         </div>
     </div>
@@ -41,17 +37,7 @@
                         <td class="text-center">{{ $gen->time->format('d M Y') }}</td>
                         <td class="text-center"><i class="btn btn-facebook btn-sm">{{ $gen->status }}</i></td>
                         <td class="text-center">
-                            <form action="{{ route('admin.generation.destroy',['id'=>$gen->id]) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                            <a href="{{ route('admin.generation.edit', ['id'=>$gen->id]) }}" class="btn  btn-warning btn-sm"><i class="fa fa-edit"></i> Edit</a>
-                                <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Delete</button>
                                 <a href="{{ route('admin.generation.show', ['id'=>$gen->id]) }}" class="btn  btn-primary btn-sm"><i class="fa fa-share"></i> Detail</a>
-                            </form>
-                            <form action="{{ route('admin.generation.verify', $gen->id) }}" method="post">
-                                @csrf
-                                @method('PUT')
-                                <button type="submit" class="btn btn-success btn sm"><i class="fa fa-check-square"></i> Verify</button>
                             </form>
                         </td>
                     </tr>

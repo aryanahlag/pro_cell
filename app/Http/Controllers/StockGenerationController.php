@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Generation;
-use App\Stock;
+use Illuminate\Http\Request;
 
-class StockController extends Controller
+class StockGenerationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +14,9 @@ class StockController extends Controller
      */
     public function index()
     {
-        //
+        // return 'okokok';
+        $generation = Generation::where('status', 'verify')->orderBy('time', 'asc')->with(['stock'])->get();
+        return view('pages.stock.index', compact('generation'));
     }
 
     /**
@@ -23,11 +24,9 @@ class StockController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create()
     {
-        $data['generation'] = Generation::where('id', $id)->first();
-
-        return view('pages.generation.createStock', $data);
+        //
     }
 
     /**
@@ -36,28 +35,10 @@ class StockController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $id)
+    public function store(Request $request)
     {
-        if (count($request->code) > 0) {
-            foreach ($request->code as $key => $value) {
-                $data = [
-                    'code' => $request->code[$key],
-                    'name' => $request->name[$key],
-                    'price_purchase' => $request->price_purchase[$key],
-                    'price_sell' => $request->price_sell[$key],
-                    'status' => $request->status[$key],
-                    'quantity' => $request->quantity[$key],
-                    'information' => $request->information[$key],
-                    'category_id' => $request->category_id[$key],
-                    'brand_id' => $request->brand_id[$key],
-                    'generation_id' => $id,
-                ];
-                Stock::insert($data);
-            }
-        }
-        return redirect()->route('admin.generation.show', $id);
+        //
     }
-
 
     /**
      * Display the specified resource.
