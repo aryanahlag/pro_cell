@@ -45,7 +45,7 @@ class StockController extends Controller
                     'name' => $request->name[$key],
                     'price_purchase' => $request->price_purchase[$key],
                     'price_sell' => $request->price_sell[$key],
-                    'status' => "unsold",
+                    'status' => $request->status[$key],
                     'quantity' => $request->quantity[$key],
                     'information' => $request->information[$key],
                     'category_id' => $request->category_id[$key],
