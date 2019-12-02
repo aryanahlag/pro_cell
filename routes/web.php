@@ -52,6 +52,8 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => '/employee', 'as' => 'employee.', 'middleware' => 'employee'], function () {
         //dashboard
         Route::get('/dashboard', 'EmployeeController@dashboard')->name('dashboard');
+
+        Route::resource('selling', 'SellingController');
     });
 
     Route::resource('card', 'CardController');

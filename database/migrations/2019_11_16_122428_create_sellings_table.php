@@ -15,9 +15,8 @@ class CreateSellingsTable extends Migration
     {
         Schema::create('sellings', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('date');
-            $table->integer('total_quan')->nullable();
-            $table->integer('total_price')->nullable();
+            $table->integer('quantity')->nullable();
+            $table->integer('price')->nullable();
             $table->integer('pay');
             $table->integer('change')->nullable();
             $table->unsignedInteger('stock_id');

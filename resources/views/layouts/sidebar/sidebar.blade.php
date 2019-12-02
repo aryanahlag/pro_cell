@@ -68,7 +68,7 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Penjualan:</h6>
-                        <a class="collapse-item {{ $activePage == 'penjualan-employee' ? ' active' : '' }}" href="">Penjualan</a>
+                        <a class="collapse-item {{ $activePage == 'penjualan' ? ' active' : '' }}" href="{{ route('employee.selling.create') }}">Penjualan</a>
                         <a class="collapse-item {{ $activePage == 'laporan-penjualan' ? ' active' : '' }}" href="">Laporan Penjualan</a>
                     </div>
                 </div>
