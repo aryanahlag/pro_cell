@@ -53,6 +53,10 @@ Route::middleware('auth')->group(function () {
         //dashboard
         Route::get('/dashboard', 'EmployeeController@dashboard')->name('dashboard');
     });
+
+    Route::resource('card', 'CardController');
+    Route::post("create/bar", "CardController@barcodeStore")->name("barcode.store");
+    Route::get("print/{limit}", "CardController@print")->name("barcode.print");
 });
 
 

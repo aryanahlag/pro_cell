@@ -51,6 +51,11 @@
                     <i class="fas fa-fw fa-table"></i>
                     <span>Merek</span></a>
             </li>
+            <li class="nav-item {{ $activePage == 'barcode' ? ' active' : '' }}">
+                <a class="nav-link" href="{{ route('card.index') }}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Barkode</span></a>
+            </li>
         @elseif(Auth::user()->role == 'employee')
         <div class="sidebar-heading">
             Transaksi
