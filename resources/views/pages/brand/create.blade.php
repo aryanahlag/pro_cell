@@ -1,4 +1,4 @@
-<form action="{{ route('brand.store') }}" class="form-horizontal" method="POST" id="form-store">
+<form action="{{ route('admin.brand.store') }}" class="form-horizontal" method="POST" id="form-store">
 	@csrf
 	<div class="form-group">
 		<label for="name">

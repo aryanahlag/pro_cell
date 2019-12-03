@@ -9,7 +9,7 @@
             <div class="col-md-8 d-flex justify-content-end">
                 {{-- <a href="{{ route('category.create') }}" class="btn btn-primary" id="btn-create"> --}}
                 <button data-url="{{ route('admin.category.create') }}" class="btn btn-primary" id="btn-create">
-                    <i class="fas fa-plus"></i> Tambah Jenis
+                    <i class="fas fa-plus"></i> Tambah Kategori
                 </button>
             </div>
         </div>

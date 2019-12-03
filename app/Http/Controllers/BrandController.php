@@ -41,7 +41,7 @@ class BrandController extends Controller
 
         $brand = Brand::create($data);
 
-        return response()->json(['msg'=>$brand->name .' Telah Ditambahkan']);
+        return response()->json(['msg' => $brand->name . ' Telah Ditambahkan']);
     }
 
     /**
@@ -85,7 +85,7 @@ class BrandController extends Controller
 
         $brand->update($data);
 
-        return response()->json(['msg'=>$brand->name .' Berhasil di edit']);
+        return response()->json(['msg' => $brand->name . ' Berhasil di edit']);
     }
 
     /**
@@ -100,18 +100,18 @@ class BrandController extends Controller
 
         $brand->delete();
 
-        return response()->json(['msg'=>$brand->name .' Berhasil Di hapus']);
+        return response()->json(['msg' => $brand->name . ' Berhasil Di hapus']);
     }
 
     public function datatables()
     {
         $brand = Brand::query();
-        return DataTables::of($brand)->addColumn('action', function($brand){
+        return DataTables::of($brand)->addColumn('action', function ($brand) {
             return view('pages.brand.action', [
-                'model'=>$brand,
-                'url_show'=>route('brand.show', $brand->id),
-                'url_edit'=>route('brand.edit', $brand->id),
-                'url_delete'=>route('brand.destroy', $brand->id),
+                'model' => $brand,
+                'url_show' => route('admin.brand.show', $brand->id),
+                'url_edit' => route('admin.brand.edit', $brand->id),
+                'url_delete' => route('admin.brand.destroy', $brand->id),
             ]);
         })->rawColumns(['action'])->addIndexColumn()->make(true);
     }

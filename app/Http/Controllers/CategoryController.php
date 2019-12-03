@@ -42,7 +42,7 @@ class CategoryController extends Controller
 
         $category = Category::create($data);
 
-        return response()->json(['msg'=>$category->name .' Telah Ditambahkan']);
+        return response()->json(['msg' => $category->name . ' Telah Ditambahkan']);
     }
 
     /**
@@ -87,7 +87,7 @@ class CategoryController extends Controller
 
         $category->update($data);
 
-        return response()->json(['msg'=>$category->name .' Berhasil di edit']);
+        return response()->json(['msg' => $category->name . ' Berhasil di edit']);
     }
 
     /**
@@ -102,18 +102,18 @@ class CategoryController extends Controller
 
         $category->delete();
 
-        return response()->json(['msg'=>$category->name .' Berhasil Di hapus']);
+        return response()->json(['msg' => $category->name . ' Berhasil Di hapus']);
     }
 
     public function datatables()
     {
         $category = Category::query();
-        return DataTables::of($category)->addColumn('action', function($category){
+        return DataTables::of($category)->addColumn('action', function ($category) {
             return view('pages.category.action', [
-                'model'=>$category,
-                'url_show'=>route('category.show', $category->id),
-                'url_edit'=>route('category.edit', $category->id),
-                'url_delete'=>route('category.destroy', $category->id),
+                'model' => $category,
+                'url_show' => route('admin.category.show', $category->id),
+                'url_edit' => route('admin.category.edit', $category->id),
+                'url_delete' => route('admin.category.destroy', $category->id),
             ]);
         })->rawColumns(['action'])->addIndexColumn()->make(true);
     }
