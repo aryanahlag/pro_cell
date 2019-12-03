@@ -7,7 +7,7 @@
                 <h4>Servis</h4>
             </div>
             <div class="col-md-8 d-flex justify-content-end">
-                <a href="{{ route('employee.service.lunas') }}" class="btn btn-info btn-sm mr-2">
+                <a href="{{ route('service.lunas') }}" class="btn btn-info btn-sm mr-2">
                     <i class="fa fa-check-square"></i> Sudah Lunas
                 </a>
 

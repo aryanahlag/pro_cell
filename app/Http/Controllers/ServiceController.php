@@ -147,6 +147,7 @@ class ServiceController extends Controller
                 'url_show'=>route('employee.service.show', $service->id),
                 'url_edit'=>route('employee.service.edit', $service->id),
                 'url_delete'=>route('employee.service.destroy', $service->id),
+                'url_pay'=>route('employee.service.payForm', $service->id),
             ]);
         })->rawColumns(['action'])->addIndexColumn()->make(true);
     }
@@ -179,7 +180,7 @@ class ServiceController extends Controller
 
     public function sudahlunas()
     {
-        return "okoko";
+        return view('pages.lunas.index');
     }
 
     public function lunasData()
@@ -196,8 +197,20 @@ class ServiceController extends Controller
             ->addColumn('action', function($service){
             return view('pages.lunas.action', [
                 'model'=>$service,
-                'url_show'=>route('employee.service.show', $service->id),
+                'url_show'=>route('service.show.lunas', $service->id),
             ]);
         })->rawColumns(['action'])->addIndexColumn()->make(true);
+    }
+
+    public function lunasShow($service)
+    {
+        $data = Service::findOrFail($service);
+        return view("pages.lunas.show", compact("data"));
+    }
+
+    public function cetakStruk($service)
+    {
+       $data = Service::findOrFail($service);
+        return view("pages.lunas.cetak", compact("data"));
     }
 }

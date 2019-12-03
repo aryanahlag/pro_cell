@@ -11,10 +11,10 @@
 |
 */
 
+Auth::routes();
 Route::get('/', function () {
     return redirect('/z/login');
-});
-Auth::routes();
+})->name('login');
 // custom auth
 Route::get("z/login", "AuthController@getLogin")->name("getLogin")->middleware("guest");
 Route::post("z/p/login", "AuthController@postLogin")->name("postLogin")->middleware("guest");
@@ -59,14 +59,15 @@ Route::middleware('auth')->group(function () {
         Route::get('service/pay/{service}', 'ServiceController@payForm')->name('service.payForm');
         Route::put('service/pay/{service}', 'ServiceController@payment')->name('service.pay');
 
-        Route::get('/service/lunas', function(){
-            return view('pages.lunas.index');
-        })->name('service.lunas');
-        Route::get('c/data', 'ServiceController@lunasData')->name('service.lunasdata');
+        
 
         // 
         Route::resource('add/{service}/item', 'ItemServiceController');
     });
+    Route::get('/service/lunas', "ServiceController@sudahlunas")->name('service.lunas');
+    Route::get('/service/lunas/{service}', "ServiceController@lunasShow")->name('service.show.lunas');
+    Route::get('/service/report/{service}', "ServiceController@cetakStruk")->name('service.cetak.lunas');
+    Route::get('c/data', 'ServiceController@lunasData')->name('service.lunasdata');
 });
 
 

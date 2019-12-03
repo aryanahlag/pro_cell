@@ -16,7 +16,7 @@
 		</div>
 	</div>
 	<hr>
-	<form action="{{ route("employee.service.pay", $data->id) }}" class="form-horizontal" id="form-pay" method="POST">
+	<form action="{{ route("employee.service.pay", $data->id) }}" data-cetak="{{ route('service.cetak.lunas', $data->id) }}" class="form-horizontal" id="form-pay" method="POST">
 		@csrf
 		@method("PUT")
 		<div class="form-group">
@@ -26,7 +26,7 @@
 			<input type="number" name="pay" class="form-control pay" id="pay" autocomplete="off">
 		</div>
 		<input type="hidden" name="change" value="" id="change">
-		<input type="hidden" name="change" value="" id="myPrice">
+		<input type="hidden" name="myPrice" value="" id="myPrice">
 		<button type="submit" class="btn btn-primary btn-sm ml-auto">Bayar</button>
 	</form>
 </div>

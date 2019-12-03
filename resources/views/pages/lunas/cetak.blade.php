@@ -1,4 +1,11 @@
-<div class="container">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap.min.css') }}">
+	<title>Cetak</title>
+</head>
+<body>
 	<div class="row">
 		<div class="col-md-5">
 			<p class="mb-3">Nama Pelanggan :</p>
@@ -42,4 +49,8 @@
 			</tbody>
 		</table>
 	</div>
-</div>
+</body>
+<script>
+	window.print();
+</script>
+</html>

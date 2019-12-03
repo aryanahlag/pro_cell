@@ -240,6 +240,7 @@ $("body").on("click", ".btn-pay", function (e) {
 		"url" : url,
 		"dataType": "html",
 		success: function (res) {
+			
 			$('#myModal .modal-title').html(`Pembayaran`);
 			$('#myModal .modal-body').html(res);
 			$('#myModal').modal('show');
@@ -267,12 +268,14 @@ $("body").on("submit", "#form-pay", function (e) {
 	e.preventDefault();
 	// alert("okok");
 	let url = $(this).attr("action");
+	let urlCetak = $(this).data("cetak");
 	let data = $(this).serializeArray();
 	$.ajax({
 		url: url,
 		type: "POST",
 		data: data,
 		success: function (res) {
+			$('#myModal').modal('hide');
 			Swal.fire({
 				title:'Sukses !',
 				type:'success',
@@ -280,18 +283,37 @@ $("body").on("submit", "#form-pay", function (e) {
 				showConfirmButton: false,
 				timer: 1800
 			});
+			window.open(urlCetak, '_blank');
 			$('#tableService').DataTable().ajax.reload();
 		},
 		error: function (xhr) {
+			const error = xhr.responseJSON;
+			// console.log(error);
 			if (xhr.status == 422) {
 					Swal.fire({
 					title:'Peringatan !',
 					type:'warning',
-					text:error.msg,
+					text:error.errors,
 				});
 			}
 		},
 	})
+});
+
+$('body').on('click', ".btn-lunas-show", function (e) {
+	e.preventDefault();
+	const url = $(this).attr('href');
+	const title = $(this).attr('title');
+	// console.log(url);
+	$.ajax({
+		url: url,
+		dataType: 'html',
+		success: function (res) {
+			$('#myModal .modal-title').html(title);
+			$('#myModal .modal-body').html(res);
+			$('#myModal').modal('show');
+		}
+	});
 })
 
 
@@ -315,3 +337,4 @@ $("body").on("click", ".btn-item", function () {
 	})
 	// alert("okok");
 });
+

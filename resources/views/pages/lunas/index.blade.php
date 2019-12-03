@@ -48,7 +48,7 @@ $(document).ready(function() {
         responsive: true,
         processing: true,
         serverSide: true,
-        ajax: "{{ route('employee.service.lunasdata') }}",
+        ajax: "{{ route('service.lunasdata') }}",
         columns: [
             { data: "DT_RowIndex", orderable: false, searchable: false },
             { data: "customer_name" },
