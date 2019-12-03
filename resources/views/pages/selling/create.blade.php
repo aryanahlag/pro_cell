@@ -34,7 +34,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="inputGroup-sizing-default">F2 Cari Kode</span>
                     </div>
-                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                    <input type="text" class="form-control" aria-label="Sizing example input" id="findCode" aria-describedby="inputGroup-sizing-default">
                 </div>
             </div>
             </div>
@@ -53,3 +53,6 @@
 </div>
 </form>
 @endsection
+@push('js')
+<script src="{{ asset('js/selling.js') }}"></script>
+@endpush
