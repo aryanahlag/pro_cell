@@ -22,6 +22,8 @@ class CreateServicesTable extends Migration
             $table->enum("status", ['lunas', 'belum lunas'])->nullable()->default('belum lunas');
             $table->integer("dp");
             $table->integer("total_price")->nullable();
+            $table->integer("pay")->nullable();
+            $table->integer("change")->nullable();
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

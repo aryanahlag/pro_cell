@@ -3,17 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Generation;
-use App\Stock;
+use App\ItemService;
+use App\Service;
+use DB;
 
-class StockController extends Controller
+class ItemServiceController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($service_id)
     {
         //
     }
@@ -23,11 +24,10 @@ class StockController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create($service_id)
     {
-        $data['generation'] = Generation::where('id', $id)->first();
-
-        return view('pages.generation.createStock', $data);
+        $data["service_id"] = $service_id;
+        return view("pages.item-service.create", $data);
     }
 
     /**
@@ -36,28 +36,28 @@ class StockController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $id)
+    public function store(Request $request, $service_id)
     {
-        if (count($request->code) > 0) {
-            foreach ($request->code as $key => $value) {
+        if (count($request->name) > 0) {
+            foreach ($request->name as $key => $value) {
                 $data = [
-                    'code' => $request->code[$key],
                     'name' => $request->name[$key],
-                    'price_purchase' => $request->price_purchase[$key],
-                    'price_sell' => $request->price_sell[$key],
-                    'status' => $request->status[$key],
                     'quantity' => $request->quantity[$key],
-                    'information' => $request->information[$key],
-                    'category_id' => $request->category_id[$key],
-                    'brand_id' => $request->brand_id[$key],
-                    'generation_id' => $id,
+                    'price' => $request->price[$key],
+                    'service_id' => $request->service_id,
                 ];
-                Stock::insert($data);
+                ItemService::insert($data);
             }
-        }
-        return redirect()->route('admin.generation.show', $id);
-    }
 
+            $total = ItemService::selectRaw("SUM((price * quantity)) AS total")->where("service_id", $service_id)->first();
+            $service = Service::findOrFail($service_id)->update([
+                'total_price' => $total->total
+            ]);
+            // dd($total->total);
+            
+        }
+        return redirect()->route('employee.service.index');
+    }
 
     /**
      * Display the specified resource.
@@ -65,7 +65,7 @@ class StockController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($service_id,$id)
     {
         //
     }
@@ -76,7 +76,7 @@ class StockController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($service_id,$id)
     {
         //
     }
@@ -88,7 +88,7 @@ class StockController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $service_id,$id)
     {
         //
     }
@@ -99,7 +99,7 @@ class StockController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($service_id, $id)
     {
         //
     }
