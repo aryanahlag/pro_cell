@@ -69,7 +69,7 @@
                 </div>
         </li>
         <li class="nav-item {{ $activePage == 'service' ? ' active' : '' }}">
-            <a class="nav-link" href="">
+        <a class="nav-link" href="{{ route('employee.service.index') }}">
                 <i class="fas fa-fw fa-chart-area"></i>
             <span>Service</span></a>
         </li>
