@@ -47,8 +47,7 @@ class MakeEmController extends Controller
             'user_id' => $user->id
         ]);
 
-        // return redirect()->route('admin.makeEmployee.index');
-        return redirect()->back()->with('msg', 'Create Success');
+        return redirect()->route('admin.makeEmployee.index');
     }
 
     /**
@@ -70,7 +69,8 @@ class MakeEmController extends Controller
      */
     public function edit($id)
     {
-        //
+        $employee = Employee::where('id', $id)->with(['user'])->first();
+        return view('pages.employee.edit', compact('employee'));
     }
 
     /**
@@ -82,7 +82,16 @@ class MakeEmController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $employee = Employee::find($id);
+        // update
+        if ($request->username) {
+            User::find($employee->user_id)->update(['username' => $request->username]);
+        }
+        $employee->update([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('admin.makeEmployee.index');
     }
 
     /**
@@ -93,6 +102,11 @@ class MakeEmController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $employee = Employee::find($id);
+        // delete
+        User::destroy($employee->user_id);
+        $employee->delete();
+        // return
+        return redirect()->route('admin.makeEmployee.index');
     }
 }
