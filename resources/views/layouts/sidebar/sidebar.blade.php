@@ -56,6 +56,11 @@
                     <i class="fas fa-fw fa-table"></i>
                     <span>Barkode</span></a>
             </li>
+            <li class="nav-item {{ $activePage == 'karyawan-buat' ? ' active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.makeEmployee.index') }}">
+                    <i class="fas fa-user-tie"></i>
+                    <span>Karyawan</span></a>
+            </li>
         @elseif(Auth::user()->role == 'employee')
         <div class="sidebar-heading">
             Transaksi
