@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Employee;
 use App\User;
+use DataTables;
+use Validator;
 
 class MakeEmController extends Controller
 {
@@ -15,8 +17,8 @@ class MakeEmController extends Controller
      */
     public function index()
     {
-        $employee = Employee::orderBy('name', 'asc')->get();
-        return view('pages.employee.index', compact('employee'));
+        // $employee = Employee::orderBy('name', 'asc')->get();
+        return view('pages.employee.index');
     }
 
     /**
@@ -26,7 +28,10 @@ class MakeEmController extends Controller
      */
     public function create()
     {
-        return view('pages.employee.create');
+        $cabang = \App\Cabang::all();
+        return view('pages.employee.create',[
+            "cabang" => $cabang
+        ]);
     }
 
     /**
@@ -58,7 +63,9 @@ class MakeEmController extends Controller
      */
     public function show($id)
     {
-        //
+        $data  = [];
+        $data['data'] = Employee::findOrFail($id);
+        return view('pages.employee.show', $data);
     }
 
     /**
@@ -69,8 +76,11 @@ class MakeEmController extends Controller
      */
     public function edit($id)
     {
-        $employee = Employee::where('id', $id)->with(['user'])->first();
-        return view('pages.employee.edit', compact('employee'));
+        $data  = [];
+        $data['data'] = Employee::findOrFail($id);
+        $data['cabang'] = \App\Cabang::all();
+        return view('pages.employee.edit', $data);
+
     }
 
     /**
@@ -108,5 +118,18 @@ class MakeEmController extends Controller
         $employee->delete();
         // return
         return redirect()->route('admin.makeEmployee.index');
+    }
+
+    public function datatables()
+    {
+        $employee = Employee::query()->with(['user', 'cabang'])->orderBy('name', 'desc');
+        return DataTables::of($employee)->addColumn('action', function ($employee) {
+            return view('pages.employee.action', [
+                'model' => $employee,
+                'url_show' => route('admin.makeEmployee.show', $employee->id),
+                'url_edit' => route('admin.makeEmployee.edit', $employee->id),
+                'url_delete' => route('admin.makeEmployee.destroy', $employee->id),
+            ]);
+        })->rawColumns(['action'])->addIndexColumn()->make(true);
     }
 }

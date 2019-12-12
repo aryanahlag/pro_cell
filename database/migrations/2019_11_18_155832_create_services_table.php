@@ -26,6 +26,8 @@ class CreateServicesTable extends Migration
             $table->integer("change")->nullable();
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedInteger('cabang_id');
+            $table->foreign('cabang_id')->references('id')->on('cabangs')->onDelete('cascade');
             $table->timestamps();
         });
     }

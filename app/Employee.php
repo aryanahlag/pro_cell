@@ -14,4 +14,9 @@ class Employee extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    public function cabang()
+    {
+    	return $this->belongsTo(Cabang::class);
+    }
 }

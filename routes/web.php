@@ -50,6 +50,7 @@ Route::middleware('auth')->group(function () {
         Route::get('b/data', 'BrandController@datatables')->name('brand.data');
 
         Route::resource('makeEmployee', 'MakeEmController');
+        Route::get('e/data', 'MakeEmController@datatables')->name('makeEmployee.data');
     });
     //employee
     Route::group(['prefix' => '/employee', 'as' => 'employee.', 'middleware' => 'employee'], function () {

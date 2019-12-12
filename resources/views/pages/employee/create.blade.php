@@ -1,51 +1,42 @@
-@extends('layouts.master', ["activePage" => "karyawan-buat", "titlePage" => "Buat Akun" ])
-
-@section('content')
-<form action="{{ route('admin.makeEmployee.store') }}" method="post">
+<form action="{{ route('admin.makeEmployee.store') }}" method="POST" id="form-store">
 @csrf
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <div class="row">
-            <div class="col-md-4">
-                <h4>Akun Karyawan</h4>
-            </div>
-        </div>
+    <div class="form-group">
+        <label for="">Nama</label>
+        <input type="text" name="name" class="form-control" required id="name">
     </div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-9">
-                <div class="form-group">
-                    <label for="">Nama</label>
-                    <input type="text" autofocus name="name" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="">Username</label>
-                    <input type="text" name="username" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="">PASSWORD DEFAULT</label>
-                    <input name="password" type="text" class="form-control" value="password123" readonly="">
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Aksi</h3>
-                    </div>
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                            <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-save"></i> Save</button>
-                            </div>
-                            <div class="col-md-6">
-                            <a href="{{ route('admin.makeEmployee.index') }}" class="btn btn-danger btn-block"><i class="fa fa-times"></i> Cancel</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="form-group">
+        <label for="">Cabang</label>
+        <select name="cabang_id" id="cabang_id" class="form-control">
+            <option disabled>Pilih Cabang</option>
+            @foreach($cabang as $q)
+            <option value="{{ $q->id }}">{{ $q->name }}</option>
+            @endforeach
+        </select>
     </div>
-</div>
+    <div class="form-group">
+        <label for="">Tingkat</label>
+        <select name="level" id="level" class="form-control" required="">
+            <option disabled>Pilih Tingkatan</option>
+            <option value="employee">Pegawai</option>
+            <option value="store leader">Kepala Toko</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="">Alamat</label>
+        <textarea name="address" required id="address" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="">Username</label>
+        <input type="text" name="username" class="form-control" required id="username">
+    </div>
+    <div class="form-group">
+        <label for="">Password</label>
+        <input name="password" type="password" class="form-control" required id="password">
+    </div>
+    <div class="form-group">
+        <label for="password-confirm" class="text-md-right">{{ __('Confirm Password') }}</label>
+        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-sm float-right">Buat</button>
 </form>
-@endsection

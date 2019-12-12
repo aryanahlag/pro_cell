@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEmployeesTable extends Migration
+class CreateStockDistributionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateEmployeesTable extends Migration
      */
     public function up()
     {
-        Schema::create('employees', function (Blueprint $table) {
+        Schema::create('stock_distributions', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->text("address");
-            $table->enum("level", ['employee', "store leader"]);
-            $table->unsignedInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedInteger('cabang_id');
             $table->foreign('cabang_id')->references('id')->on('cabangs')->onDelete('cascade');
+            $table->unsignedInteger('stock_id');
+            $table->foreign('stock_id')->references('id')->on('stocks')->onDelete('cascade');
+            $table->integer('quantity');
+            $table->integer('price_sell')->nullable();
+            $table->integer('price_grosir')->nullable();
             $table->timestamps();
         });
     }
@@ -33,6 +33,6 @@ class CreateEmployeesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employees');
+        Schema::dropIfExists('stock_distributions');
     }
 }

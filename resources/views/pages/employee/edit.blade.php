@@ -1,48 +1,41 @@
-@extends('layouts.master', ["activePage" => "karyawan-buat", "titlePage" => "Edit Akun" ])
-
-@section('content')
-<form action="{{ route('admin.makeEmployee.update', ['id'=>$employee->id]) }}" method="post">
+<form action="{{ route('admin.makeEmployee.update', ['id'=>$data->id]) }}" method="post">
 @csrf
 @method('PUT')
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <div class="row">
-            <div class="col-md-4">
-                <h4>Akun Karyawan</h4>
-            </div>
-        </div>
-    </div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-9">
-                <div class="form-group">
-                    <label for="">Nama</label>
-                    <input type="text" value="{{ $employee->name }}" autofocus name="name" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="">Username</label>
-                    <input type="text" value="{{ $employee->user->username }}" name="username" class="form-control" required>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Aksi</h3>
-                    </div>
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                            <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-save"></i> Save</button>
-                            </div>
-                            <div class="col-md-6">
-                            <a href="{{ route('admin.makeEmployee.index') }}" class="btn btn-danger btn-block"><i class="fa fa-times"></i> Cancel</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="form-group">
+    <label for="">Nama</label>
+    <input type="text" value="{{ $data->name }}" autofocus name="name" class="form-control" id="name" required>
+</div>
+<div class="form-group">
+    <label for="">Cabang</label>
+    <select name="cabang_id" id="cabang_id" class="form-control">
+        @foreach($cabang as $q)
+        <option value="{{ $q->id }}" {{ $q->id == $data->cabang_id ? "selected" : "" }}>{{ $q->name }}</option>
+        @endforeach
+    </select>
+</div>
+<div class="form-group">
+    <label for="">Tingkat</label>
+    <select name="level" id="level" class="form-control" required="">
+        <option value="employee" {{ $data->level == "employee" ? "selected" : "" }}>Pegawai</option>
+        <option value="store leader" {{ $data->level == "store leader" ? "selected" : "" }}>Kepala Toko</option>
+    </select>
+</div>
+<div class="form-group">
+    <label for="">Alamat</label>
+    <textarea id="address" name="address" class="form-control">{{ $data->address }}</textarea>
+</div>
+<div class="form-group">
+    <label for="">Username</label>
+    <input type="text" value="{{ $data->user->username }}" name="username" class="form-control" id="username" required>
+</div>
+
+<div class="form-group">
+    <label for="password" class="text-md-right">{{ __('Password') }}</label>
+    <input id="password" type="password" class="form-control" name="password" placeholder="Tidak Perlu diisi jika tidak ada perubahan">
+</div>
+
+<div class="form-group">
+    <label for="password-confirm" class="text-md-right">{{ __('Confirm Password') }}</label>
+    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="Tidak Perlu diisi jika tidak ada perubahan">
 </div>
 </form>
-@endsection
