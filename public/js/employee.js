@@ -107,7 +107,7 @@ $('body').on('click', '#btn-delete', function(e){
 $('body').on("submit", "#form-store", function (e) {
 	e.preventDefault();
 	let url = $(this).attr("action");
-	let data = $(this).serializeArray;
+	let data = $(this).serializeArray();
 
 	$('form').find('.form-group').removeClass('has-errors');
 	$('form').find('.help-block').remove();
@@ -139,9 +139,17 @@ $('body').on("submit", "#form-store", function (e) {
 			}
 
 			$.each(errors.errors, function(key, value){
+				// $('#' + key)
+				// .closest('.form-group')
+				// .addClass('has-errors')
+				// .append(
+				// 	`<span class="help-block">`+value+`</span>`
+				// )
+				$('#' + key)
+				.closest('.form-group .form-control')
+				.addClass('is-invalid')
 				$('#' + key)
 				.closest('.form-group')
-				.addClass('has-errors')
 				.append(
 					`<span class="help-block">`+value+`</span>`
 				)

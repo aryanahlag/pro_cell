@@ -42,17 +42,31 @@ class MakeEmController extends Controller
      */
     public function store(Request $request)
     {
+        $valid = Validator::make($request->all(), [
+            'username' => "required|unique:users|max:70|min:3",
+            "name" => "required|min:3",
+            "password" => "required|confirmed|min:6",
+            "address" => "required",
+        ]);
+
+        if ($valid->fails()) {
+            return response()->json(['errors', $valid->errors()], 401);
+        }
+        // dd($request);
         $user = User::create([
             'username' => $request->username,
             'password' => bcrypt($request->password),
             'role' => 'employee'
         ]);
         Employee::create([
+            'cabang_id' => $request->cabang_id,
+            'address' => $request->address,
             'name' => $request->name,
+            "level" => $request->level,
             'user_id' => $user->id
         ]);
 
-        return redirect()->route('admin.makeEmployee.index');
+        return response()->json(['msg' => "Berhasil di tambahkan"]);
     }
 
     /**
