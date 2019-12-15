@@ -38,4 +38,7 @@
     <label for="password-confirm" class="text-md-right">{{ __('Confirm Password') }}</label>
     <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="Tidak Perlu diisi jika tidak ada perubahan">
 </div>
+<div class="d-flex">
+    <button type="submit" class="btn btn-primary ml-auto" id="action-primary">Edit</button>
+</div>
 </form>

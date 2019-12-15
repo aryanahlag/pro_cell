@@ -21,13 +21,13 @@
             <table class="table table-stripped" id="tableEmployee">
                 <thead>
                     <tr>
-                        <th class="text-center">No</th>
-                        <th class="text-center">Nama</th>
-                        <th class="text-center">Cabang</th>
-                        <th class="text-center"></th>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Cabang</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
-                
+
             </table>
         </div>
     </div>
