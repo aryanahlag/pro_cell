@@ -29,7 +29,7 @@ class MakeEmController extends Controller
     public function create()
     {
         $cabang = \App\Cabang::all();
-        return view('pages.employee.create',[
+        return view('pages.employee.create', [
             "cabang" => $cabang
         ]);
     }
@@ -94,7 +94,6 @@ class MakeEmController extends Controller
         $data['data'] = Employee::findOrFail($id);
         $data['cabang'] = \App\Cabang::all();
         return view('pages.employee.edit', $data);
-
     }
 
     /**
@@ -113,9 +112,12 @@ class MakeEmController extends Controller
         }
         $employee->update([
             'name' => $request->name,
+            'address' => $request->address,
+            'level' => $request->level,
+            'cabang_id' => $request->cabang_id,
         ]);
 
-        return redirect()->route('admin.makeEmployee.index');
+        return response()->json(['msg' => $employee->name . ' Berhasil di edit']);
     }
 
     /**

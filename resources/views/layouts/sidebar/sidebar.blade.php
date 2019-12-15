@@ -61,6 +61,11 @@
                     <i class="fas fa-user-tie"></i>
                     <span>Karyawan</span></a>
             </li>
+            <li class="nav-item {{ $activePage == 'cabang' ? ' active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.cabang.index') }}">
+                    <i class="fas fa-store"></i>
+                    <span>Cabang</span></a>
+            </li>
         @elseif(Auth::user()->role == 'employee')
         <div class="sidebar-heading">
             Transaksi
