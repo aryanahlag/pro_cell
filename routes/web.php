@@ -11,7 +11,7 @@
 |
 */
 
-Auth::routes();
+// Auth::routes();
 Route::get('/', function () {
     return redirect('/z/login');
 })->name('login');
@@ -49,6 +49,9 @@ Route::middleware('auth')->group(function () {
         Route::resource('brand', 'BrandController');
         Route::get('b/data', 'BrandController@datatables')->name('brand.data');
 
+        Route::resource('cabang', 'CabangController');
+        Route::get('a/data', 'CabangController@datatables')->name('cabang.data');
+
         Route::resource('makeEmployee', 'MakeEmController');
         Route::get('e/data', 'MakeEmController@datatables')->name('makeEmployee.data');
     });
@@ -62,9 +65,9 @@ Route::middleware('auth')->group(function () {
         Route::get('service/pay/{service}', 'ServiceController@payForm')->name('service.payForm');
         Route::put('service/pay/{service}', 'ServiceController@payment')->name('service.pay');
 
-        
 
-        // 
+
+        //
         Route::resource('add/{service}/item', 'ItemServiceController');
     });
 
