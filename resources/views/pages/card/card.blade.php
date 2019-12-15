@@ -81,7 +81,7 @@
             }
             return getRandom;
         }
-        return data = getRandomNumber(500, 1000000000);
+        return data = getRandomNumber(1000000, 1000000000000);
     // $('#hasil').append((500, 1000000)+ "<br>");
     };
 
