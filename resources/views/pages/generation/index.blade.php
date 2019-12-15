@@ -18,7 +18,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-stripped" id="tableCategory">
+            <table class="table table-stripped" id="tableGeneration">
                 <thead>
                     <tr>
                         <th class="text-center">No</th>
@@ -28,7 +28,7 @@
                         <th class="text-center">Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
+{{--                 <tbody>
                     @if($generation->count() == 0)
                     <tr>
                         <td colspan="4" class="text-center">Tidak ada data</td>
@@ -56,9 +56,27 @@
                         </td>
                     </tr>
                     @endforeach
-                </tbody>
+                </tbody> --}}
             </table>
         </div>
     </div>
 </div>
 @endsection
+@push('js')
+<script>
+$(document).ready(function() {
+    $('#tableGeneration').DataTable({
+        responsive: true,
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('admin.generation.data') }}",
+        columns: [
+            { data: "DT_RowIndex", orderable: false, searchable: false },
+            { data: "name" },
+            { data: 'action', orderable: false, searchable: false },
+        ]
+    });
+});
+</script>
+<script src="{{ asset('js/brand.js')}}"></script>
+@endpush

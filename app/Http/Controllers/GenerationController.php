@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Generation;
 use App\Stock;
+use DataTables;
 
 class GenerationController extends Controller
 {
@@ -103,5 +104,20 @@ class GenerationController extends Controller
         Generation::find($id)->update(['status' => 'verify']);
         // return
         return redirect()->route('admin.stock-generation.index');
+        // generation
+    }
+
+    public function datatables()
+    {
+        $generation = Generation::query()->with('stock')->where('status', 'unverify')->orderBy('time', 'asc');
+        return DataTables::of($generation)->addColumn('action', function ($generation) {
+            return view('pages.generation.action', [
+                'model' => $generation,
+                'url_show' => route('admin.generation.show', $generation->id),
+                'url_edit' => route('admin.generation.edit', $generation->id),
+                'url_delete' => route('admin.generation.destroy', $generation->id),
+                'url_verify' => route('admin.generation.verify', $generation->id),
+            ]);
+        })->rawColumns(['action'])->addIndexColumn()->make(true);
     }
 }

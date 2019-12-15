@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
         Route::get('generation/stok', 'StockGenerationController@index')->name('stock-generation.index');
 
         Route::resource('generation', 'GenerationController');
+        Route::get('g/data', 'GenerationController@datatables')->name('generation.data');
 
         Route::put('generation/{id}/verify', 'GenerationController@verify')->name('generation.verify');
 
