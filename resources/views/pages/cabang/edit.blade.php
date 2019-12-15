@@ -1,7 +1,6 @@
 <form action="{{ route('admin.cabang.update', $data->id) }}" class="form-horizontal" method="POST" id="form-update">
 	{{ method_field('PUT') }}
 	@csrf
-	<div class="form-group">
 		<label for="name">
 			Nama Cabang
 		</label>

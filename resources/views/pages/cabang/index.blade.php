@@ -4,7 +4,7 @@
     <div class="card-header py-3">
         <div class="row">
             <div class="col-md-4">
-                <h4>Merek</h4>
+                <h4>Cabang</h4>
             </div>
             <div class="col-md-8 d-flex justify-content-end">
                 {{-- <a href="{{ route('category.create') }}" class="btn btn-primary" id="btn-create"> --}}
