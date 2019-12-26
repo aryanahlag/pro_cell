@@ -24,11 +24,11 @@
                             <tr>
                                 <th>Kode</th>
                                 <th>Nama</th>
-                                <th>Status</th>
+                                {{-- <th>Status</th> --}}
                                 <th>Lainnya</th>
                                 <th>Jumlah</th>
                                 <th>Harga Beli</th>
-                                <th>Harga Jual</th>
+                                {{-- <th>Harga Jual</th> --}}
                                 <th>Kategori</th>
                                 <th>Merk</th>
                                 <th><a href="javascript:void(0)" class="addRow"><i class="fa fa-plus"></i></a></th>
@@ -38,11 +38,11 @@
                             <tr>
                                 <td><input type="text" name="code[]" class="form-control" required></td>
                                 <td><input type="text" name="name[]" class="form-control" required></td>
-                                <td><input type="text" name="status[]" class="form-control" value="unsold" readonly></td>
-                                <td><input type="text" name="information[]" class="form-control" required></td>
+                                {{-- <td><input type="text" name="status[]" class="form-control" value="unsold" readonly></td> --}}
+                                <td><input type="text" name="information[]" class="form-control"></td>
                                 <td><input type="number" min="1" name="quantity[]" class="form-control" required></td>
                                 <td><input type="number" min="1" name="price_purchase[]" class="form-control" required></td>
-                                <td><input type="number" min="1" name="price_sell[]" class="form-control" required></td>
+                                {{-- <td><input type="number" min="1" name="price_sell[]" class="form-control" required></td> --}}
                                 <td>
                                     <select name="category_id[]" id="" class="form-control" required>
                                         <option value="" disabled>Pilih Kategori</option>
@@ -59,7 +59,9 @@
                                                 @endforeach
                                         </select>
                                 </td>
-                                <td><a href="javascript:void(0)" class="btn btn-danger" class="remove"><i class="fa fa-trash"></i></a></td>
+                                <td>
+                                    <a href="javascript:void(0)"  class="btn btn-danger" class="remove"><i class="fa fa-trash"></i></a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -81,11 +83,11 @@
         var tr='<tr>'+
                 '<td><input type="text" name="code[]" class="form-control" required></td>'+
                 '<td><input type="text" name="name[]" class="form-control" required></td>'+
-                '<td><input type="text" name="status[]" class="form-control" value="unsold" readonly></td>'+
-                '<td><input type="text" name="information[]" class="form-control" required></td>'+
+                // '<td><input type="text" name="status[]" class="form-control" value="unsold" readonly></td>'+
+                '<td><input type="text" name="information[]" class="form-control"></td>'+
                 '<td><input type="number" min="1" name="quantity[]" class="form-control" required></td>'+
                 '<td><input type="number" min="1" name="price_purchase[]" class="form-control" required></td>'+
-                '<td><input type="number" min="1" name="price_sell[]" class="form-control" required></td>'+
+                // '<td><input type="number" min="1" name="price_sell[]" class="form-control" required></td>'+
                 `<td><select name="category_id[]" id="" class="form-control" required>
                     <option value="" disabled>Pilih Kategori</option>`+
                     @foreach (\App\Category::orderBy('name', 'asc')->get() as $a)
@@ -98,11 +100,12 @@
                         `<option value="{{ $a->id }}">{{ $a->name }}</option>`+
                     @endforeach
                     '</select></td>'+
-                '<td><a href="#" class="btn btn-danger" class="remove"><i class="fa fa-trash"></i></a></td>'+
+                '<td><a href="javascript:void(0)" class="btn btn-danger removed"><i class="fa fa-trash"></i></a></td>'+
         '</tr>';
         $('tbody').append(tr);
     };
-    $('.remove').on('click',function(){
+
+    $('body').on('click', ".removed", function(){
         var last=$('tbody tr').length;
         if(last==1){
             alert("Form input tidak bisa dihapus");
@@ -112,5 +115,15 @@
         }
 
     });
+    // function myRemove() {
+    //     var last=$('tbody tr').length;
+    //     if(last==1){
+    //         alert("Form input tidak bisa dihapus");
+    //     }
+    //     else{
+    //         console.log($(this).parent());
+    //          $(this).parent().parent().remove();
+    //     }
+    // }
 </script>
 @endpush

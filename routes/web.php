@@ -38,10 +38,16 @@ Route::middleware('auth')->group(function () {
 
         Route::resource('generation', 'GenerationController');
         Route::get('g/data', 'GenerationController@datatables')->name('generation.data');
-
         Route::put('generation/{id}/verify', 'GenerationController@verify')->name('generation.verify');
 
+
         Route::resource('generation/{generation}/stock', 'StockController');
+        Route::get('s/generation/data/{generation}', 'GenerationController@stockGenerationData')->name('stock.generation.data');
+
+        // Route::get('generation/{generation}/stock/single', 'StockController@createSingle')->name("stock.single.create");
+        Route::get('generation/{generation}/single', 'StockController@createSingle')->name("stock.single.create");
+
+        Route::post('generation/{generation}/stock/store/single', 'StockController@storeSingle')->name("stock.create.single.store");
 
 
         Route::resource('category', 'CategoryController');

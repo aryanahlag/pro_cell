@@ -42,15 +42,15 @@ class MakeEmController extends Controller
      */
     public function store(Request $request)
     {
-        $valid = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'username' => "required|unique:users|max:70|min:3",
             "name" => "required|min:3",
             "password" => "required|confirmed|min:6",
             "address" => "required",
         ]);
 
-        if ($valid->fails()) {
-            return response()->json(['errors', $valid->errors()], 401);
+        if ($validator->fails()) {
+            return response()->json(["errors" => $validator->errors()], 401);
         }
         // dd($request);
         $user = User::create([

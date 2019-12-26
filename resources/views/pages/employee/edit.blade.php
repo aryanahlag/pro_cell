@@ -1,4 +1,4 @@
-<form action="{{ route('admin.makeEmployee.update', ['id'=>$data->id]) }}" method="post">
+<form action="{{ route('admin.makeEmployee.update', ['id'=>$data->id]) }}" method="post" id="form-update">
 @csrf
 @method('PUT')
 <div class="form-group">

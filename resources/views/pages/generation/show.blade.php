@@ -8,14 +8,18 @@
                 <h4>Keranjang</h4>
             </div>
             <div class="col-md-8 d-flex justify-content-end">
-                <a href="{{ route('admin.stock.create', ['generation'=>$generation->id]) }}" class="btn btn-success btn-sm">
+                <a href="{{ route('admin.stock.single.create', ['generation'=>$generation->id]) }}" class="btn btn-info btn-sm" id="btn-create">
                     <i class="fa fa-plus"></i>
                     Buat Stock
                 </a>
-                <a href="{{ route('admin.generation.index') }}" style="margin-left:3px" class="btn btn-danger btn-sm">
-                        <i class="fa fa-times"></i>
-                        Kembali
-                    </a>
+                <a href="{{ route('admin.stock.create', ['generation'=>$generation->id]) }}" class="btn btn-success btn-sm ml-3">
+                    <i class="fa fa-plus"></i>
+                    Buat Banyak Stock
+                </a>
+                <a href="{{ route('admin.generation.index') }}" class="btn btn-danger btn-sm ml-3">
+                    <i class="fa fa-times"></i>
+                    Kembali
+                </a>
             </div>
         </div>
     </div>
@@ -23,7 +27,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="table-responsive">
-                    <table class="table table-stripped" id="tableCategory">
+                    <table class="table table-stripped" id="tableStockGeneration">
                         <thead>
                             <tr>
                                 <th class="text-center">No</th>
@@ -31,19 +35,11 @@
                                 <th class="text-center">Nama Barang</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Jumlah</th>
-                                <th class="text-center">Harga Beli</th>
-                                <th class="text-center">Harga Jual</th>
-                                <th class="text-center">Lainnya</th>
                                 <th class="text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if($stocks->count() == 0)
-                            <tr>
-                                <td colspan="4" class="text-center">Tidak ada data</td>
-                            </tr>
-                            @endif
-                            @foreach ($stocks as $i => $stock)
+                            {{-- @foreach ($stocks as $i => $stock)
                             <tr>
                                 <td class="text-center">{{ $i+1 }}</td>
                                 <td class="text-center">{{ $stock->code }}</td>
@@ -51,7 +47,6 @@
                                 <td class="text-center">{{ $stock->status }}</td>
                                 <td class="text-center">{{ $stock->quantity }}</td>
                                 <td class="text-center">{{ $stock->price_purchase }}</td>
-                                <td class="text-center">{{ $stock->price_sell }}</td>
                                 <td class="text-center">{{ $stock->information }}</td>
                                 <td class="text-center">
                                     <form action="{{ route('admin.stock.destroy', ['generation_id'=>$stock->generation_id, 'stock'=>$stock->id]) }}" method="POST">
@@ -62,7 +57,7 @@
                                     </form>
                                 </td>
                             </tr>
-                            @endforeach
+                            @endforeach --}}
                         </tbody>
                     </table>
                 </div>
@@ -71,3 +66,24 @@
     </div>
 </div>
 @endsection
+@push('js')
+<script>
+    $(document).ready(function() {
+        $('#tableStockGeneration').DataTable({
+            responsive: true,
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('admin.stock.generation.data', ["generation" => $generation->id]) }}",
+            columns: [
+                { data: "DT_RowIndex", orderable: false, searchable: false },
+                { data: "code" },
+                { data: "name" },
+                { data: "status" },
+                { data: "quantity" },
+                { data: 'action', orderable: false, searchable: false },
+            ]
+        });
+    });
+</script>
+<script src="{{ asset('js/stock.js') }}"></script>
+@endpush

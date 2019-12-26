@@ -139,20 +139,62 @@ $('body').on("submit", "#form-store", function (e) {
             }
 
             $.each(errors.errors, function (key, value) {
-                // $('#' + key)
-                // .closest('.form-group')
-                // .addClass('has-errors')
-                // .append(
-                // 	`<span class="help-block">`+value+`</span>`
-                // )
                 $('#' + key)
-                    .closest('.form-group .form-control')
-                    .addClass('is-invalid')
+                .closest('.form-group .form-control')
+                .addClass('is-invalid')
                 $('#' + key)
-                    .closest('.form-group')
-                    .append(
-                        `<span class="help-block">` + value + `</span>`
-                    )
+                .closest('.form-group')
+                .append(
+                    `<span class="help-block">`+value+`</span>`
+                )
+            });
+        }
+    })
+})
+
+$('body').on("submit", "#form-update", function (e) {
+    e.preventDefault();
+    let url = $(this).attr("action");
+    let data = $(this).serializeArray();
+
+    $('form').find('.form-group').removeClass('has-errors');
+    $('form').find('.help-block').remove();
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: data,
+        success: function (res) {
+            $('#myModal').modal('hide');
+
+            Swal.fire({
+                title: 'Sukses !',
+                type: 'success',
+                text: res.msg,
+                showConfirmButton: false,
+                timer: 2000
+            });
+
+            $('#tableEmployee').DataTable().ajax.reload();
+        },
+        error: function (xhr) {
+            const errors = xhr.responseJSON;
+            if (xhr.status === 500) {
+                Swal.fire({
+                    title: 'Peringatan !',
+                    type: 'warning',
+                    text: "Terjadi Kesalahan",
+                });
+            }
+
+            $.each(errors.errors, function (key, value) {
+                $('#' + key)
+                .closest('.form-group .form-control')
+                .addClass('is-invalid')
+                $('#' + key)
+                .closest('.form-group')
+                .append(
+                    `<span class="help-block">`+value+`</span>`
+                )
             });
         }
     })

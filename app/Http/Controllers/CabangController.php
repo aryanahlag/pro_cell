@@ -111,6 +111,11 @@ class CabangController extends Controller
     {
         $cabang = Cabang::findOrFail($id);
 
+        $user = \App\Employee::where('cabang_id', $id)->get();
+        if (count($user) > 0) {
+            return response()->json(["msg" => "Cabang Masih Memliki Pegawai"], 401);
+        }
+
         $cabang->delete();
 
         return response()->json(['msg' => $cabang->name . ' Berhasil Di hapus']);

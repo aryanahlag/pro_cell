@@ -7,6 +7,3 @@
 <a class="btn-show mr-2" title="{{ $model->time }}" href="{{$url_show}}">
 	<i class="fas fa-eye text-inverse"></i>
 </a>
-<a class="btn-verify" title="{{ $model->time }}" href="{{ $url_verify }}">
-	<i class="fa fa-check"></i>
-</a>

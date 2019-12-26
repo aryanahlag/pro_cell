@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Service;
+use App\Employee;
 use App\ItemService;
 use Validator;
 use Date;
@@ -50,13 +51,14 @@ class ServiceController extends Controller
         if ($validator->fails()) {
             return response()->json(["errors" => $validator->errors()], 422);
         }
-
+        $employee = Employee::where("user_id", Auth::id())->first();
         $service = Service::create([
             "customer_name" => $request->customer_name,
             "dp" => $request->dp,
             "unit" => $request->unit,
             "date_in" => Date::now()->format('Y-m-d'),
             "status" => "belum lunas",
+            "cabang_id" => $employee->cabang_id,
             "total_price" => 0,
             "user_id" => Auth::id(),
         ]);
@@ -130,7 +132,7 @@ class ServiceController extends Controller
         $service = Service::findOrFail($id);
         $service->delete();
 
-        return response()->json(["msg" => "Service atas Nama ". $service->customer_name." Berhasil di hapus"]);
+        return response()->json(["msg" => "Service atas Nama ". $service->customer_name." Berhasil di hapus"],200);
     }
 
     public function datatables()

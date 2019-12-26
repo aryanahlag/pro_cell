@@ -22,6 +22,6 @@ class User extends Authenticatable
 
     public function employee()
     {
-        return $this->hasMany('App\Employee');
+        return $this->hasOne(Employee::class);
     }
 }

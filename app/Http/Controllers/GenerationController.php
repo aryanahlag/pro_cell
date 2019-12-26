@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Generation;
 use App\Stock;
 use DataTables;
+use Validator;
+use Date;
 
 class GenerationController extends Controller
 {
@@ -16,8 +18,8 @@ class GenerationController extends Controller
      */
     public function index()
     {
-        $generation = Generation::where('status', 'unverify')->orderBy('time', 'asc')->with(['stock'])->get();
-        return view('pages.generation.index', compact('generation'));
+        // $generation = Generation::where('status', 'unverify')->orderBy('time', 'asc')->with(['stock'])->get();
+        return view('pages.generation.index');
     }
 
     /**
@@ -38,13 +40,19 @@ class GenerationController extends Controller
      */
     public function store(Request $request)
     {
-        Generation::create([
+        $unique = Generation::where('time', $request->time)->get();
+
+        if (count($unique) > 0) {
+            return response()->json(["msg" => "Tanggal sudah terdaftar"], 401);
+        }
+
+        $gen = Generation::create([
             'generation' => date('Y', strtotime($request->time)),
             'time' => $request->time,
             'status' => "unverify",
         ]);
         // return
-        return redirect()->route('admin.generation.index');
+        return response()->json(['msg' => "Keranjang Berhasil Ditambahkan"], 200);
     }
 
     /**
@@ -56,7 +64,7 @@ class GenerationController extends Controller
     public function show($id)
     {
         $data['generation'] = Generation::where('id', $id)->first();
-        $data['stocks'] = Stock::where('generation_id', $id)->get();
+        // $data['stocks'] = Stock::where('generation_id', $id)->get();
 
         return view('pages.generation.show', $data);
     }
@@ -70,7 +78,9 @@ class GenerationController extends Controller
     public function edit($id)
     {
         $generation = Generation::find($id);
-        return view('page.generation.edit', compact('generation'));
+        $date = Date::parse($generation->time)->format('Y-m-d');
+        // dd($date);
+        return view('pages.generation.edit', ["data" => $date]);
     }
 
     /**
@@ -93,31 +103,60 @@ class GenerationController extends Controller
      */
     public function destroy($id)
     {
-        $gen = Generation::find($id);
+        $gen = Generation::findOrFail($id);
+        $stock = \App\Stock::where('generation_id', $id)->get();
+        if (count($stock) > 0) {
+            return response()->json(["msg" => "Keranjang Memiliki Stock"], 401);
+        }
         $gen->delete();
         // return
-        return redirect()->route('admin.generation.index')->with('msg', 'Delete Success');
+        return response()->json(["msg" => "Keranjang Berhasil dihapus"], 200);
     }
 
     public function verify($id)
     {
-        Generation::find($id)->update(['status' => 'verify']);
+        $gen = Generation::findOrFail($id);
+        $gen->update(['status' => 'verify']);
         // return
-        return redirect()->route('admin.stock-generation.index');
+        return response()->json(["msg", "Keranjang pada $gen->time Berhail di verivikasi"], 200);
         // generation
     }
 
     public function datatables()
     {
         $generation = Generation::query()->with('stock')->where('status', 'unverify')->orderBy('time', 'asc');
-        return DataTables::of($generation)->addColumn('action', function ($generation) {
-            return view('pages.generation.action', [
-                'model' => $generation,
-                'url_show' => route('admin.generation.show', $generation->id),
-                'url_edit' => route('admin.generation.edit', $generation->id),
-                'url_delete' => route('admin.generation.destroy', $generation->id),
-                'url_verify' => route('admin.generation.verify', $generation->id),
-            ]);
+        return DataTables::of($generation)
+            ->addColumn("allStock", function ($generation){
+                $stock_count = Stock::where("generation_id", $generation->id)->count();
+
+                return $stock_count;
+            })
+            ->addColumn('myTime', function($generation){
+                // $newDate = date("d F Y", strtotime($originalDate));
+                return Date::parse($generation->time)->format('d F Y');
+            })
+            ->addColumn('action', function ($generation) {
+                return view('pages.generation.action', [
+                    'model' => $generation,
+                    'url_show' => route('admin.generation.show', $generation->id),
+                    'url_edit' => route('admin.generation.edit', $generation->id),
+                    'url_delete' => route('admin.generation.destroy', $generation->id),
+                    'url_verify' => route('admin.generation.verify', $generation->id),
+                ]);
+        })->rawColumns(['action'])->addIndexColumn()->make(true);
+    }
+
+    public function stockGenerationData($id)
+    {
+        $stock = Stock::query()->where('generation_id', $id);
+        return DataTables::of($stock)
+            ->addColumn('action', function ($stock) {
+                return view('pages.stock.action', [
+                    'model' => $stock,
+                    'url_edit' => route('admin.stock.edit', ["generation" => $stock->generation_id, "stock" => $stock->id]),
+                    'url_delete' => route('admin.stock.destroy', ["generation" => $stock->generation_id, "stock" => $stock->id]),
+                    'url_show' => route('admin.stock.show', ["generation" => $stock->generation_id, "stock" => $stock->id]),
+                ]);
         })->rawColumns(['action'])->addIndexColumn()->make(true);
     }
 }

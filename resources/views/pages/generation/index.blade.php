@@ -9,7 +9,7 @@
             </div>
             <div class="col-md-8 d-flex justify-content-end">
                 {{-- <a href="{{ route('category.create') }}" class="btn btn-primary" id="btn-create"> --}}
-                <a href="{{ route('admin.generation.create') }}" class="btn btn-success">
+                <a href="{{ route('admin.generation.create') }}" class="btn btn-success" id="btn-create">
                     <i class="fa fa-plus"></i>
                     Tambah Keranjang
                 </a>
@@ -24,6 +24,7 @@
                         <th class="text-center">No</th>
                         <th class="text-center">Tahun</th>
                         <th class="text-center">Tanggal Keranjang</th>
+                        <th class="text-center">Stok</th>
                         <th class="text-center">Status</th>
                         <th class="text-center">Aksi</th>
                     </tr>
@@ -72,11 +73,14 @@ $(document).ready(function() {
         ajax: "{{ route('admin.generation.data') }}",
         columns: [
             { data: "DT_RowIndex", orderable: false, searchable: false },
-            { data: "name" },
+            { data: "generation" },
+            { data: "myTime" },
+            { data: "allStock" },
+            { data: "status" },
             { data: 'action', orderable: false, searchable: false },
         ]
     });
 });
 </script>
-<script src="{{ asset('js/brand.js')}}"></script>
+<script src="{{ asset('js/generation.js')}}"></script>
 @endpush

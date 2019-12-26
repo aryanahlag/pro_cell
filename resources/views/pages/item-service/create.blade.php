@@ -6,11 +6,6 @@
             <div class="col-md-4">
                 <h4>Item Servis</h4>
             </div>
-            {{-- <div class="col-md-8 d-flex justify-content-end">
-                <button class="btn btn-primary btn-sm" id="addRow">
-                    <i class="fas fa-plus"></i> Tambah Ite,
-                </button>
-            </div> --}}
         </div>
     </div>
     <div class="card-body">
@@ -83,6 +78,7 @@ function addRow() {
 $('body').on('click', ".remove", function(e) {
 	e.preventDefault();
     let last = $('.major').length;
+    console.log($(this).parent())
     $(this).parent().parent().remove();
 	// console.info(last);
     // if (last == 1) {
