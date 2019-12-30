@@ -19,4 +19,9 @@ class Service extends Model
     {
         return $this->hasMany('App\ItemService');
     }
+
+    public function cabang()
+    {
+        return $this->belongsTo(Cabang::class);
+    }
 }

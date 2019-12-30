@@ -6,6 +6,7 @@ use App\Generation;
 use App\Stock;
 use Validator;
 use Date;
+use Auth;
 
 class StockController extends Controller
 {
@@ -75,6 +76,7 @@ class StockController extends Controller
             'category_id' => $request->category_id,
             'brand_id' => $request->brand_id,
             'generation_id' => $id,
+            'user_id' => Auth::id(),
         ]);
 
         return response()->json(["msg", "$stock->name Berhasil Ditambahkan"], 200);
@@ -101,6 +103,7 @@ class StockController extends Controller
                     'category_id' => $request->category_id[$key],
                     'brand_id' => $request->brand_id[$key],
                     'generation_id' => $id,
+                    'user_id' => Auth::id(),
                 ];
                 Stock::insert($data);
             }

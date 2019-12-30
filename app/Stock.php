@@ -15,11 +15,6 @@ class Stock extends Model
         return $this->belongsTo('App\Category');
     }
 
-    public function buying()
-    {
-        return $this->belongsTo('App\Buying');
-    }
-
     public function brand()
     {
         return $this->belongsTo('App\Brand');
@@ -28,5 +23,10 @@ class Stock extends Model
     public function generation()
     {
         return $this->belongsTo('App\Generation');
+    }
+
+    public function stockDistribution()
+    {
+        return $this->hasMany('App\StockDistribution');
     }
 }

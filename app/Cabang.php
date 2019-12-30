@@ -14,4 +14,14 @@ class Cabang extends Model
     {
     	return $this->hasMany(Employee::class);
     }
+
+    public function stockDistribution()
+    {
+    	return $this->hasMany(StockDistribution::class);
+    }
+
+    public function service()
+    {
+    	return $this->hasMany(Service::class);
+    }
 }
