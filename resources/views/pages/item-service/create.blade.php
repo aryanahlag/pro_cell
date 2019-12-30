@@ -1,12 +1,9 @@
 @extends('layouts.master', ["activePage" => "service", "titlePage" => "Service" ])
 @section('content')
 <div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <div class="row">
-            <div class="col-md-4">
-                <h4>Item Servis</h4>
-            </div>
-        </div>
+    <div class="card-header py-3 d-flex">
+        <h4>Item Servis</h4>
+        <a href="{{ route('employee.service.index', $slug) }}" class="btn btn-sm btn-danger ml-auto"><i class="fa fa-times"></i> Kembali</a>
     </div>
     <div class="card-body">
         <form action="{{ route('employee.item.store', $service_id) }}" class="form-horizontal" method="POST" id="form-update">

@@ -64,20 +64,14 @@ Route::middleware('auth')->group(function () {
     });
     //employee
     Route::group(['prefix' => '/employee', 'as' => 'employee.', 'middleware' => 'employee'], function () {
-        //dashboard
-        Route::get('/dashboard', 'EmployeeController@dashboard')->name('dashboard');
-        // service
         Route::resource('service', 'ServiceController');
         Route::get('s/data', 'ServiceController@datatables')->name('service.data');
         Route::get('service/pay/{service}', 'ServiceController@payForm')->name('service.payForm');
         Route::put('service/pay/{service}', 'ServiceController@payment')->name('service.pay');
 
-
-
-        //
         Route::resource('add/{service}/item', 'ItemServiceController');
+        
     });
-
     Route::resource('card', 'CardController');
     Route::post("create/bar", "CardController@barcodeStore")->name("barcode.store");
     Route::get("print/{limit}", "CardController@print")->name("barcode.print");
@@ -86,6 +80,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/service/lunas/{service}', "ServiceController@lunasShow")->name('service.show.lunas');
     Route::get('/service/report/{service}', "ServiceController@cetakStruk")->name('service.cetak.lunas');
     Route::get('c/data', 'ServiceController@lunasData')->name('service.lunasdata');
+
+    Route::group(['prefix' => '/employee/{cabang}', 'as' => 'employee.', 'middleware' => 'employee'], function () {
+        //dashboard
+        Route::get('/dashboard', 'EmployeeController@dashboard')->name('dashboard');
+        // service
+        Route::get('service', "ServiceController@index")->name("service.index");
+        //
+    });
 });
 
 

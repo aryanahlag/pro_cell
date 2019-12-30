@@ -27,8 +27,9 @@ class HomeController extends Controller
             if (Auth::user()->role == "admin") {
                 return redirect()->route("admin.dashboard");
             }
+            $employ = \App\Employee::where("user_id", Auth::id())->first();
             if (Auth::user()->role == "employee") {
-                return redirect()->route("employee.dashboard");
+                return redirect()->route("employee.dashboard", ["cabang" => $employ->cabang->slug]);
             }
             return redirect()->route("getLogin");
         }

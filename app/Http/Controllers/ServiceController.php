@@ -87,9 +87,10 @@ class ServiceController extends Controller
      */
     public function edit($id)
     {
-        $data = Service::findOrFail($id);
+        $data =  [];
+        $data["data"] = Service::findOrFail($id);
 
-        return view("pages.service.edit", compact("data"));
+        return view("pages.service.edit", $data);
     }
 
     /**
@@ -137,21 +138,23 @@ class ServiceController extends Controller
 
     public function datatables()
     {
-        $service = Service::query()->where("status", "belum lunas");
-
-        return DataTables::of($service)
+        $employee = Employee::where("user_id", Auth::id())->first();
+        $service = Service::query()->where("status", "belum lunas")->where("cabang_id", $employee->cabang_id);
+        // dd($service);
+        $data = DataTables::of($service)
             ->addColumn('tgl_masuk', function($service){
                 return Date::parse($service->date_in)->format('d-m-Y');
             })
             ->addColumn('action', function($service){
-            return view('pages.service.action', [
-                'model'=>$service,
-                'url_show'=>route('employee.service.show', $service->id),
-                'url_edit'=>route('employee.service.edit', $service->id),
-                'url_delete'=>route('employee.service.destroy', $service->id),
-                'url_pay'=>route('employee.service.payForm', $service->id),
-            ]);
-        })->rawColumns(['action'])->addIndexColumn()->make(true);
+                return view('pages.service.action', [
+                    'model'=>$service,
+                    'url_show'=>route('employee.service.show', ["service" => $service->id]),
+                    'url_edit'=>route('employee.service.edit', ["service" => $service->id]),
+                    'url_delete'=>route('employee.service.destroy', ["service" => $service->id]),
+                    'url_pay'=>route('employee.service.payForm', ["service" => $service->id]),
+                ]);
+            })->rawColumns(['action'])->addIndexColumn()->make(true);
+        return $data; 
     }
 
     public function payForm($service_id)
@@ -182,12 +185,15 @@ class ServiceController extends Controller
 
     public function sudahlunas()
     {
-        return view('pages.lunas.index');
+        $employ = \App\Employee::where("user_id", Auth::id())->first();
+        $data['slug'] = $employ->cabang->slug;
+        return view('pages.lunas.index', $data);
     }
 
     public function lunasData()
     {
-        $service = Service::query()->where("status", "lunas");
+        $employee = Employee::where("user_id", Auth::id())->first();
+        $service = Service::query()->where("status", "lunas")->where("cabang_id", $employee->cabang_id);
 
         return DataTables::of($service)
             ->addColumn('tgl_masuk', function($service){

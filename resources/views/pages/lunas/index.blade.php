@@ -7,7 +7,7 @@
                 <h4>Servis</h4>
             </div>
             <div class="col-md-8 d-flex justify-content-end">
-                <a href="{{ route('employee.service.index') }}" class="btn btn-danger btn-sm mr-2">
+                <a href="{{ route('employee.service.index', $slug) }}" class="btn btn-danger btn-sm mr-2">
                     <i class="fa fa-times"></i> Kembali
                 </a>
             </div>

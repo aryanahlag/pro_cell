@@ -1,3 +1,11 @@
+@php
+if (Auth::user()->role == "employee") {
+    $employ = \App\Employee::where("user_id", Auth::id())->first();
+    $slug = $employ->cabang->slug;
+}else{
+    $employ = '';
+}
+@endphp
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
@@ -66,6 +74,7 @@
                     <i class="fas fa-store"></i>
                     <span>Cabang</span></a>
             </li>
+            {{-- employee --}}
         @elseif(Auth::user()->role == 'employee')
         <div class="sidebar-heading">
             Transaksi
@@ -79,12 +88,14 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Penjualan:</h6>
                         <a class="collapse-item {{ $activePage == 'penjualan-employee' ? ' active' : '' }}" href="">Penjualan</a>
+                        @if($employ->level == "store leader")
                         <a class="collapse-item {{ $activePage == 'laporan-penjualan' ? ' active' : '' }}" href="">Laporan Penjualan</a>
+                        @endif
                     </div>
                 </div>
         </li>
         <li class="nav-item {{ $activePage == 'service' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('employee.service.index') }}">
+        <a class="nav-link" href="{{ route('employee.service.index', ["cabang" => $slug]) }}">
                 <i class="fas fa-fw fa-chart-area"></i>
             <span>Service</span></a>
         </li>

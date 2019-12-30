@@ -1,4 +1,4 @@
-<form action="{{ route('employee.service.update', $data->id) }}" class="form-horizontal" method="POST" id="form-store">
+<form action="{{ route('employee.service.update', ['service' => $data->id]) }}" class="form-horizontal" method="POST" id="form-store">
 	@csrf
 	@method("PUT")
 	<div class="form-group">

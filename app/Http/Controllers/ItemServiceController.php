@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\ItemService;
 use App\Service;
 use DB;
+use Auth;
 
 class ItemServiceController extends Controller
 {
@@ -26,7 +27,10 @@ class ItemServiceController extends Controller
      */
     public function create($service_id)
     {
+        $data = [];
+        $employ = \App\Employee::where("user_id", Auth::id())->first();
         $data["service_id"] = $service_id;
+        $data['slug'] = $employ->cabang->slug;
         return view("pages.item-service.create", $data);
     }
 
@@ -50,13 +54,15 @@ class ItemServiceController extends Controller
             }
 
             $total = ItemService::selectRaw("SUM((price * quantity)) AS total")->where("service_id", $service_id)->first();
-            $service = Service::findOrFail($service_id)->update([
-                'total_price' => $total->total
+            $service = Service::findOrFail($service_id);
+            $service->update([
+                'total_price' => $total->total - $service->dp
             ]);
-            // dd($total->total);
+            // get slug
+            $employ = \App\Employee::where("user_id", Auth::id())->first();
             
         }
-        return redirect()->route('employee.service.index');
+        return redirect()->route('employee.service.index', $employ->cabang->slug);
     }
 
     /**
