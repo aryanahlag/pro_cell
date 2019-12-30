@@ -71,6 +71,9 @@ Route::middleware('auth')->group(function () {
 
         Route::resource('add/{service}/item', 'ItemServiceController');
         
+
+        Route::resource('stock-distribution', 'StockDistributionController');
+        Route::get('sd/data', "StockDistributionController@datatables")->name("stock-distribution.data");
     });
     Route::resource('card', 'CardController');
     Route::post("create/bar", "CardController@barcodeStore")->name("barcode.store");
@@ -87,6 +90,8 @@ Route::middleware('auth')->group(function () {
         // service
         Route::get('service', "ServiceController@index")->name("service.index");
         //
+        // StockDistributionController
+        Route::get('stock-distribution', "StockDistributionController@index")->name("stock-distribution.index");
     });
 });
 

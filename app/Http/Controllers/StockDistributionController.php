@@ -3,8 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\StockDistribution;
+use App\Stock;
+use DataTables;
+use Auth;
+use Date;
+use Validator;
 
-class StockDistribution extends Controller
+class StockDistributionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +19,7 @@ class StockDistribution extends Controller
      */
     public function index()
     {
-        //
+        return view('pages.stock-distribution.index');
     }
 
     /**
@@ -80,5 +86,22 @@ class StockDistribution extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function datatables()
+    {
+        $employee = Employee::where("user_id", Auth::id())->first();
+        $sd = StockDistribution::query()->where('cabang_id', $employee->cabang_id)->with(['stock']);
+
+        $data = DataTables::of($sd)
+            ->addColumn('action', function($service){
+                return view('pages.service.action', [
+                    'model'=>$service,
+                    'url_show'=>route('employee.service.show', ["service" => $service->id]),
+                    'url_edit'=>route('employee.service.edit', ["service" => $service->id]),
+                    'url_delete'=>route('employee.service.destroy', ["service" => $service->id]),
+                    'url_pay'=>route('employee.service.payForm', ["service" => $service->id]),
+                ]);
+            })->rawColumns(['action'])->addIndexColumn()->make(true);
     }
 }

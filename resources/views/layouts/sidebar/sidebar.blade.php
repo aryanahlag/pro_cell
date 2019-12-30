@@ -101,7 +101,7 @@ if (Auth::user()->role == "employee") {
         </li>
         @if($employ->level == "store leader")
         <li class="nav-item {{ $activePage == 'stock-distribution' ? ' active' : '' }}">
-        <a class="nav-link" href="">
+        <a class="nav-link" href="{{ route('employee.stock-distribution.index', ['cabnag' => $slug]) }}">
             <i class="fa fa-dropbox"></i>
             <span>Barang Toko</span></a>
         </li>
