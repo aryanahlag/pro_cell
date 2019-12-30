@@ -99,6 +99,13 @@ if (Auth::user()->role == "employee") {
                 <i class="fas fa-fw fa-chart-area"></i>
             <span>Service</span></a>
         </li>
+        @if($employ->level == "store leader")
+        <li class="nav-item {{ $activePage == 'stock-distribution' ? ' active' : '' }}">
+        <a class="nav-link" href="">
+            <i class="fa fa-dropbox"></i>
+            <span>Barang Toko</span></a>
+        </li>
+        @endif
         @else
         <li class="nav-item">
             <a class="nav-link" href="">
