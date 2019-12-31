@@ -29,7 +29,7 @@ class StockDistributionController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.stock-distribution.create');
     }
 
     /**
@@ -40,7 +40,7 @@ class StockDistributionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return $request->all();
     }
 
     /**
@@ -90,18 +90,25 @@ class StockDistributionController extends Controller
 
     public function datatables()
     {
-        $employee = Employee::where("user_id", Auth::id())->first();
+        $employee = \App\Employee::where("user_id", Auth::id())->first();
         $sd = StockDistribution::query()->where('cabang_id', $employee->cabang_id)->with(['stock']);
 
         $data = DataTables::of($sd)
-            ->addColumn('action', function($service){
-                return view('pages.service.action', [
-                    'model'=>$service,
-                    'url_show'=>route('employee.service.show', ["service" => $service->id]),
-                    'url_edit'=>route('employee.service.edit', ["service" => $service->id]),
-                    'url_delete'=>route('employee.service.destroy', ["service" => $service->id]),
-                    'url_pay'=>route('employee.service.payForm', ["service" => $service->id]),
+            ->addColumn('action', function($sd){
+                return view('pages.stock-distribution.action', [
+                    'model'=>$sd,
+                    'url_show'=>route('employee.stock-distribution.show', ["stock_distribution" => $sd->id]),
+                    'url_edit'=>route('employee.stock-distribution.edit', ["stock_distribution" => $sd->id]),
+                    'url_delete'=>route('employee.stock-distribution.destroy', ["stock_distribution" => $sd->id]),
                 ]);
             })->rawColumns(['action'])->addIndexColumn()->make(true);
+
+        return $data;
+    }
+
+    public function findStock()
+    {
+        $stock = Stock::where("name", 'LIKE', '%' .   request('q') . '%')->with(['brand', 'category', 'generation'])->get();
+        return response()->json(["items" => $stock], 200);
     }
 }

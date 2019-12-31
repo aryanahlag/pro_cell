@@ -74,6 +74,7 @@ Route::middleware('auth')->group(function () {
 
         Route::resource('stock-distribution', 'StockDistributionController');
         Route::get('sd/data', "StockDistributionController@datatables")->name("stock-distribution.data");
+        Route::get('sd/sel2', "StockDistributionController@findStock")->name("stock-distribution.sel2");
     });
     Route::resource('card', 'CardController');
     Route::post("create/bar", "CardController@barcodeStore")->name("barcode.store");
