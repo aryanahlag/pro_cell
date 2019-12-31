@@ -21,7 +21,8 @@ class CreateStockDistributionsTable extends Migration
             $table->foreign('stock_id')->references('id')->on('stocks')->onDelete('cascade');
             $table->integer('quantity');
             $table->integer('price_sell')->nullable();
-            $table->integer('price_grosir')->nullable();
+            $table->integer('price_grosir');
+            $table->enum('status', ['submission', 'accepted', 'rejected']);
             $table->timestamps();
         });
     }
