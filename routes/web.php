@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
         Route::get('b/data', 'BrandController@datatables')->name('brand.data');
 
         Route::resource('makeEmployee', 'MakeEmController');
+        Route::get('makeEmployee/export', 'MakeEmController@export')->name('makeEmployee.export');
     });
     //employee
     Route::group(['prefix' => '/employee', 'as' => 'employee.', 'middleware' => 'employee'], function () {

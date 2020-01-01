@@ -9,9 +9,13 @@
             </div>
             <div class="col-md-8 d-flex justify-content-end">
                 {{-- <a href="{{ route('category.create') }}" class="btn btn-primary" id="btn-create"> --}}
-                <a href="{{ route('admin.makeEmployee.create') }}" class="btn btn-success">
+                <a style="margin-right:5px;" href="{{ route('admin.makeEmployee.create') }}" class="btn btn-success">
                     <i class="fa fa-plus"></i>
                     Tambah Akun Karyawan
+                </a>
+                <a href="{{ route('admin.makeEmployee.export') }}" class="btn btn-danger">
+                    <i class="fa fa-file-excel"></i>
+                    Print
                 </a>
             </div>
         </div>

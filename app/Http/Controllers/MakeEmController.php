@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Employee;
 use App\User;
+use App\Exports\EmployeeExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class MakeEmController extends Controller
 {
@@ -108,5 +111,10 @@ class MakeEmController extends Controller
         $employee->delete();
         // return
         return redirect()->route('admin.makeEmployee.index');
+    }
+
+    public function export()
+    {
+        return Excel::download(new EmployeeExport, 'employee.xlsx');
     }
 }
