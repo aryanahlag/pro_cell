@@ -5,8 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Employee;
 use App\User;
+<<<<<<< Updated upstream
 use DataTables;
 use Validator;
+=======
+use App\Exports\EmployeeExport;
+use Maatwebsite\Excel\Facades\Excel;
+>>>>>>> Stashed changes
 
 class MakeEmController extends Controller
 {
@@ -136,7 +141,11 @@ class MakeEmController extends Controller
         return redirect()->route('admin.makeEmployee.index');
     }
 
+<<<<<<< Updated upstream
     public function datatables()
+=======
+    public function Export()
+>>>>>>> Stashed changes
     {
         $employee = Employee::query()->with(['user', 'cabang'])->orderBy('name', 'desc');
         return DataTables::of($employee)->addColumn('action', function ($employee) {
