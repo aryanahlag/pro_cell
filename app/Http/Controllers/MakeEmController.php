@@ -141,11 +141,7 @@ class MakeEmController extends Controller
         return redirect()->route('admin.makeEmployee.index');
     }
 
-<<<<<<< Updated upstream
     public function datatables()
-=======
-    public function Export()
->>>>>>> Stashed changes
     {
         $employee = Employee::query()->with(['user', 'cabang'])->orderBy('name', 'desc');
         return DataTables::of($employee)->addColumn('action', function ($employee) {

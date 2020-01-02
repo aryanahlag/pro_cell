@@ -15,11 +15,4 @@ class EmployeeExport implements FromCollection, WithMapping
     {
         return Employee::all();
     }
-
-    public function map($invoice): array
-    {
-        return[
-            $
-        ]
-    }
 }
