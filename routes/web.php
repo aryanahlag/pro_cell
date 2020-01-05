@@ -85,6 +85,10 @@ Route::middleware('auth')->group(function () {
         Route::get('stock-distribution/single/create', "StockDistributionController@createSingle")->name("stock-distribution.createSingle");
         Route::post('stock-distribution/single', "StockDistributionController@storeSingle")->name("stock-distribution.storeSingle");
         // endstock
+        //dashboard
+        Route::get('/dashboard', 'EmployeeController@dashboard')->name('dashboard');
+
+        Route::resource('selling', 'SellingController');
     });
     Route::resource('card', 'CardController');
     Route::post("create/bar", "CardController@barcodeStore")->name("barcode.store");
