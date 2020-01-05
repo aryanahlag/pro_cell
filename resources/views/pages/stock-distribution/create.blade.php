@@ -1,4 +1,4 @@
-<form action="{{ route('employee.stock-distribution.store') }}" class="form-horizontal" method="POST" id="form-store">
+<form action="{{ route('employee.stock-distribution.storeSingle') }}" class="form-horizontal" method="POST" id="form-store">
 	@csrf
 	<div class="form-group">
 		<label for="name">
@@ -13,17 +13,23 @@
 		<input type="number" name="quantity" class="form-control" id="quantity" autocomplete="off">
 	</div>
 	<div class="form-group">
-		<label for="name">
+		<label for="price_sell">
 			Harga Jual
 		</label>
 		<input type="number" name="price_sell" class="form-control" id="price_sell" autocomplete="off">
 	</div>
 	<div class="form-group">
-		<label for="name">
+		<label for="price_grosir">
 			Harga Grosir
 		</label>
 		<input type="number" name="price_grosir" class="form-control" id="price_grosir" autocomplete="off">
 	</div>
+    <div class="form-group">
+        <label for="information">
+            Information
+        </label>
+        <textarea name="information" class="form-control" id="information"></textarea>
+    </div>
 	<div class="d-flex">
 		<button type="submit" class="btn btn-primary ml-auto" id="action-primary">Tambah</button>
 	</div>
@@ -46,7 +52,8 @@
                 return {
                     results: data.items
                 };
-            }
+            },
+            cache: true
         },
         placeholder: 'Cari Stok Barang',
         // minimumInputLength: 1,

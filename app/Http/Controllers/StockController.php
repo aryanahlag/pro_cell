@@ -166,7 +166,7 @@ class StockController extends Controller
             'price_purchase.integer' => 'Qyt Harus Angka.',
         ];
         $validator = Validator::make($request->all(),[
-            'code' => "required|unique:stocks",
+            'code' => "required",
             'name' => "required",
             'price_purchase' => "required|integer",
             'quantity' => "required|integer",

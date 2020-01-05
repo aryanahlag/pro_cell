@@ -25,7 +25,6 @@ $('body').on('submit', '#form-store', function (e) {
     const url = $(this).attr('action');
     const form = $(this).serializeArray();
     // me9889
-    console.log(form);
 
     $('form').find('.form-group').removeClass('has-errors');
     $('form').find('.help-block').remove();

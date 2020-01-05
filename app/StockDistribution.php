@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class StockDistribution extends Model
 {
+    protected $table = 'stock_distributions';
+
+    protected $guarded = [];
+
     public function cabang()
     {
         return $this->belongsTo('App\Cabang');

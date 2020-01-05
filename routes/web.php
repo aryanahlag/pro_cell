@@ -40,27 +40,33 @@ Route::middleware('auth')->group(function () {
         Route::get('g/data', 'GenerationController@datatables')->name('generation.data');
         Route::put('generation/{id}/verify', 'GenerationController@verify')->name('generation.verify');
 
-
+        // Create Stock & Generation 
         Route::resource('generation/{generation}/stock', 'StockController');
         Route::get('s/generation/data/{generation}', 'GenerationController@stockGenerationData')->name('stock.generation.data');
-
-        // Route::get('generation/{generation}/stock/single', 'StockController@createSingle')->name("stock.single.create");
         Route::get('generation/{generation}/single', 'StockController@createSingle')->name("stock.single.create");
-
         Route::post('generation/{generation}/stock/store/single', 'StockController@storeSingle')->name("stock.create.single.store");
 
 
+        // Category
         Route::resource('category', 'CategoryController');
         Route::get('c/data', 'CategoryController@datatables')->name('category.data');
 
+        // brand
         Route::resource('brand', 'BrandController');
         Route::get('b/data', 'BrandController@datatables')->name('brand.data');
 
+        // cabang
         Route::resource('cabang', 'CabangController');
         Route::get('a/data', 'CabangController@datatables')->name('cabang.data');
 
+        // make Employee
         Route::resource('makeEmployee', 'MakeEmController');
         Route::get('e/data', 'MakeEmController@datatables')->name('makeEmployee.data');
+
+        // stock distribution
+        Route::get('sd/sdm/submission', 'StockDistributionController@dataAdminSubmission')->name('stock-distribution.data');
+        Route::get('sd/stock', 'StockGenerationController@stockCabang')->name('stock-distribution.data.cabang');
+        
     });
     //employee
     Route::group(['prefix' => '/employee', 'as' => 'employee.', 'middleware' => 'employee'], function () {
@@ -72,9 +78,13 @@ Route::middleware('auth')->group(function () {
         Route::resource('add/{service}/item', 'ItemServiceController');
         
 
-        Route::resource('stock-distribution', 'StockDistributionController');
+        // stock ditsti
         Route::get('sd/data', "StockDistributionController@datatables")->name("stock-distribution.data");
+        Route::get('sd/data/submission', "StockDistributionController@dataSubmission")->name("stock-distribution.dataSubmission");
         Route::get('sd/sel2', "StockDistributionController@findStock")->name("stock-distribution.sel2");
+        Route::get('stock-distribution/single/create', "StockDistributionController@createSingle")->name("stock-distribution.createSingle");
+        Route::post('stock-distribution/single', "StockDistributionController@storeSingle")->name("stock-distribution.storeSingle");
+        // endstock
     });
     Route::resource('card', 'CardController');
     Route::post("create/bar", "CardController@barcodeStore")->name("barcode.store");
@@ -85,6 +95,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/service/report/{service}', "ServiceController@cetakStruk")->name('service.cetak.lunas');
     Route::get('c/data', 'ServiceController@lunasData')->name('service.lunasdata');
 
+    Route::resource('stock-distribution', 'StockDistributionController');
+    Route::match(['put', 'post'], 'sd/verify/{stock}', 'StockDistributionController@stockDistributionVerify')->name('stock-distribution.verify');
+
     Route::group(['prefix' => '/employee/{cabang}', 'as' => 'employee.', 'middleware' => 'employee'], function () {
         //dashboard
         Route::get('/dashboard', 'EmployeeController@dashboard')->name('dashboard');
@@ -93,6 +106,7 @@ Route::middleware('auth')->group(function () {
         //
         // StockDistributionController
         Route::get('stock-distribution', "StockDistributionController@index")->name("stock-distribution.index");
+        Route::get('stock-distribution/submission', "StockDistributionController@indexSubmission")->name("stock-distribution.indexSubmission");
     });
 });
 

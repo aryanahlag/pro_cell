@@ -4,16 +4,15 @@
     <div class="card-header py-3">
         <div class="row">
             <div class="col-md-4">
-                <h4>Barang</h4>
+                <h4>Pengajuan Barang</h4>
             </div>
             <div class="col-md-8 d-flex justify-content-end">
-                {{-- <a href="{{ route('category.create') }}" class="btn btn-primary" id="btn-create"> --}}
-                    {{-- <button onclick="get()">get val</button> --}}
-                {{-- <a href="{{ route('employee.stock-distribution.createSingle') }}" class="btn btn-primary btn-sm mr-3" id="btn-create">
+                <button type="button" id="btn-refresh" class="btn btn-info btn-sm mr-3"><i class="fa fa-refresh"></i> Refresh</button>
+                <a href="{{ route('employee.stock-distribution.createSingle') }}" class="btn btn-primary btn-sm mr-3" id="btn-create">
                     <i class="fas fa-plus"></i> Tambah Barang
                 </a>
-                <a href="{{ route('employee.stock-distribution.create') }}" class="btn btn-success btn-sm mr-3">Tambah Banyak Barang</a> --}}
-                <a href="{{ route('employee.stock-distribution.indexSubmission', $slug) }}" class="btn btn-info btn-sm">Pengajuan Barang</a>
+                <a href="{{ route('stock-distribution.create') }}" class="btn btn-success btn-sm mr-3">Tambah Banyak Barang</a>
+                <a href="{{ route('stock-distribution.index', $slug) }}" class="btn btn-danger btn-sm">Barang</a>
             </div>
         </div>
     </div>
@@ -23,12 +22,12 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Code</th>
                         <th>Nama Barang</th>
                         <th>Harga Jual Satuan (Rp)</th>
                         <th>Harga Jual Grosir (Rp)</th>
                         <th>Qyt</th>
-                        {{-- <th></th> --}}
+                        <th>Status</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -46,15 +45,15 @@ $(document).ready(function() {
         responsive: true,
         processing: true,
         serverSide: true,
-        ajax: "{{ route('employee.stock-distribution.data') }}",
+        ajax: "{{ route('employee.stock-distribution.dataSubmission') }}",
         columns: [
             { data: "DT_RowIndex", orderable: false, searchable: false },
-            { data: "stock.code" },
             { data: "stock.name" },
             { data: "price_sell" },
             { data: "price_grosir" },
             { data: "quantity" },
-            // { data: 'action', orderable: false, searchable: false },
+            { data: "status" },
+            { data: 'action', orderable: false, searchable: false },
         ]
     });
 });

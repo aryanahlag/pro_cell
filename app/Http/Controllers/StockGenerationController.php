@@ -4,6 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Generation;
 use Illuminate\Http\Request;
+use App\Stock;
+use App\StockDistribution;
+use App\Cabang;
+use DataTables;
+use Auth;
+use Validator;
+use Date;
 
 class StockGenerationController extends Controller
 {
@@ -14,9 +21,11 @@ class StockGenerationController extends Controller
      */
     public function index()
     {
-        // return 'okokok';
+        $data = [];
         $generation = Generation::where('status', 'verify')->orderBy('time', 'asc')->with(['stock'])->get();
-        return view('pages.stock.index', compact('generation'));
+        $data['generation'] = $generation;
+        // $data['sd'] = StockDistribution::where('status', 'submission')-with(['stock'])->get();
+        return view('pages.stock.index', $data);
     }
 
     /**
@@ -84,4 +93,25 @@ class StockGenerationController extends Controller
     {
         //
     }
+
+    public function stockCabang()
+    {
+        $cabang = Cabang::query()->with('stockDistribution')->orderBy('name', 'ASC');
+        return DataTables::of($cabang)
+            ->addColumn("allStock", function ($cabang){
+                $stock_count = StockDistribution::where("cabang_id", $cabang->id)->count();
+                return $stock_count;
+            })
+            // ->addColumn('action', function ($cabang) {
+            //     return view('pages.cabang.action', [
+            //         'model' => $cabang,
+            //         'url_show' => route('admin.cabang.show', $cabang->id),
+            //         'url_edit' => route('admin.cabang.edit', $cabang->id),
+            //         'url_delete' => route('admin.cabang.destroy', $cabang->id),
+            //         'url_verify' => route('admin.cabang.verify', $cabang->id),
+            //     ]);
+            // })
+            ->rawColumns(['action'])->addIndexColumn()->make(true);
+    }
+
 }
