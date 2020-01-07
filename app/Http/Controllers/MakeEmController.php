@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Employee;
 use App\User;
-use App\Exports\EmployeeExport;
-use Maatwebsite\Excel\Facades\Excel;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Excel;
+use PDF;
+use App\Exports\EmployeeExport as EmployeeExport;
 
 class MakeEmController extends Controller
 {
@@ -113,8 +113,17 @@ class MakeEmController extends Controller
         return redirect()->route('admin.makeEmployee.index');
     }
 
-    public function export()
-    {
-        return Excel::download(new EmployeeExport, 'employee.xlsx');
+    public function excel(){
+        return Excel::download(new EmployeeExport, 'Employee.xlsx');
     }
+
+    public function pdf()
+    {
+        $employee = Employee::all();
+
+        $pdf = PDF::loadView('layouts.pdf.employee', compact('employee'));
+
+        return $pdf->download('employee.pdf');
+    }
+
 }

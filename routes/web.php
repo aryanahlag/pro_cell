@@ -11,6 +11,7 @@
 |
 */
 
+
 Route::get('/', function () {
     return redirect('/z/login');
 });
@@ -49,8 +50,10 @@ Route::middleware('auth')->group(function () {
         Route::get('b/data', 'BrandController@datatables')->name('brand.data');
 
         Route::resource('makeEmployee', 'MakeEmController');
-        Route::get('makeEmployee/export', 'MakeEmController@export')->name('makeEmployee.export');
+
     });
+    Route::get('/makeEmployee/excel', 'MakeEmController@excel')->name('makeEmployee.excel');
+    Route::get('/makeEmployee/pdf', 'MakeEmController@pdf')->name('makeEmployee.pdf');
     //employee
     Route::group(['prefix' => '/employee', 'as' => 'employee.', 'middleware' => 'employee'], function () {
         //dashboard
