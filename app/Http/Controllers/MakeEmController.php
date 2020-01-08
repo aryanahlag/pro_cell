@@ -7,8 +7,9 @@ use App\Employee;
 use App\User;
 use DataTables;
 use Validator;
-use App\Exports\EmployeeExport;
-use Maatwebsite\Excel\Facades\Excel;
+use Excel;
+use PDF;
+use App\Exports\EmployeeExport as EmployeeExport;
 class MakeEmController extends Controller
 {
     /**
@@ -149,4 +150,17 @@ class MakeEmController extends Controller
             ]);
         })->rawColumns(['action'])->addIndexColumn()->make(true);
     }
+    public function excel(){
+        return Excel::download(new EmployeeExport, 'Employee.xlsx');
+    }
+
+    public function pdf()
+    {
+        $employee = Employee::all();
+
+        $pdf = PDF::loadView('layouts.pdf.employee', compact('employee'));
+
+        return $pdf->download('employee.pdf');
+    }
+
 }
