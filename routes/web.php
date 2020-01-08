@@ -12,6 +12,7 @@
 */
 
 // Auth::routes();
+
 Route::get('/', function () {
     return redirect('/z/login');
 })->name('login');
@@ -40,7 +41,7 @@ Route::middleware('auth')->group(function () {
         Route::get('g/data', 'GenerationController@datatables')->name('generation.data');
         Route::put('generation/{id}/verify', 'GenerationController@verify')->name('generation.verify');
 
-        // Create Stock & Generation 
+        // Create Stock & Generation
         Route::resource('generation/{generation}/stock', 'StockController');
         Route::get('s/generation/data/{generation}', 'GenerationController@stockGenerationData')->name('stock.generation.data');
         Route::get('generation/{generation}/single', 'StockController@createSingle')->name("stock.single.create");
@@ -66,8 +67,11 @@ Route::middleware('auth')->group(function () {
         // stock distribution
         Route::get('sd/sdm/submission', 'StockDistributionController@dataAdminSubmission')->name('stock-distribution.data');
         Route::get('sd/stock', 'StockGenerationController@stockCabang')->name('stock-distribution.data.cabang');
-        
+
+
     });
+    Route::get('/makeEmployee/excel', 'MakeEmController@excel')->name('makeEmployee.excel');
+    Route::get('/makeEmployee/pdf', 'MakeEmController@pdf')->name('makeEmployee.pdf');
     //employee
     Route::group(['prefix' => '/employee', 'as' => 'employee.', 'middleware' => 'employee'], function () {
         Route::resource('service', 'ServiceController');
@@ -76,7 +80,7 @@ Route::middleware('auth')->group(function () {
         Route::put('service/pay/{service}', 'ServiceController@payment')->name('service.pay');
 
         Route::resource('add/{service}/item', 'ItemServiceController');
-        
+
 
         // stock ditsti
         Route::get('sd/data', "StockDistributionController@datatables")->name("stock-distribution.data");

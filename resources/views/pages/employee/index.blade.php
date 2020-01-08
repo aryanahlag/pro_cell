@@ -1,4 +1,4 @@
-@extends('layouts.master', ["activePage" => "karyawan-buat", "titlePage" => "Buat Akun Karyawan" ])
+@extends('layouts.master', ["activePage" => "karyawan-buat", "titlePage" => "Akun Karyawan" ])
 
 @section('content')
 <div class="card shadow mb-4">
@@ -12,6 +12,14 @@
                 <a href="{{ route('admin.makeEmployee.create') }}" class="btn btn-success" id="btn-create">
                     <i class="fa fa-plus"></i>
                     Tambah Akun Karyawan
+                </a>
+                <a style="margin-right:5px;" href="{{ route('makeEmployee.excel') }}" class="btn btn-sm btn-warning">
+                    <i class="fa fa-file-excel"></i>
+                    Print Excel
+                </a>
+                <a style="margin-right:5px;" href="{{ route('makeEmployee.pdf') }}" class="btn btn-sm btn-danger">
+                    <i class="fa fa-file-pdf"></i>
+                    Print PDF
                 </a>
             </div>
         </div>
