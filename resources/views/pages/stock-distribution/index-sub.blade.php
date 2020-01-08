@@ -12,7 +12,7 @@
                     <i class="fas fa-plus"></i> Tambah Barang
                 </a>
                 <a href="{{ route('stock-distribution.create') }}" class="btn btn-success btn-sm mr-3">Tambah Banyak Barang</a>
-                <a href="{{ route('stock-distribution.index', $slug) }}" class="btn btn-danger btn-sm">Barang</a>
+                <a href="{{ route('stock-distribution.index', $slug) }}" class="btn btn-danger btn-sm">Kembali</a>
             </div>
         </div>
     </div>

@@ -5,14 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Employee;
 use App\User;
-<<<<<<< Updated upstream
 use DataTables;
 use Validator;
-=======
 use App\Exports\EmployeeExport;
 use Maatwebsite\Excel\Facades\Excel;
->>>>>>> Stashed changes
-
 class MakeEmController extends Controller
 {
     /**

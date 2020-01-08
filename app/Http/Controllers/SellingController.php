@@ -3,82 +3,56 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Stock;
+use App\StockDistribution;
+use Auth;
+use Date;
+use DataTables;
+
 
 class SellingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         //
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('pages.selling.create');
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        dd($request);
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //
+    }
+    public function findSdByCode(Request $request)
+    {
+        $stock = Stock::where('code', $request->code)->first();
+        $sd = StockDistribution::where('stock_id', $stock->id)->where('status', 'accepted')->first();
+        if (!$stock || !$sd) {
+            return response()->json(["msg" => "Barang Tidak Ditemukan"], 401);
+        }else {
+            return response()->json([
+                "name" => $stock->name,
+                "price" => $sd->price_sell,
+                "stock" => $stock->id,
+                "sd" => $sd->id
+            ]);
+        }
     }
 }
