@@ -9,7 +9,7 @@
             </div>
             <div class="col-md-8 d-flex justify-content-end">
                 {{-- <a href="{{ route('category.create') }}" class="btn btn-primary" id="btn-create"> --}}
-                <a href="{{ route('admin.makeEmployee.create') }}" class="btn btn-success" id="btn-create">
+                <a style="margin-right:5px;" href="{{ route('admin.makeEmployee.create') }}" class="btn btn-success" id="btn-create">
                     <i class="fa fa-plus"></i>
                     Tambah Akun Karyawan
                 </a>
@@ -17,7 +17,7 @@
                     <i class="fa fa-file-excel"></i>
                     Print Excel
                 </a>
-                <a style="margin-right:5px;" href="{{ route('makeEmployee.pdf') }}" class="btn btn-sm btn-danger">
+                <a href="{{ route('makeEmployee.pdf') }}" class="btn btn-sm btn-danger">
                     <i class="fa fa-file-pdf"></i>
                     Print PDF
                 </a>
