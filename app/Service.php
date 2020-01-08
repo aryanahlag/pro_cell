@@ -10,18 +10,13 @@ class Service extends Model
 
     protected $guarded = [];
 
-    public function user()
+    public function serviceOrder()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\ServiceOrder');
     }
 
-    public function item_service()
+    public function stockDistribution()
     {
-        return $this->hasMany('App\ItemService');
-    }
-
-    public function cabang()
-    {
-        return $this->belongsTo(Cabang::class);
+        return $this->belongsTo('App\StockDistribution');
     }
 }

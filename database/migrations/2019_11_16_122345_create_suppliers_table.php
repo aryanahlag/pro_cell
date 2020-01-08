@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateItemServicesTable extends Migration
+class CreateSuppliersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateItemServicesTable extends Migration
      */
     public function up()
     {
-        Schema::create('item_services', function (Blueprint $table) {
+        Schema::create('suppliers', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('code');
             $table->string('name');
-            $table->integer('quantity');
-            $table->integer('price');
-            $table->unsignedInteger('service_id');
-            $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');
+            $table->string('address');
+            $table->string('phone');
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ class CreateItemServicesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('item_services');
+        Schema::dropIfExists('suppliers');
     }
 }

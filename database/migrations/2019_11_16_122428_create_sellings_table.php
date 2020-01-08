@@ -15,10 +15,7 @@ class CreateSellingsTable extends Migration
     {
         Schema::create('sellings', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('quantity')->nullable();
-            $table->integer('price')->nullable();
-            $table->integer('pay');
-            $table->integer('change')->nullable();
+            $table->integer('quantity');
              $table->enum("type", ['grosir', 'satuan'])->nullable()->default('satuan');
             $table->unsignedInteger('stock_distribution_id');
             $table->foreign('stock_distribution_id')->references('id')->on('stock_distributions')->onDelete('cascade');
@@ -28,9 +25,6 @@ class CreateSellingsTable extends Migration
 
             $table->unsignedInteger('order_id');
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
-
-            $table->unsignedInteger('cabang_id');
-            $table->foreign('cabang_id')->references('id')->on('cabangs')->onDelete('cascade');
 
             $table->timestamps();
         });

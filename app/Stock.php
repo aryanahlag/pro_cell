@@ -20,6 +20,11 @@ class Stock extends Model
         return $this->belongsTo('App\Brand');
     }
 
+    public function supplier()
+    {
+        return $this->belongsTo('App\Supplier');
+    }
+
     public function generation()
     {
         return $this->belongsTo('App\Generation');

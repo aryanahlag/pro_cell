@@ -17,6 +17,8 @@ class CreateOrdersTable extends Migration
             $table->increments('id');
             $table->date('date');
             $table->string('code')->unique();
+            $table->integer("total_price")->nullable();
+            $table->integer("pay")->nullable();
             $table->unsignedInteger('cabang_id');
             $table->foreign('cabang_id')->references('id')->on('cabangs')->onDelete('cascade');
             $table->timestamps();
