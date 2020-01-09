@@ -18,10 +18,9 @@ class CreateStocksTable extends Migration
             $table->string('code', 15)->nullable();
             $table->string('name');
             $table->integer('price_purchase');
-            // $table->integer('price_sell')->nullable();
-            // $table->integer('price_grosir')->nullable();
             $table->enum('status', ['sold', 'unsold'])->nullable()->default('unsold');
-            $table->integer('quantity');
+            $table->integer('quantity_p');
+            $table->integer('quantity_tbh');
             $table->text('information')->nullable();
             $table->unsignedInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');

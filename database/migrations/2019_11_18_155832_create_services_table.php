@@ -26,6 +26,7 @@ class CreateServicesTable extends Migration
             // $table->integer("change")->nullable();
             // $table->unsignedInteger('user_id');
             // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('quantity');
             $table->unsignedInteger('stock_distribution_id');
             $table->foreign('stock_distribution_id')->references('id')->on('stock_distributions')->onDelete('cascade');
             $table->unsignedInteger('service_order_id');
