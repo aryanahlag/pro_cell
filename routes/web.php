@@ -69,8 +69,12 @@ Route::middleware('auth')->group(function () {
 
 
     });
+    //Report Karyawan
     Route::get('/makeEmployee/excel', 'MakeEmController@excel')->name('makeEmployee.excel');
     Route::get('/makeEmployee/pdf', 'MakeEmController@pdf')->name('makeEmployee.pdf');
+    //Report Cabang
+    Route::get('/cabang/excel', 'CabangController@excel')->name('cabang.excel');
+    Route::get('/cabang/pdf', 'CabangController@pdf')->name('cabang.pdf');
     //employee
     Route::group(['prefix' => '/employee', 'as' => 'employee.', 'middleware' => 'employee'], function () {
         Route::resource('service', 'ServiceController');
