@@ -46,6 +46,11 @@ if (Auth::user()->role == "employee") {
                     </div>
                 </div>
         </li>
+        <li class="nav-item {{ $activePage == 'pengajuan' ? ' active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.index-sub') }}">
+                <i class="fa fa-list-alt"></i>
+                <span>Pengajuan</span></a>
+        </li>
         <div class="sidebar-heading">
                 Lainnya
             </div>
@@ -61,8 +66,13 @@ if (Auth::user()->role == "employee") {
             </li>
             <li class="nav-item {{ $activePage == 'barcode' ? ' active' : '' }}">
                 <a class="nav-link" href="{{ route('card.index') }}">
-                    <i class="fas fa-fw fa-table"></i>
+                    <i class="fa fa-barcode"></i>
                     <span>Barkode</span></a>
+            </li>
+            <li class="nav-item {{ $activePage == 'suplier' ? ' active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.suplier.index') }}">
+                    <i class="fa fa-user-plus"></i>
+                    <span>Suplier</span></a>
             </li>
             <li class="nav-item {{ $activePage == 'karyawan-buat' ? ' active' : '' }}">
                 <a class="nav-link" href="{{ route('admin.makeEmployee.index') }}">

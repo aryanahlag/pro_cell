@@ -16,114 +16,155 @@
         </div>
     </div>
     <div class="card-body">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Kode</th>
-                                <th>Nama</th>
-                                {{-- <th>Status</th> --}}
-                                <th>Lainnya</th>
-                                <th>Jumlah</th>
-                                <th>Harga Beli</th>
-                                {{-- <th>Harga Jual</th> --}}
-                                <th>Kategori</th>
-                                <th>Merk</th>
-                                <th><a href="javascript:void(0)" class="addRow"><i class="fa fa-plus"></i></a></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="text" name="code[]" class="form-control" required></td>
-                                <td><input type="text" name="name[]" class="form-control" required></td>
-                                {{-- <td><input type="text" name="status[]" class="form-control" value="unsold" readonly></td> --}}
-                                <td><input type="text" name="information[]" class="form-control"></td>
-                                <td><input type="number" min="1" name="quantity[]" class="form-control" required></td>
-                                <td><input type="number" min="1" name="price_purchase[]" class="form-control" required></td>
-                                {{-- <td><input type="number" min="1" name="price_sell[]" class="form-control" required></td> --}}
-                                <td>
-                                    <select name="category_id[]" id="" class="form-control" required>
-                                        <option value="" disabled>Pilih Kategori</option>
-                                        @foreach (\App\Category::orderBy('name', 'asc')->get() as $t)
-                                            <option value="{{ $t->id }}">{{ $t->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td>
-                                        <select name="brand_id[]" id="" class="form-control" required>
-                                                <option value="" disabled>Pilih Merek</option>
-                                                @foreach (\App\Brand::orderBy('name', 'asc')->get() as $a)
-                                                    <option value="{{ $a->id }}">{{ $a->name }}</option>
-                                                @endforeach
-                                        </select>
-                                </td>
-                                <td>
-                                    <a href="javascript:void(0)"  class="btn btn-danger" class="remove"><i class="fa fa-trash"></i></a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <div class="d-flex">
+            <h4 id="total">Total Stock : </h4>
+            <a href="javascript:void(0)" class="btn btn-info ml-auto mb-3 addRow"><i class="fa fa-plus"></i></a>
+        </div>
+        
+            <div id="data">
+                <div class="form-group">
+                    <input type="text" name="name[]" class="form-control form-control-sm" id="name" autocomplete="off" placeholder="Nama Barang" required>
                 </div>
-            </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <input type="number" name="code[]" class="form-control form-control-sm" placeholder="Kode Barang" required>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <input type="number" min="1" name="quantity_p[]" class="form-control form-control-sm" placeholder="qty" required>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <input type="number" min="1" name="price[]" class="form-control form-control-sm" placeholder="Harga Beli (Rp)" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="supplier">Suplier</label>
+                            <select name="supplier[]" class="form-control form-control-sm" required>
+                                @foreach($supplier as $q)
+                                <option value="{{ $q->id }}">{{ $q->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="category">Kategori</label>
+                            <select name="category[]" class="form-control form-control-sm" required>
+                                @foreach($category as $q)
+                                <option value="{{ $q->id }}">{{ $q->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="brand">Merek</label>
+                            <select name="brand[]" class="form-control form-control-sm" required>
+                                @foreach($brand as $q)
+                                <option value="{{ $q->id }}">{{ $q->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="information">Information</label>
+                    <textarea class="form-control form-control-sm" name="infomation[]" placeholder="(Jika Ada)"></textarea>
+                </div>
+            </div>{{-- --}}
         </div>
     </div>
-</div>
 </form>
+
 @endsection
 @push('js')
-    <script type="text/javascript">
+    <script>
+        window.onload = init();
+        let no = 1;
+        function init() {
+            const name = $('input[name="name[]"]');
+            const code = $('input[name="code[]"]');
+            const qty = $('input[name="qty[]"]');
+            const price = $('input[name="price[]"]');
+            const information = $('textarea[name="information[]"]');
+            const total = $('#total');
+            total.html('Total Stock : 1');
+            name.val('');
+            code.val('');
+            qty.val('');
+            price.val('');
+            information.val('');
+            name.focus();
+        }
     $('.addRow').on('click',function(e){
         e.preventDefault();
         addRow();
+        no++
+        $('#total').html(`Total Stock : ${no}`);
     });
     function addRow()
     {
-        var tr='<tr>'+
-                '<td><input type="text" name="code[]" class="form-control" required></td>'+
-                '<td><input type="text" name="name[]" class="form-control" required></td>'+
-                // '<td><input type="text" name="status[]" class="form-control" value="unsold" readonly></td>'+
-                '<td><input type="text" name="information[]" class="form-control"></td>'+
-                '<td><input type="number" min="1" name="quantity[]" class="form-control" required></td>'+
-                '<td><input type="number" min="1" name="price_purchase[]" class="form-control" required></td>'+
-                // '<td><input type="number" min="1" name="price_sell[]" class="form-control" required></td>'+
-                `<td><select name="category_id[]" id="" class="form-control" required>
-                    <option value="" disabled>Pilih Kategori</option>`+
-                    @foreach (\App\Category::orderBy('name', 'asc')->get() as $a)
-                        `<option value="{{ $a->id }}">{{ $a->name }}</option>`+
-                    @endforeach
-                    '</select></td>'+
-                `<td><select name="brand_id[]" id="" class="form-control" required>
-                    <option value="" disabled>Pilih Merek</option>`+
-                    @foreach (\App\Brand::orderBy('name', 'asc')->get() as $a)
-                        `<option value="{{ $a->id }}">{{ $a->name }}</option>`+
-                    @endforeach
-                    '</select></td>'+
-                '<td><a href="javascript:void(0)" class="btn btn-danger removed"><i class="fa fa-trash"></i></a></td>'+
-        '</tr>';
-        $('tbody').append(tr);
-    };
-
-    $('body').on('click', ".removed", function(){
-        var last=$('tbody tr').length;
-        if(last==1){
-            alert("Form input tidak bisa dihapus");
-        }
-        else{
-             $(this).parent().parent().remove();
-        }
-
+        let res = ``;
+        res =   '<div class="major">' +
+                   
+                    '<div class="form-group"><input type="text" name="name[]" class="form-control form-control" id="name" autocomplete="off" placeholder="Nama Barang" required></div>'+
+                    '<div class="row">' +
+                        '<div class="col-md-4"><div class="form-group"><input type="text" name="code[]" class="form-control form-control-sm" required autocomplete="off" placeholder="Kode Barang" required></div></div>'+
+                        '<div class="col-md-4"><div class="form-group"><input type="number" name="quantity_p[]" class="form-control form-control-sm" required autocomplete="off" placeholder="qty" min="1" required></div></div>'+
+                        '<div class="col-md-4"><div class="form-group"><input type="number" name="price[]" class="form-control form-control-sm" required autocomplete="off" placeholder="Harga Beli (Rp)" min="1" required></div></div>'+
+                    '</div>'+
+                    '<div class="row">' +
+                        `<div class="col-md-4"> <div class="form-gruop"><label for="supplier">Suplier</label>`+
+                            `<select name="supplier[]" class="form-control form-control-sm" required>`+
+                                `<option value="" disabled>Pilih Supplier</option>`+
+                                @foreach ($supplier as $a)
+                                    `<option value="{{ $a->id }}">{{ $a->name }}</option>`+
+                                @endforeach
+                            `</select>`+
+                        `</div></div>`+
+                        `<div class="col-md-4"> <div class="form-gruop"><label for="category">Kategori</label>`+
+                            `<select name="category[]" class="form-control form-control-sm" required>`+
+                                `<option value="" disabled>Pilih Kategori</option>`+
+                                @foreach ($category as $a)
+                                    `<option value="{{ $a->id }}">{{ $a->name }}</option>`+
+                                @endforeach
+                            `</select>`+
+                        `</div></div>`+
+                        `<div class="col-md-4"> <div class="form-gruop"><label for="brand">Merek</label>`+
+                            `<select name="brand[]" class="form-control form-control-sm" required>`+
+                                `<option value="" disabled>Pilih Merek</option>`+
+                                @foreach ($brand as $a)
+                                    `<option value="{{ $a->id }}">{{ $a->name }}</option>`+
+                                @endforeach
+                            `</select>`+
+                        `</div></div>`+
+                    '</div>'+
+                    '<div class="form-group"><label for="information">Information</label><textarea class="form-control form-control-sm" name="infomation[]" placeholder="(Jika Ada)"></textarea></div>'+
+                     `<div class="row">
+                        <div class="col-md-11">
+                            <hr>
+                        </div  class="col-md-1">
+                        <a href="javascript:void(0)" class="text-center text-danger remove">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </div>`+
+                '</div>'
+        $('#data').prepend(res);
+        console.log($('input[name="name[]"]'));
+    }
+    $('body').on('click', ".remove", function(e) {
+        e.preventDefault();
+        let last = $('.major').length;
+        $(this).parent().parent().remove();
+        no--
+        $('#total').html(`Total Stock : ${no}`);
     });
-    // function myRemove() {
-    //     var last=$('tbody tr').length;
-    //     if(last==1){
-    //         alert("Form input tidak bisa dihapus");
-    //     }
-    //     else{
-    //         console.log($(this).parent());
-    //          $(this).parent().parent().remove();
-    //     }
-    // }
 </script>
 @endpush

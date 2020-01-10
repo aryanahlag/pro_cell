@@ -29,7 +29,8 @@ class GenerationController extends Controller
      */
     public function create()
     {
-        return view('pages.generation.create');
+        $data['now'] = date('Y-m-d');
+        return view('pages.generation.create', $data);
     }
 
     /**
@@ -38,6 +39,24 @@ class GenerationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function codeGen()
+    {
+        $max_query = Generation::max('code');
+        // $kodeB = Inventaris::all();
+        $date = date("ymdh");
+
+        if ($max_query != null) {
+            $nilai = substr($max_query, 9, 9);
+            $kode = (int) $nilai;
+            // tambah 1
+            $kode = $kode + 1;
+            $auto_kode = "P". $date . str_pad($kode, 4, "0",  STR_PAD_LEFT);
+        } else {
+            $auto_kode = "P". $date . "0001";
+        }
+
+        return $auto_kode;
+    }
     public function store(Request $request)
     {
         $unique = Generation::where('time', $request->time)->get();
@@ -49,6 +68,7 @@ class GenerationController extends Controller
         $gen = Generation::create([
             'generation' => date('Y', strtotime($request->time)),
             'time' => $request->time,
+            'code' => $this->codeGen(),
             'status' => "unverify",
         ]);
         // return
@@ -124,7 +144,7 @@ class GenerationController extends Controller
 
     public function datatables()
     {
-        $generation = Generation::query()->with('stock')->where('status', 'unverify')->orderBy('time', 'asc');
+        $generation = Generation::query()->with('stock')->where('status', 'unverify')->orderBy('code', 'desc');
         return DataTables::of($generation)
             ->addColumn("allStock", function ($generation){
                 $stock_count = Stock::where("generation_id", $generation->id)->count();

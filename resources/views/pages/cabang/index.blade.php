@@ -29,7 +29,7 @@
                             Alamat
                         </th>
                         <th>
-                            Tanggal diBuat
+                            Tanggal Dibuat
                         </th>
                         <th>
                             Aksi

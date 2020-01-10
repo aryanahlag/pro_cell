@@ -15,6 +15,10 @@ $('body').on('click', '#btn-create', function (e) {
             $('#myModal .modal-title').html('Tambah Karyawan');
             $('#myModal .modal-body').html(res);
             $('#myModal').modal('show');
+
+            setTimeout(() => {
+                $('#name').focus()
+            },800);
         }
     })
 });

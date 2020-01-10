@@ -79,7 +79,11 @@
                 { data: "code" },
                 { data: "name" },
                 { data: "status" },
-                { data: "quantity" },
+                { data: "quantity_p",render: function (a,b,c) {
+                    let pk = Number(c.quantity_p);
+                    let tbh = Number(c.quantity_tbh);
+                    return pk + tbh;
+                }},
                 { data: 'action', orderable: false, searchable: false },
             ]
         });

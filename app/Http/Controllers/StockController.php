@@ -28,6 +28,9 @@ class StockController extends Controller
     public function create($id)
     {
         $data['generation'] = Generation::where('id', $id)->first();
+        $data["category"] = \App\Category::orderBy('name', 'asc')->get();
+        $data["brand"] = \App\Brand::orderBy('name', 'asc')->get();
+        $data["supplier"] = \App\Supplier::orderBy('name', 'asc')->get();
 
         return view('pages.generation.createStock', $data);
     }
@@ -38,6 +41,7 @@ class StockController extends Controller
         $data['generation'] = $id;
         $data["category"] = \App\Category::all();
         $data["brand"] = \App\Brand::all();
+        $data["supplier"] = \App\Supplier::all();
 
         return view('pages.stock.create', $data);
     }
@@ -49,17 +53,18 @@ class StockController extends Controller
             'code.unique' => 'Kode Sudah Ada.',
             'name.required' => 'Nama Harus Di isi.',
             'price_purchase.required' => 'Harga Beli Harus Di isi.',
-            'quantity.required' => 'Harga Beli Harus Di isi.',
-            'quantity.integer' => 'Qyt Harus Angka.',
+            'quantity_p.required' => 'Harga Beli Harus Di isi.',
+            'quantity_p.integer' => 'Qyt Harus Angka.',
             'price_purchase.integer' => 'Qyt Harus Angka.',
         ];
         $validator = Validator::make($request->all(),[
             'code' => "required|unique:stocks",
             'name' => "required",
             'price_purchase' => "required|integer",
-            'quantity' => "required|integer",
+            'quantity_p' => "required|integer",
             'category_id' => "required",
             'brand_id' => "required",
+            'supplier_id' => "required",
         ], $customMessages);
 
         if ($validator->fails()) {
@@ -71,11 +76,13 @@ class StockController extends Controller
             'name' => $request->name,
             'price_purchase' => $request->price_purchase,
             'status' => "unsold",
-            'quantity' => $request->quantity,
+            'quantity_p' => $request->quantity_p,
+            'quantity_tbh' => 0,
             'information' => $request->information,
             'category_id' => $request->category_id,
             'brand_id' => $request->brand_id,
             'generation_id' => $id,
+            'supplier_id' => $request->supplier_id,
             'user_id' => Auth::id(),
         ]);
 
@@ -96,12 +103,14 @@ class StockController extends Controller
                 $data = [
                     'code' => $request->code[$key],
                     'name' => $request->name[$key],
-                    'price_purchase' => $request->price_purchase[$key],
+                    'price_purchase' => $request->price[$key],
                     'status' => "unsold",
-                    'quantity' => $request->quantity[$key],
+                    'quantity_p' => $request->quantity_p[$key],
+                    'quantity_tbh' => 0,
                     'information' => $request->information[$key],
-                    'category_id' => $request->category_id[$key],
-                    'brand_id' => $request->brand_id[$key],
+                    'category_id' => $request->category[$key],
+                    'brand_id' => $request->brand[$key],
+                    'supplier_id' => $request->supplier[$key],
                     'generation_id' => $id,
                     'user_id' => Auth::id(),
                 ];
@@ -184,7 +193,7 @@ class StockController extends Controller
             'name' => $request->name,
             'price_purchase' => $request->price_purchase,
             'status' => "unsold",
-            'quantity' => $request->quantity,
+            'quantity_p' => $request->quantity,
             'information' => $request->information,
             'category_id' => $request->category_id,
             'brand_id' => $request->brand_id,

@@ -2,7 +2,7 @@
 @csrf
 <div class="form-group">
     <label for="">Tanggal</label>
-    <input type="date" name="time" class="form-control" id="time" required>
+    <input type="date" name="time" class="form-control" id="time" required value="{{ $now }}">
 </div>
     <button type="submit" class="btn btn-primary btn-block">Tambah</button>
 </form>

@@ -46,6 +46,12 @@ Route::middleware('auth')->group(function () {
         Route::get('generation/{generation}/single', 'StockController@createSingle')->name("stock.single.create");
         Route::post('generation/{generation}/stock/store/single', 'StockController@storeSingle')->name("stock.create.single.store");
 
+        // pengjuan
+        Route::get('/submission', "HomeController@indexAdminSub")->name('index-sub');
+
+        // Suplier
+        Route::resource('suplier', 'SuplierController');
+        Route::get('sp/data', 'SuplierController@datatables')->name('suplier.data');
 
         // Category
         Route::resource('category', 'CategoryController');

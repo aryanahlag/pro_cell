@@ -21,12 +21,13 @@
             <table class="table table-stripped" id="tableGeneration">
                 <thead>
                     <tr>
-                        <th class="text-center">No</th>
-                        <th class="text-center">Tahun</th>
-                        <th class="text-center">Tanggal Keranjang</th>
-                        <th class="text-center">Stok</th>
-                        <th class="text-center">Status</th>
-                        <th class="text-center">Aksi</th>
+                        <th class="">No</th>
+                        <th class="">Nomor Faktur</th>
+                        <th class="">Tahun</th>
+                        <th class="">Tanggal Keranjang</th>
+                        <th class="">Stok</th>
+                        <th class="">Status</th>
+                        <th class=""></th>
                     </tr>
                 </thead>
 {{--                 <tbody>
@@ -73,6 +74,9 @@ $(document).ready(function() {
         ajax: "{{ route('admin.generation.data') }}",
         columns: [
             { data: "DT_RowIndex", orderable: false, searchable: false },
+            { data: "code", render: function (a,b,c) {
+                return `<b>${c.code}</b>`
+            } },
             { data: "generation" },
             { data: "myTime" },
             { data: "allStock" },

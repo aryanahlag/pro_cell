@@ -16,6 +16,10 @@ $('body').on('click', '#btn-create', function(e) {
             $('#myModal .modal-title').html('Tambah Merek');
             $('#myModal .modal-body').html(res);
             $('#myModal').modal('show');
+
+            setTimeout(() => {
+                $('#time').focus()
+            },500)
         }
     });
 });

@@ -1,6 +1,16 @@
 <form action="{{ route('admin.stock.create.single.store', ["generation" => $generation]) }}" class="form-horizontal" method="POST" id="form-store">
 	@csrf
 	<div class="form-group">
+		<label for="category_id">
+			Suplier
+		</label>
+		<select class="form-control" name="supplier_id">
+			@foreach($supplier as $q)
+			<option value="{{ $q->id }}">{{ $q->name }}</option>
+			@endforeach
+		</select>
+	</div>
+	<div class="form-group">
 		<label for="code">
 			code
 		</label>
@@ -17,7 +27,7 @@
 		<label for="quantity">
 			Qyt
 		</label>
-		<input type="number" name="quantity" class="form-control" id="quantity" autocomplete="off">
+		<input type="number" name="quantity_p" class="form-control" id="quantity_p" autocomplete="off">
 	</div>
 	<div class="form-group">
 		<label for="price_purchase">

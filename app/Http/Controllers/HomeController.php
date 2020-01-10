@@ -44,4 +44,8 @@ class HomeController extends Controller
     {
         return view('home');
     }
+    public function indexAdminSub()
+    {
+        return view('pages.stock-distribution.adm-index-sub');
+    }
 }

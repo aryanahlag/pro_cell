@@ -17,13 +17,23 @@
 		<label for="quantity">
 			Qyt
 		</label>
-		<input type="number" name="quantity" class="form-control" id="quantity" autocomplete="off" value="{{ $stock->quantity }}">
+		<input type="number" name="quantity" class="form-control" id="quantity" autocomplete="off" value="{{ $stock->quantity_p }}">
 	</div>
 	<div class="form-group">
 		<label for="price_purchase">
 			Harga Beli
 		</label>
 		<input type="number" name="price_purchase" class="form-control" id="price_purchase" autocomplete="off" value="{{ $stock->price_purchase }}">
+	</div>
+	<div class="form-group">
+		<label for="category_id">
+			Supplier
+		</label>
+		<select class="form-control" name="category_id">
+			@foreach(\App\Supplier::all() as $q)
+			<option value="{{ $q->id }}" {{ $q->id == $stock->supplier_id ? "selected" : "" }}>{{ $q->name }}</option>
+			@endforeach
+		</select>
 	</div>
 	<div class="form-group">
 		<label for="category_id">

@@ -26,7 +26,9 @@ class CabangController extends Controller
      */
     public function create()
     {
-        return view('pages.cabang.create');
+        $data = [];  
+        $data['now'] = date('Y-m-d');
+        return view('pages.cabang.create', $data);
     }
 
     /**

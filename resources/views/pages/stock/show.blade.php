@@ -13,7 +13,7 @@
 		<div class="col-md-7">
 			<p class="mb-3"><b>{{ $data->code }}</b></p>
 			<p class="mb-3">{{ $data->name }}</p>
-			<p class="mb-3">{{ $data->quantity }}</p>
+			<p class="mb-3">{{ $data->quantity_p + $data->quantity_tbh }}</p>
 			<p class="mb-3">{{ $data->price_purchase }}</p>
 			<p class="mb-3">{{ $data->category->name }}</p>
 			<p class="mb-3">{{ $data->brand->name }}</p>

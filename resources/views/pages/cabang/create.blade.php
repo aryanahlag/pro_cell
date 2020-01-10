@@ -10,13 +10,14 @@
 		<label for="address">
 			Alamat
 		</label>
-		<input type="text" name="address" class="form-control" id="address" autocomplete="off">
+		{{-- <input type="text" name="address" class="form-control" id="address" autocomplete="off"> --}}
+		<textarea name="address" class="form-control" id="address"></textarea>
 	</div>
 	<div class="form-group">
 		<label for="date">
 			Tanggal Dibuat
 		</label>
-		<input type="date" name="date" class="form-control" id="date" autocomplete="off">
+		<input type="date" name="date" class="form-control" value="{{ $now }}" id="date" autocomplete="off">
 	</div>
 	<div class="d-flex">
 		<button type="submit" class="btn btn-primary ml-auto" id="action-primary">Tambah</button>

@@ -16,6 +16,9 @@ $('body').on('click', '#btn-create', function (e) {
             $('#myModal .modal-title').html('Tambah Cabang');
             $('#myModal .modal-body').html(res);
             $('#myModal').modal('show');
+            setTimeout(() => {
+                $('#name').focus();
+            },500)
         }
     });
 });
@@ -93,6 +96,10 @@ $('body').on('click', '.btn-edit', function (e) {
             $('#myModal .modal-title').html('Edit ' + title);
             $('#myModal .modal-body').html(res);
             $('#myModal').modal('show');
+
+            setTimeout(() => {
+                $('#name').focus();
+            },500)
         }
     });
 });
