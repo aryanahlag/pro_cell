@@ -3,7 +3,11 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex">
         <h4>Barang Toko</h4>
+        @if(Auth::user()->role == 'employee')
         <a href="{{ route('stock-distribution.index', $slug) }}" class="btn btn-sm btn-danger ml-auto"><i class="fa fa-times"></i> Kembali</a>
+        @elseif(Auth::user()->role == 'admin')
+        <a href="{{ route('admin.stock-distribution.shipment.index') }}" class="btn btn-sm btn-danger ml-auto"><i class="fa fa-times"></i> Kembali</a>
+        @endif
     </div>
     <div class="card-body">
         <div class="d-flex">
