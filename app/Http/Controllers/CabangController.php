@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Cabang;
 use DataTables;
+use Excel;
+use PDF;
+use App\Exports\CabangExport as CabangExport;
 
 class CabangController extends Controller
 {
@@ -134,5 +137,18 @@ class CabangController extends Controller
                 'url_delete' => route('admin.cabang.destroy', $cabang->id),
             ]);
         })->rawColumns(['action'])->addIndexColumn()->make(true);
+    }
+
+    public function excel(){
+        return Excel::download(new CabangExport, 'Cabang.xlsx');
+    }
+
+    public function pdf()
+    {
+        $cabang = Cabang::all();
+
+        $pdf = PDF::loadView('layouts.pdf.cabang', compact('cabang'));
+
+        return $pdf->download('cabang.pdf');
     }
 }

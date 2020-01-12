@@ -8,9 +8,17 @@
             </div>
             <div class="col-md-8 d-flex justify-content-end">
                 {{-- <a href="{{ route('category.create') }}" class="btn btn-primary" id="btn-create"> --}}
-                <button data-url="{{ route('admin.cabang.create') }}" class="btn btn-primary" id="btn-create">
+                <button style="margin-right:5px;" data-url="{{ route('admin.cabang.create') }}" class="btn btn-primary" id="btn-create">
                     <i class="fas fa-plus"></i> Tambah Cabang
                 </button>
+                <a style="margin-right:5px;" href="{{ route('cabang.excel') }}" class="btn btn-sm btn-warning">
+                    <i class="fa fa-file-excel"></i>
+                    Print Excel
+                </a>
+                <a href="{{ route('cabang.pdf') }}" class="btn btn-sm btn-danger">
+                    <i class="fa fa-file-pdf"></i>
+                    Print PDF
+                </a>
             </div>
         </div>
     </div>
