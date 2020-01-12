@@ -157,7 +157,6 @@
                     </div>`+
                 '</div>'
         $('#data').prepend(res);
-        console.log($('input[name="name[]"]'));
     }
     $('body').on('click', ".remove", function(e) {
         e.preventDefault();

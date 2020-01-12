@@ -62,7 +62,7 @@
                         <!--  -->
                         <div class="col-md-6">
                             <div class="form-group mb-3">
-                                <input type="number" name="cash" id="cash" placeholder="Cash (F8)" class="form-control">
+                                <input type="text" name="cash" id="cash" placeholder="Cash (F8)" class="form-control">
                             </div>
                             <div class="form-group">
                                 <input type="number" name="change" id="change" placeholder="Kembalian" class="form-control" readonly>

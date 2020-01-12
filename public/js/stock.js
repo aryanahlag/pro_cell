@@ -100,7 +100,7 @@ $('body').on('submit', '#form-update', function (e) {
 	const url = $(this).attr('action');
 	const form = $(this).serializeArray();
 
-	$('form').find('.form-group').removeClass('has-errors');
+	$('form').find('.form-group .form-control').removeClass('is-invalid');
 	$('form').find('.help-block').remove();
 
 	$.ajax({
@@ -143,12 +143,8 @@ $('body').on('submit', '#form-update', function (e) {
 			}
 
 			$.each(errors.errors, function(key, value){
-				$('#' + key)
-				.closest('.form-group')
-				.addClass('has-errors')
-				.append(
-					`<span class="help-block">`+value+`</span>`
-				)
+				$('#' + key).closest('.form-group .form-control').addClass('is-invalid')
+				$('#' + key).closest('.form-group').append(`<span class="help-block text-danger">`+value+`</span>`)
 			});
 		}
 	});
@@ -223,3 +219,19 @@ $('body').on('click', '.btn-show', function (e) {
 		}
 	});
 });
+
+$('body').on('click', '.btn-tbh', function (e) {
+	e.preventDefault();
+	const url = $(this).attr('href');
+	const title = $(this).attr('title');
+
+	$.ajax({
+		url: url,
+		dataType: 'html',
+		success: function (res) {
+			$('#myModal .modal-title').html('Tambah Quantity '+ title);
+			$('#myModal .modal-body').html(res);
+			$('#myModal').modal('show');
+		}
+	});
+})

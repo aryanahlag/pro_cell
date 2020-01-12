@@ -44,7 +44,8 @@ $(document).ready(function() {
 			key == 120 || //f9 x
 			key == 121 || //f10 x
 			key == 122 || //f11
-			key == 123 //f12
+			key == 123 || //f12
+			key == 107 // plus di keyboard komputer di atas enter
 			) {
 			switch (key) {
 				// findcode
@@ -68,17 +69,28 @@ $(document).ready(function() {
 					break;
 				// input barang
 				case 115:
-				inputBar();
-
+					inputBar();
 					break;
 				// Bayar 
 				case 121:
 					form.submit();
 					break;;
+				case 107:
+					let target = e.explicitOriginalTarget;
+					// let str = target.value;
+					setTimeout(() => {
+						let str = document.getElementById('cash').value
+						let n = str.length;
+						let res = str.replace('+', ''); 
+						$('#cash').val(res);
+						console.log(res);
+					}, 100)
+
+					break;
 
 			}
 		}
-	} 
+	}
 });
 
 findCode.on('change', function () {

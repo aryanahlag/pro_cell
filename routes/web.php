@@ -45,6 +45,8 @@ Route::middleware('auth')->group(function () {
         Route::get('s/generation/data/{generation}', 'GenerationController@stockGenerationData')->name('stock.generation.data');
         Route::get('generation/{generation}/single', 'StockController@createSingle')->name("stock.single.create");
         Route::post('generation/{generation}/stock/store/single', 'StockController@storeSingle')->name("stock.create.single.store");
+        Route::get('generation/{generation}/stock/{stock}/tbh', 'StockController@createTbh')->name("stock.create.tbh");
+        Route::put('generation/{generation}/stock/{stock}/tbh', 'StockController@storeTbh')->name("stock.store.tbh");
 
         // pengjuan
         Route::get('/submission', "HomeController@indexAdminSub")->name('index-sub');
@@ -72,6 +74,11 @@ Route::middleware('auth')->group(function () {
         // stock distribution
         Route::get('sd/sdm/submission', 'StockDistributionController@dataAdminSubmission')->name('stock-distribution.data');
         Route::get('sd/stock', 'StockGenerationController@stockCabang')->name('stock-distribution.data.cabang');
+        // shipment
+        Route::get('sd/shipment', 'StockDistributionController@shipmentIndex')->name('stock-distribution.shipment.index');
+        Route::get('sd/shipment/create', 'StockDistributionController@createShipment')->name('stock-distribution.shipment.create');
+        Route::post('sd/shipment/create', 'StockDistributionController@storeShipment')->name('stock-distribution.storeShipment');
+        Route::get('sd/sm/data', 'StockDistributionController@shipmentData')->name('stock-distribution.shipment.data');
 
 
     });
@@ -90,7 +97,7 @@ Route::middleware('auth')->group(function () {
         // stock ditsti
         Route::get('sd/data', "StockDistributionController@datatables")->name("stock-distribution.data");
         Route::get('sd/data/submission', "StockDistributionController@dataSubmission")->name("stock-distribution.dataSubmission");
-        Route::get('sd/sel2', "StockDistributionController@findStock")->name("stock-distribution.sel2");
+        
         Route::get('stock-distribution/single/create', "StockDistributionController@createSingle")->name("stock-distribution.createSingle");
         Route::post('stock-distribution/single', "StockDistributionController@storeSingle")->name("stock-distribution.storeSingle");
         // endstock
@@ -111,6 +118,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('stock-distribution', 'StockDistributionController');
     Route::match(['put', 'post'], 'sd/verify/{stock}', 'StockDistributionController@stockDistributionVerify')->name('stock-distribution.verify');
+    // select 2
+    Route::get('sd/sel2', "StockDistributionController@findStock")->name("stock-distribution.sel2");
 
     Route::group(['prefix' => '/employee/{cabang}', 'as' => 'employee.', 'middleware' => 'employee'], function () {
         //dashboard

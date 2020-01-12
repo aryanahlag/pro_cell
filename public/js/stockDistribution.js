@@ -50,6 +50,7 @@ $('body').on('submit', '#form-store', function (e) {
 			});
 
 			$('#tableStockDistribution').DataTable().ajax.reload();
+			$('#tableStockDistributionShipment').DataTable().ajax.reload();
 		},
 
 		error: function(xhr){
@@ -207,4 +208,5 @@ $('body').on('click', "#btn-refresh", function () {
 $('body').on('click', "#btn-refresh-admin-sub", function () {
 	$('#tableStockDistributionSubmission').DataTable().ajax.reload();
 	$('#tableStockDistributionCabang').DataTable().ajax.reload();
+	$('#tableStockDistributionShipment').DataTable().ajax.reload();
 })

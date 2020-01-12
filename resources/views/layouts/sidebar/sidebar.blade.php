@@ -51,6 +51,11 @@ if (Auth::user()->role == "employee") {
                 <i class="fa fa-list-alt"></i>
                 <span>Pengajuan</span></a>
         </li>
+        <li class="nav-item {{ $activePage == 'pengiriman' ? ' active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.stock-distribution.shipment.index') }}">
+                <i class="fa fa-share-square"></i>
+                <span>Pengiriman</span></a>
+        </li>
         <div class="sidebar-heading">
                 Lainnya
             </div>

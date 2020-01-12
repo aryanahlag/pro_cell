@@ -176,6 +176,7 @@ class GenerationController extends Controller
                     'url_edit' => route('admin.stock.edit', ["generation" => $stock->generation_id, "stock" => $stock->id]),
                     'url_delete' => route('admin.stock.destroy', ["generation" => $stock->generation_id, "stock" => $stock->id]),
                     'url_show' => route('admin.stock.show', ["generation" => $stock->generation_id, "stock" => $stock->id]),
+                    'url_tbh' => route('admin.stock.create.tbh', ["generation" => $stock->generation_id, "stock" => $stock->id]),
                 ]);
         })->rawColumns(['action'])->addIndexColumn()->make(true);
     }

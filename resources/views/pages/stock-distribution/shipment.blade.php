@@ -1,28 +1,29 @@
-@extends('layouts.master', ["activePage" => "stock-distribution", "titlePage" => "Barang Toko" ])
+
+@extends('layouts.master', ["activePage" => "pengiriman", "titlePage" => "Pengiriman Ke Cabang" ])
 @section('content')
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <div class="row">
             <div class="col-md-4">
-                <h4>Pengajuan Barang</h4>
+                <h4>Pengiriman Barang</h4>
             </div>
             <div class="col-md-8 d-flex justify-content-end">
-                <button type="button" id="btn-refresh" class="btn btn-info btn-sm mr-3"><i class="fa fa-refresh"></i> Refresh</button>
-                <a href="{{ route('employee.stock-distribution.createSingle') }}" class="btn btn-primary btn-sm mr-3" id="btn-create">
+                <button type="button" id="btn-refresh-admin-sub" class="btn btn-info btn-sm mr-3"><i class="fa fa-refresh"></i> Refresh</button>
+                <a href="{{ route('admin.stock-distribution.shipment.create') }}" class="btn btn-primary btn-sm mr-3" id="btn-create">
                     <i class="fas fa-plus"></i> Tambah
                 </a>
                 <a href="{{ route('stock-distribution.create') }}" class="btn btn-success btn-sm mr-3">Tambah Banyak</a>
-                <a href="{{ route('stock-distribution.index', $slug) }}" class="btn btn-danger btn-sm">Kembali</a>
             </div>
         </div>
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-stripped" id="tableStockDistribution">
+            <table class="table table-stripped" id="tableStockDistributionShipment">
                 <thead>
                     <tr>
                         <th>No</th>
                         <th>Nama Barang</th>
+                        <th>Cabang</th>
                         <th>Harga Jual Satuan (Rp)</th>
                         <th>Harga Jual Grosir (Rp)</th>
                         <th>Qyt</th>
@@ -41,18 +42,21 @@
 <script>
 $(document).ready(function() {
     // let markup = $('#myModal .modal-body');
-    $('#tableStockDistribution').DataTable({
+    $('#tableStockDistributionShipment').DataTable({
         responsive: true,
         processing: true,
         serverSide: true,
-        ajax: "{{ route('employee.stock-distribution.dataSubmission') }}",
+        ajax: "{{ route('admin.stock-distribution.shipment.data') }}",
         columns: [
             { data: "DT_RowIndex", orderable: false, searchable: false },
             { data: "stock.name" },
+            { data: "cabang.name" },
             { data: "price_sell" },
             { data: "price_grosir" },
             { data: "quantity" },
-            { data: "status" },
+            { data: "status", render: function (a,b,c) {
+                return 'Kiriman'
+            }},
             { data: 'action', orderable: false, searchable: false },
         ]
     });

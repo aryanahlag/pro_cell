@@ -1,4 +1,16 @@
+@if(Auth::user()->role == "admin")
+<form action="{{ route('admin.stock-distribution.storeShipment') }}" class="form-horizontal" method="POST" id="form-store">
+    <div class="form-group">
+        <label for="cabang">Cabang</label>
+        <select name="cabang" class="form-control">
+            @foreach(\App\Cabang::orderBy('name', 'asc')->get() as $q)
+            <option value="{{ $q->id }}">{{ $q->name }}</option>
+            @endforeach
+        </select>
+    </div>
+@else
 <form action="{{ route('employee.stock-distribution.storeSingle') }}" class="form-horizontal" method="POST" id="form-store">
+@endif
 	@csrf
 	<div class="form-group">
 		<label for="name">
@@ -39,7 +51,7 @@
 	$(document).ready(function () {
 		$('#stock_id').select2({
         ajax: {
-            url: "{{ route('employee.stock-distribution.sel2') }}",
+            url: "{{ route('stock-distribution.sel2') }}",
             dataType: "json",
             delay: 250,
             data: function (params) {

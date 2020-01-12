@@ -159,7 +159,7 @@ class SuplierController extends Controller
 
     public function datatables()
     {
-        $suplier = Suplier::query();
+        $suplier = Suplier::query()->orderBy('created_at', 'DESC');
         return DataTables::of($suplier)
             ->addColumn('allStock', function ($suplier){
                 $stock_count = \App\Stock::where("supplier_id", $suplier->id)->count();

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\StockDistribution;
 use App\Stock;
 use DataTables;
+use App\Cabang;
 use Auth;
 use Date;
 use Validator;
@@ -13,6 +14,13 @@ use DB;
 
 class StockDistributionController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $user = Auth::check();
+    //     if (!$user) {
+    //         return response()->json(['msg' => "Terjadi Kesalahan .. Refresh Halaman"], 401);
+    //     }
+    // }
     public function index()
     {
         $employee = \App\Employee::where("user_id", Auth::id())->first();
@@ -23,9 +31,11 @@ class StockDistributionController extends Controller
 
     public function create()
     {
-        $employee = \App\Employee::where("user_id", Auth::id())->first();
         $data = [];
-        $data['slug'] = $employee->cabang->slug;
+        if (Auth::user()->role == 'employee') {
+            $employee = \App\Employee::where("user_id", Auth::id())->first();
+            $data['slug'] = $employee->cabang->slug;
+        }
         return view('pages.stock-distribution.multi-create', $data); 
     }
 
@@ -59,18 +69,18 @@ class StockDistributionController extends Controller
             'stock_id.required' => 'Stock Harus Di isi.',
             'stock_id.exists' => 'Stock Tidak Ada.',
             'price_sell.required' => 'Harga Jual Harus Di isi.',
-            'price_sell.integer' => 'Harga Jual Harus Angka.',
+            'price_sell.numeric' => 'Harga Jual Harus Angka.',
             'price_grosir.required' => 'Harga Grosir Harus Di isi.',
-            'price_grosir.integer' => 'Harga Grosir Harus Angka.',
+            'price_grosir.numeric' => 'Harga Grosir Harus Angka.',
             'quantity.required' => 'Harga Beli Harus Di isi.',
-            'quantity.integer' => 'Qyt Harus Angka.',
+            'quantity.numeric' => 'Qyt Harus Angka.',
             'quantity.min' => 'Qyt Minimal 1.',
         ];
         $validator = Validator::make($request->all(),[
             "stock_id" => "required",
-            "price_sell" => "required|integer",
-            "price_grosir" => "required|integer",
-            "quantity" => "required|integer|min:1",
+            "price_sell" => "required|numeric",
+            "price_grosir" => "required|numeric",
+            "quantity" => "required|numeric|min:1",
         ], $customMessages);
 
         if ($validator->fails()) {
@@ -84,8 +94,25 @@ class StockDistributionController extends Controller
             return response()->json(['msg' => 'Stock Tidak Ditemukan'], 401);
         }
 
-        if ($stock->quantity < $request->quantity) {
-            return response()->json(['msg' => "Qyt Tidak Valid" ], 401);
+        $all_stock = $stock->quantity_p + $stock->quantity_tbh;
+        if ($request->quantity > $all_stock) {
+            return response()->json(['msg' => "Jumlah Maksimal {$all_stock}"], 401);
+        }
+
+        if ($stock->quantity_tbh > $request->quantity) {
+            $res_quantity = $stock->quantity_tbh - $request->quantity;
+            // dd($res_quantity. '====='.  $request->quantity);
+            $stock->update([
+                "quantity_tbh" => $res_quantity,
+            ]);
+        }else {
+            $res_quantity = $request->quantity - $stock->quantity_tbh;
+            $res_quantity = $stock->quantity_p - $res_quantity;
+            // dd($res_quantity. '====='.  $request->quantity);
+            $stock->update([
+                "quantity_tbh" => 0,
+                "quantity_p" => $res_quantity,
+            ]);
         }
 
         if ($stock->price_purchase > $request->price_sell) {
@@ -132,7 +159,14 @@ class StockDistributionController extends Controller
     public function datatables()
     {
         $employee = \App\Employee::where("user_id", Auth::id())->first();
-        $sd = StockDistribution::query()->where('cabang_id', $employee->cabang_id)->with(['stock'])->where('status', 'accepted');
+        $sd = StockDistribution::query()
+            ->where('cabang_id', $employee->cabang_id)
+            ->with(['stock'])
+            ->select('stock_id', 'price_sell', 'price_grosir', DB::raw('SUM(quantity) AS quantity'))
+            ->groupBy('stock_id', 'price_sell', 'price_grosir')
+            ->where('status', 'accepted')
+            ->orWhere('status', 'shipment');
+        // dd($sd);
 
         $data = DataTables::of($sd)
             ->addColumn('action', function($sd){
@@ -141,6 +175,7 @@ class StockDistributionController extends Controller
                     'url_show'=>route('stock-distribution.show', ["stock_distribution" => $sd->id]),
                     'url_edit'=>route('stock-distribution.edit', ["stock_distribution" => $sd->id]),
                     'url_delete'=>route('stock-distribution.destroy', ["stock_distribution" => $sd->id]),
+                    'page' => '',
                 ]);
             })->rawColumns(['action'])->addIndexColumn()->make(true);
 
@@ -154,7 +189,7 @@ class StockDistributionController extends Controller
         // $stock = Stock::where("name", 'LIKE', '%' .   request('q') . '%')->with(['brand', 'category', 'generation'])->get();
         $stock = DB::table('generations')
             ->join('stocks', 'generations.id', '=', 'stocks.generation_id')
-            ->select('stocks.id','stocks.information', 'stocks.name', 'stocks.quantity', 'stocks.price_purchase')
+            ->select('stocks.id','stocks.information', 'stocks.name', DB::raw('quantity_p + quantity_tbh AS quantity'), 'stocks.price_purchase')
             ->where('generations.status', 'verify')
             ->where('stocks.name', 'LIKE', "%". request('q'). "%")
             ->get();
@@ -164,7 +199,7 @@ class StockDistributionController extends Controller
     public function dataSubmission()
     {
         $employee = \App\Employee::where("user_id", Auth::id())->first();
-        $sd = StockDistribution::query()->where('cabang_id', $employee->cabang_id)->with(['stock'])->where('status', '!=','accepted')->orderBy('status', 'ASC');
+        $sd = StockDistribution::query()->where('cabang_id', $employee->cabang_id)->with(['stock'])->where('status', '!=','accepted')->where('status', '!=','shipment')->orderBy('status', 'ASC');
 
         $data = DataTables::of($sd)
             ->addColumn('action', function($sd){
@@ -173,6 +208,7 @@ class StockDistributionController extends Controller
                     'url_show'=>route('stock-distribution.show', ["stock_distribution" => $sd->id]),
                     'url_edit'=>route('stock-distribution.edit', ["stock_distribution" => $sd->id]),
                     'url_delete'=>route('stock-distribution.destroy', ["stock_distribution" => $sd->id]),
+                    'page' => ''
                 ]);
             })->rawColumns(['action'])->addIndexColumn()->make(true);
 
@@ -200,6 +236,7 @@ class StockDistributionController extends Controller
                     'url_edit'=>route('stock-distribution.edit', ["stock_distribution" => $sd->id]),
                     'url_delete'=>route('stock-distribution.destroy', ["stock_distribution" => $sd->id]),
                     'url_verify'=>route('stock-distribution.verify', ["stock_distribution" => $sd->id]),
+                    'page' => 'submission',
                 ]);
             })->rawColumns(['action'])->addIndexColumn()->make(true);
 
@@ -217,12 +254,31 @@ class StockDistributionController extends Controller
             return response()->json(['msg' => "Sudah Ditolak"], 401);
         }
         if (request()->isMethod("PUT")) {
-            $sd_qyt = $stock_dis->quantity;
-            $stock_qyt = $stock->quantity;
-            $res_stock = $stock_qyt - $sd_qyt ;
-            $stock->update([
-                "quantity" => $res_stock,
-            ]);
+            $res_quantity = 0;
+            $all_stock = $stock->quantity_p + $stock->quantity_tbh;
+
+
+            if ($stock->quantity_tbh > $stock_dis->quantity) {
+                $res_quantity = $stock->quantity_tbh - $stock_dis->quantity;
+                $stock->update([
+                    "quantity_tbh" => $res_quantity,
+                ]);
+            }else {
+                $res_quantity = $stock_dis->quantity - $stock->quantity_tbh;
+                $res_quantity = $stock->quantity_p - $res_quantity;
+                // dd($res_quantity. '====='.  $request->quantity);
+                $stock->update([
+                    "quantity_tbh" => 0,
+                    "quantity_p" => $res_quantity,
+                ]);
+            }
+
+            // $sd_qyt = $stock_dis->quantity;
+            // $stock_qyt = $stock->quantity;
+            // $res_stock = $stock_qyt - $sd_qyt ;
+            // $stock->update([
+            //     "quantity" => $res_stock,
+            // ]);
 
             $stock_dis->update([
                 "status" => "accepted",
@@ -237,5 +293,119 @@ class StockDistributionController extends Controller
 
             return response()->json(["msg" => "{$stock->name} Ditolak"], 200);
         } 
+    }
+
+    public function shipmentIndex()
+    {
+        return view('pages.stock-distribution.shipment');
+    }
+
+    public function shipmentData()
+    {
+        $sd = StockDistribution::query()->where('status', 'shipment')->with(['stock', 'cabang'])->orderBy('created_at', 'DESC');
+
+        $data = DataTables::of($sd)
+            ->addColumn('action', function($sd){
+                return view('pages.stock-distribution.action', [
+                    'model'=>$sd,
+                    'url_show'=>route('stock-distribution.show', ["stock_distribution" => $sd->id]),
+                    'url_edit'=>route('stock-distribution.edit', ["stock_distribution" => $sd->id]),
+                    'url_delete'=>route('stock-distribution.destroy', ["stock_distribution" => $sd->id]),
+                    'url_verify'=>route('stock-distribution.verify', ["stock_distribution" => $sd->id]),
+                    'page' => 'shipment'                    
+                ]);
+            })->rawColumns(['action'])->addIndexColumn()->make(true);
+
+        return $data;
+    }
+
+    public function createShipment()
+    {
+        return view('pages.stock-distribution.create');
+    }
+
+    public function storeShipment(Request $request)
+    {
+        $customMessages = [
+            'stock_id.required' => 'Stock Harus Di isi.',
+            'stock_id.exists' => 'Stock Tidak Ada.',
+            'price_sell.required' => 'Harga Jual Harus Di isi.',
+            'price_sell.numeric' => 'Harga Jual Harus Angka.',
+            'price_grosir.required' => 'Harga Grosir Harus Di isi.',
+            'price_grosir.numeric' => 'Harga Grosir Harus Angka.',
+            'quantity.required' => 'Harga Beli Harus Di isi.',
+            'quantity.numeric' => 'Qyt Harus Angka.',
+            'quantity.min' => 'Qyt Minimal 1.',
+            'cabang.required' => 'Pilih Cabang'
+        ];
+        $validator = Validator::make($request->all(),[
+            "stock_id" => "required",
+            "price_sell" => "required|numeric",
+            "price_grosir" => "required|numeric",
+            "quantity" => "required|numeric|min:1",
+            "cabang" => 'required',
+        ], $customMessages);
+
+        if ($validator->fails()) {
+            return response()->json(["errors" => $validator->errors()], 422);
+        }
+
+        $stock = Stock::where('id', $request->stock_id)->first();
+        $employee = \App\Employee::where("user_id", Auth::id())->first();
+        $thatSd = StockDistribution::where('stock_id', $request->stock_id)->first();
+        if (!$stock) {
+            return response()->json(['msg' => 'Stock Tidak Ditemukan'], 401);
+        }
+
+        $res_quantity = 0;
+        // if ($stock->quantity_tbh != 0) {
+        $all_stock = $stock->quantity_p + $stock->quantity_tbh;
+        if ($request->quantity > $stock->quantity_p + $stock->quantity_tbh) {
+            return response()->json(['msg' => "Jumlah Maksimal {$all_stock}"], 401);
+        }
+
+        if ($stock->quantity_tbh > $request->quantity) {
+            $res_quantity = $stock->quantity_tbh - $request->quantity;
+            // dd($res_quantity. '====='.  $request->quantity);
+            $stock->update([
+                "quantity_tbh" => $res_quantity,
+            ]);
+        }else {
+            $res_quantity = $request->quantity - $stock->quantity_tbh;
+            $res_quantity = $stock->quantity_p - $res_quantity;
+            // dd($res_quantity. '====='.  $request->quantity);
+            $stock->update([
+                "quantity_tbh" => 0,
+                "quantity_p" => $res_quantity,
+            ]);
+        }
+        // if ($res_quantity > 0) {
+        // }
+        // }else{
+        //     $res_quantity = $stock->quantity_p;
+        //     dd($res_quantity);
+        // }
+
+        if ($stock->price_purchase > $request->price_sell) {
+            return response()->json(['msg' => "Harga Jual Terlalu Kecil" ], 401);
+        }
+
+        if ($stock->price_purchase > $request->price_grosir) {
+            return response()->json(['msg' => "Harga Grosir Terlalu Kecil" ], 401);
+        }
+
+        
+        $cabang = Cabang::findOrFail($request->cabang);
+        $sd = StockDistribution::create([
+            'stock_id' => $request->stock_id,
+            'cabang_id' => $request->cabang,
+            'quantity' => $request->quantity,
+            'price_sell' => $request->price_sell,
+            'price_grosir' => $request->price_grosir,
+            'status' => 'shipment',
+            'information' => $request->information
+        ]);
+
+        return response()->json(['msg' => "Stock Berhasil DIkirim ke {$cabang->name} Sebanyak {$request->quantity}"], 200);
     }
 }
