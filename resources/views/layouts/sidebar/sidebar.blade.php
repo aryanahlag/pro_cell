@@ -17,16 +17,17 @@ if (Auth::user()->role == "employee") {
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
     <!-- Nav Item - Dashboard -->
-    <li class="nav-item active">
-        <a class="nav-link {{ $activePage == 'dashboard' ? ' active' : '' }}" href="" aria-disabled="">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span></a>
-    </li>
+
 
     <!-- Divider -->
     <hr class="sidebar-divider">
     @if (!Auth::guest())
         @if(Auth::user()->role == 'admin')
+        <li class="nav-item active">
+            <a class="nav-link {{ $activePage == 'dashboard' ? ' active' : '' }}" href="{{ route('admin.dashboard') }}" aria-disabled="">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Dashboard</span></a>
+        </li>
         <!-- Nav Item - Tables -->
             <div class="sidebar-heading">
                 Transaksi
