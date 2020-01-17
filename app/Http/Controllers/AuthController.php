@@ -30,7 +30,17 @@ class AuthController extends Controller
     	if (Auth::attempt($credentials)) {
     		return redirect()->route("init");
     	}else{
-    		return redirect()->back();
+            $username = User::where('username', $request->username)->first();
+            $password = User::where('password', $request->password)->first();
+
+            if (!$username && !$password) {
+                return redirect()->back()->with('msgWarning','Akun gak ada');
+            } else if(!$username) {
+                return redirect()->back()->with('msgWarning','Username Tidak Cocok');
+            }
+            else if (!$password) {
+                return redirect()->back()->with('msgWarning','Password Tidak Cocok');
+            }
     	}
     }
 

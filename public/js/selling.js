@@ -1,4 +1,3 @@
-// $('*').off('keyup  keydown');
 $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -24,10 +23,8 @@ function loaded() {
 	qty.val(1);
 	totalShow.val(0);
 	findCode.focus();
+	setCookie('qty', 0, 1);
 }
-$('body').on('load', function () {
-	
-})
 $(document).ready(function() {
 	const body = $('body');
 	window.onkeydown = function (e) {
@@ -151,8 +148,10 @@ $('body').on('click', '.rmv', function (e) {
 })
 
 $('body').on('submit', '#form', function (e) {
+	// console.log(e.keyCode);
 	e.preventDefault();
-	const data = $(this).serializeArray();
+	const data = $(this).serialize();
+	console.info(data);
 	const url = $(this).attr('action');
 	$.ajax({
 		url:url,
@@ -162,34 +161,51 @@ $('body').on('submit', '#form', function (e) {
 			console.log('ok')
 		}
 	})
+});
+$('body').on('change', '.qty', function () {
+	let qty = $(this).val();
+	let price = $(this).parent().parent().find('.price').val()
+	$(this).parent().parent().find('.sub-tot').val(qty*price);
+	total()
 })
-
+i = 1;
 function toTable() {
-	tbody.append(` 
-		<tr>
-            <input type="hidden" name="sd[]" value="${sid.val()}">
-            <td>${tbody.length + 1}</td>
-            <td>
-                <input type="text" name="nama_barang[]" class="cl-line nama_barang" value="${stockName.val()}" readonly>
-            </td>
-            <td>
-                <input type="text" name="qty[]" class="grey-line qty"  value="${qty.val()}">
-            </td>
-            <td>
-                <input type="text" name="price[]" class="cl-line price" value="${price.val()}" readonly>
-            </td>
-            <td>
-                <input type="text" name="sub-tot[]" class="cl-line sub-tot" value="${qty.val() * price.val()}" readonly>
-            </td>
-            <td>
-                <input type="checkbox" name="grosir[]" value="0" class=""grosir>
-            </td>
-            <td>
-                <a href="javascript:void(0)" class="rmv"><i class="fa fa-times text-danger"></i></a>
-            </td>
-        </tr>
+	let there = $(`[data-code=${findCode.val()}]`);
+	if (there.length != 0) {
+		let thereQty = there.find('.qty').val();
+		let ress = parseInt(thereQty) + parseInt(qty.val());
+		there.find('.qty').val(ress);
+		there.find('.sub-tot').val(ress * parseInt(there.find('.price').val()))
 
-	`);
+	}else{
+		tbody.prepend(` 
+			<tr data-code="${findCode.val()}">
+	            <input type="hidden" name="sd[]" value="${sid.val()}">
+	            <td>${i++}</td>
+	            <td>
+	                <input type="text" name="code[]" class="cl-line code" value="${findCode.val()}" readonly>
+	            </td>
+	            <td>
+	                <input type="text" name="nama_barang[]" class="cl-line nama_barang" value="${stockName.val()}" readonly>
+	            </td>
+	            <td>
+	                <input type="text" name="qty[]" class="grey-line qty"  value="${qty.val()}">
+	            </td>
+	            <td>
+	                <input type="text" name="price[]" class="cl-line price" value="${price.val()}" readonly>
+	            </td>
+	            <td>
+	                <input type="text" name="sub-tot[]" class="cl-line sub-tot" value="${qty.val() * price.val()}" readonly>
+	            </td>
+	            <td>
+	                <input type="checkbox" name="grosir[]" value="0" class=""grosir>
+	            </td>
+	            <td>
+	                <a href="javascript:void(0)" class="rmv"><i class="fa fa-times text-danger"></i></a>
+	            </td>
+	        </tr>
+		`);
+	}
 	findCode.val('');
 	stockName.val('');
 	price.val('');
@@ -236,3 +252,38 @@ function inputBar() {
 	}
 }
 
+setInterval(()=> {
+	// console.log(1)
+	$('#hd_cash').val(cash.val())
+	$('#hd_total').val($("#total").val())
+},300)
+
+function setCookie(name, value, daysToLive) {
+    // Encode value in order to escape semicolons, commas, and whitespace
+    var cookie = name + "=" + encodeURIComponent(value);
+
+    if (typeof daysToLive === "number") {
+        /* Sets the max-age attribute so that the cookie expires
+        after the specified number of days */
+        cookie += "; max-age=" + (daysToLive * 24 * 60 * 60);
+
+        document.cookie = cookie;
+    }}
+function getCookie(name) {
+    // Split cookie string and get all individual name=value pairs in an array
+    var cookieArr = document.cookie.split(";");
+
+    // Loop through the array elements
+    for (var i = 0; i < cookieArr.length; i++) {
+        var cookiePair = cookieArr[i].split("=");
+
+        /* Removing whitespace at the beginning of the cookie name
+        and compare it with the given string */
+        if (name == cookiePair[0].trim()) {
+            // Decode the cookie value and return
+            return decodeURIComponent(cookiePair[1]);
+        }
+    }
+
+    // Return null if not found
+    return null;}

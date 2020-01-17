@@ -43,16 +43,21 @@ class SellingController extends Controller
     public function findSdByCode(Request $request)
     {
         $stock = Stock::where('code', $request->code)->first();
-        $sd = StockDistribution::where('stock_id', $stock->id)->where('status', 'accepted')->first();
-        if (!$stock || !$sd) {
+        if (!$stock) {
             return response()->json(["msg" => "Barang Tidak Ditemukan"], 401);
-        }else {
-            return response()->json([
-                "name" => $stock->name,
-                "price" => $sd->price_sell,
-                "stock" => $stock->id,
-                "sd" => $sd->id
-            ]);
         }
+        $sd = StockDistribution::where('stock_id', 5)->where('status', 'shipment')->orWhere('status', 'accepted')->first();
+        if (!$sd) {
+            return response()->json(["msg" => "Barang Tidak Ditemukan"], 401);
+        }
+
+        // dd($sd);
+
+        return response()->json([
+            "name" => $stock->name,
+            "price" => $sd->price_sell,
+            "stock" => $stock->id,
+            "sd" => $sd->id
+        ]);
     }
 }

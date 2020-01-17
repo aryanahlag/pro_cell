@@ -1,4 +1,4 @@
-@extends('layouts.master', ["activePage" => "stock-distribution", "titlePage" => "Stock Distribution" ])
+@extends('layouts.master', ["activePage" => Auth::user()->role == 'employee' ? "stock-distribution" : "pengiriman", "titlePage" => "Stock Distribution" ])
 @section('content')
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex">

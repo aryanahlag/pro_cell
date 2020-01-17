@@ -3,8 +3,7 @@
 @push('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('css/selling.css') }}">
 @endpush
-<form action="{{ route('employee.selling.store') }}" id="form" method="post">
-    @csrf
+{{-- <form action="{{ route('employee.selling.store') }}" id="form" method="post"> --}}
     <div class="row">
         <div class="col-md-3">
             <div class="total">
@@ -77,10 +76,15 @@
     <input type="hidden" id="sid">
     <hr>
     <div class="table-responsive">
+        <form action="{{ route('employee.selling.store') }}" id="form" method="post">
+        <input type="hidden" name="cash" id="hd_cash">
+        <input type="hidden" name="total" id="hd_total">
+        @csrf
         <table class="table">
             <thead>
                 <tr>
                     <th>#</th>
+                    <th>Kode</th>
                     <th>Nama Barang</th>
                     <th>Qty</th>
                     <th>Harga</th>
@@ -92,11 +96,12 @@
             <tbody id="tbody">
             </tbody>
         </table>
+        </form>
     </div>
     {{-- form akhir --}}
     {{-- </form> --}}
     {{--  --}}
-</form>
+{{-- </form> --}}
 @endsection
 @push('js')
 <script src="{{ asset('js/selling.js') }}"></script>

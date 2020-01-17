@@ -364,21 +364,6 @@ class StockDistributionController extends Controller
             return response()->json(['msg' => "Jumlah Maksimal {$all_stock}"], 401);
         }
 
-        if ($stock->quantity_tbh > $request->quantity) {
-            $res_quantity = $stock->quantity_tbh - $request->quantity;
-            // dd($res_quantity. '====='.  $request->quantity);
-            $stock->update([
-                "quantity_tbh" => $res_quantity,
-            ]);
-        }else {
-            $res_quantity = $request->quantity - $stock->quantity_tbh;
-            $res_quantity = $stock->quantity_p - $res_quantity;
-            // dd($res_quantity. '====='.  $request->quantity);
-            $stock->update([
-                "quantity_tbh" => 0,
-                "quantity_p" => $res_quantity,
-            ]);
-        }
         // if ($res_quantity > 0) {
         // }
         // }else{
@@ -394,6 +379,21 @@ class StockDistributionController extends Controller
             return response()->json(['msg' => "Harga Grosir Terlalu Kecil" ], 401);
         }
 
+        if ($stock->quantity_tbh > $request->quantity) {
+            $res_quantity = $stock->quantity_tbh - $request->quantity;
+            // dd($res_quantity. '====='.  $request->quantity);
+            $stock->update([
+                "quantity_tbh" => $res_quantity,
+            ]);
+        }else {
+            $res_quantity = $request->quantity - $stock->quantity_tbh;
+            $res_quantity = $stock->quantity_p - $res_quantity;
+            // dd($res_quantity. '====='.  $request->quantity);
+            $stock->update([
+                "quantity_tbh" => 0,
+                "quantity_p" => $res_quantity,
+            ]);
+        }
         
         $cabang = Cabang::findOrFail($request->cabang);
         $sd = StockDistribution::create([
