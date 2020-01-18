@@ -29,7 +29,7 @@ class CabangController extends Controller
      */
     public function create()
     {
-        $data = [];  
+        $data = [];
         $data['now'] = date('Y-m-d');
         return view('pages.cabang.create', $data);
     }
@@ -141,7 +141,7 @@ class CabangController extends Controller
 
     public function excel(){
         return Excel::download(new CabangExport, 'Cabang.xlsx');
-    }
+    }a
 
     public function pdf()
     {

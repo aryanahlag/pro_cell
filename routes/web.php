@@ -80,8 +80,10 @@ Route::middleware('auth')->group(function () {
         Route::post('sd/shipment/create', 'StockDistributionController@storeShipment')->name('stock-distribution.storeShipment');
         Route::get('sd/sm/data', 'StockDistributionController@shipmentData')->name('stock-distribution.shipment.data');
 
+        Route::get('/report', 'ReportSellController@excel')->name('report-excel');
 
     });
+    //Report Pembelian
     //Report Karyawan
     Route::get('/makeEmployee/excel', 'MakeEmController@excel')->name('makeEmployee.excel');
     Route::get('/makeEmployee/pdf', 'MakeEmController@pdf')->name('makeEmployee.pdf');
@@ -101,7 +103,7 @@ Route::middleware('auth')->group(function () {
         // stock ditsti
         Route::get('sd/data', "StockDistributionController@datatables")->name("stock-distribution.data");
         Route::get('sd/data/submission', "StockDistributionController@dataSubmission")->name("stock-distribution.dataSubmission");
-        
+
         Route::get('stock-distribution/single/create', "StockDistributionController@createSingle")->name("stock-distribution.createSingle");
         Route::post('stock-distribution/single', "StockDistributionController@storeSingle")->name("stock-distribution.storeSingle");
         // endstock

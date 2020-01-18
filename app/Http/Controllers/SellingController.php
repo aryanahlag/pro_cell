@@ -46,7 +46,7 @@ class SellingController extends Controller
         if (!$stock) {
             return response()->json(["msg" => "Barang Tidak Ditemukan"], 401);
         }
-        $sd = StockDistribution::where('stock_id', 5)->where('status', 'shipment')->orWhere('status', 'accepted')->first();
+        $sd = StockDistribution::where('stock_id', $stock->id)->where('status', 'shipment')->orWhere('status', 'accepted')->first();
         if (!$sd) {
             return response()->json(["msg" => "Barang Tidak Ditemukan"], 401);
         }
