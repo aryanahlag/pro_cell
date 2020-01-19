@@ -99,6 +99,15 @@ class StockDistributionController extends Controller
             return response()->json(['msg' => "Jumlah Maksimal {$all_stock}"], 401);
         }
 
+
+        if ($stock->price_purchase > $request->price_sell) {
+            return response()->json(['msg' => "Harga Jual Terlalu Kecil" ], 401);
+        }
+
+        if ($stock->price_purchase > $request->price_grosir) {
+            return response()->json(['msg' => "Harga Grosir Terlalu Kecil" ], 401);
+        }
+
         if ($stock->quantity_tbh > $request->quantity) {
             $res_quantity = $stock->quantity_tbh - $request->quantity;
             // dd($res_quantity. '====='.  $request->quantity);
@@ -114,15 +123,7 @@ class StockDistributionController extends Controller
                 "quantity_p" => $res_quantity,
             ]);
         }
-
-        if ($stock->price_purchase > $request->price_sell) {
-            return response()->json(['msg' => "Harga Jual Terlalu Kecil" ], 401);
-        }
-
-        if ($stock->price_purchase > $request->price_grosir) {
-            return response()->json(['msg' => "Harga Grosir Terlalu Kecil" ], 401);
-        }
-
+        
         $sd = StockDistribution::create([
             'stock_id' => $request->stock_id,
             'cabang_id' => $employee->cabang_id,
@@ -363,13 +364,6 @@ class StockDistributionController extends Controller
         if ($request->quantity > $stock->quantity_p + $stock->quantity_tbh) {
             return response()->json(['msg' => "Jumlah Maksimal {$all_stock}"], 401);
         }
-
-        // if ($res_quantity > 0) {
-        // }
-        // }else{
-        //     $res_quantity = $stock->quantity_p;
-        //     dd($res_quantity);
-        // }
 
         if ($stock->price_purchase > $request->price_sell) {
             return response()->json(['msg' => "Harga Jual Terlalu Kecil" ], 401);

@@ -125,6 +125,10 @@ Route::middleware('auth')->group(function () {
     // select 2
     Route::get('sd/sel2', "StockDistributionController@findStock")->name("stock-distribution.sel2");
 
+    // selling
+    Route::get('s/stock', "sellingController@stockDataSelling")->name("selling.stockDataSelling");
+
+
     Route::group(['prefix' => '/employee/{cabang}', 'as' => 'employee.', 'middleware' => 'employee'], function () {
         //dashboard
         Route::get('/dashboard', 'EmployeeController@dashboard')->name('dashboard');

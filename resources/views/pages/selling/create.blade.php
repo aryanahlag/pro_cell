@@ -17,13 +17,13 @@
             <div class="row">
                 <div class="col-md-6">
                     <p class="badge badge-warning" style="color:black;">F1 = Cari Barcode</p>
-                    <p class="badge badge-warning" style="color:black;">F3 = Cari Barcode</p>
-                    <p class="badge badge-warning" style="color:black;">F5 = Cari Barcode</p>
+                    <p class="badge badge-warning" style="color:black;">F3 = Masukan Qty</p>
+                    <p class="badge badge-warning" style="color:black;">F8 = Cash</p>
                 </div>
                 <div class="col-md-6">
-                    <p class="badge badge-warning" style="color:black;">F2 = Cari Barcode</p>
-                    <p class="badge badge-warning" style="color:black;">F4 = Cari Barcode</p>
-                    <p class="badge badge-warning" style="color:black;">F6 = Cari Barcode</p>
+                    <p class="badge badge-warning" style="color:black;">F2 = Cari Barang</p>
+                    <p class="badge badge-warning" style="color:black;">F4 = Input Barang</p>
+                    <p class="badge badge-warning" style="color:black;">F10 = Bayar</p>
                 </div>
             </div>
         </div>
@@ -32,12 +32,13 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="input-group mb-3">
+                            {{-- <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="inputGroup-sizing-default">F2 Cari Nama</span>
                                 </div>
                                 <input type="text" class="form-control" id="findName" aria-describedby="inputGroup-sizing-default">
-                            </div>
+                            </div> --}}
+                            <button type="button" class="btn btn-block btn-light btn-sm mb-3" data-toggle="modal" data-target="#modal-stock" id="findName"><i class="fa fa-search"></i> Cari Barang (F2) </button>
                             <div class="input-group">
                                 <input type="text" class="form-control" data-url="{{ route('employee.selling.fsbc') }}" aria-describedby="basic-addon2" id="findCode">
                                 <div class="input-group-append">
@@ -59,14 +60,15 @@
                         {{-- <form class=""> --}}
                         {{--  --}}
                         <!--  -->
-                        <div class="col-md-6">
+                        <div class="col-md-6 text-center">
+                            <i class="fa fa-retweet loaded hide"></i>
                             <div class="form-group mb-3">
                                 <input type="text" name="cash" id="cash" placeholder="Cash (F8)" class="form-control">
                             </div>
                             <div class="form-group">
-                                <input type="number" name="change" id="change" placeholder="Kembalian" class="form-control" readonly>
+                                <input type="text" name="change" id="change" placeholder="Kembalian" class="form-control" readonly>
                             </div>
-                            <button type="submit" class="btn btn-warning btn-block btn-sm">Bayar (F10)</button>
+                            <button type="submit" id="bayar" class="btn btn-warning btn-block btn-sm">Bayar (F10)</button>
                         </div>
                     </div>
                 </div>
@@ -102,7 +104,62 @@
     {{-- </form> --}}
     {{--  --}}
 {{-- </form> --}}
+<!-- Modal -->
+<div class="modal fade" id="modal-stock" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title stock" id="exampleModalScrollableTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body stock">
+        {{-- <div class="table-responsive"> --}}
+            <table id="tableStock" class="table table-stripped" style="width: 100%">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Nama</th>
+                        <th>Harga Satuan</th>
+                        <th>Harga Grosir</th>
+                        <th>*</th>
+                    </tr>
+                </thead>       
+            </table>
+        {{-- </div> --}}
+      </div>
+      <div class="modal-footer stock">
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">&times; Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 @push('js')
+<script>
+    $(document).ready( function () {
+        $('#tableStock').DataTable({
+            "ajax" : "{{ route('selling.stockDataSelling') }}",
+            "columns" : [
+                {"data" : "code", render : function (a, b, c) {
+                    return `<span data-s-code="${c.code}" class="s-code">${c.code}</span>`;
+                }},
+                {"data" : "stock.name", render : function (a,b,c) {
+                    return `<span data-s-name="${c.name}" class="s-name">${c.name}</span>`;
+                }},
+                {"data" : "price_sell", render : function (a,b,c) {
+                     return `<span data-s-price="${c.price_sell}" class="s-price">${c.price_sell}</span>`;
+                }},
+                {"data" : "price_grosir", render: function (a,b,c) {
+                    return `<span data-s-grosir="${c.price_grosir}" class="s-grosir">${c.price_grosir}</span>`;
+                }},
+                {"data" : "stock_id", render: function (a,b,c) {
+                    return `<a href="javascript:void(0)" class="select-stock badge badge-info" data-s-sid="${c.stock_id}" data-s-sd="${c.id}"><i class="fa fa-check-circle"></i> Pilih</a>`
+                }},
+            ]
+        });
+    });
+</script>
 <script src="{{ asset('js/selling.js') }}"></script>
 @endpush
