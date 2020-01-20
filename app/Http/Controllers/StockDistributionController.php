@@ -89,7 +89,10 @@ class StockDistributionController extends Controller
 
         $stock = Stock::where('id', $request->stock_id)->first();
         $employee = \App\Employee::where("user_id", Auth::id())->first();
-        // dd(!$stock);
+        $sd = StockDistribution::where('stock_id', $request->stock_id)->where('cabang_id', $employee->cabang_id)->where('status', '!=', 'submission')->where('status', '!=', 'rejected')->get();
+        
+
+
         if (!$stock) {
             return response()->json(['msg' => 'Stock Tidak Ditemukan'], 401);
         }
@@ -107,6 +110,37 @@ class StockDistributionController extends Controller
         if ($stock->price_purchase > $request->price_grosir) {
             return response()->json(['msg' => "Harga Grosir Terlalu Kecil" ], 401);
         }
+
+        // =================================================================== //
+        // jika ada request harga
+        $res_price = [$request->price_sell, $request->price_grosir];
+        if (count($sd)) {
+            dd(true);
+            $old_sd = DB::table('stock_distributions')
+                    ->select('stock_id', 'price_sell', 'price_grosir', DB::raw('SUM(quantity) AS quantity'))
+                    ->groupBy('stock_id', 'price_sell', 'price_grosir')
+                    ->where('stock_id', $request->stock_id)
+                    ->where('cabang_id', $employee->cabang_id)
+                    ->where('status', '!=', 'submission')
+                    ->where('status', '!=', 'rejected')
+                    ->first();
+            if ($request->price_sell != $old_sd->price_sell) {
+                $res_price[0] = $request->price_sell;
+                DB::table('stock_distributions')
+                    ->where('stock_id', $request->stock_id)
+                    ->where('cabang_id', $employee->cabang_id)
+                    ->update(['price_sell' => $request->price_sell]);
+            }
+
+            if ($request->price_grosir != $old_sd->price_grosir) {
+                $res_price[1] = $request->price_grosir;
+                DB::table('stock_distributions')
+                    ->where('stock_id', $request->stock_id)
+                    ->where('cabang_id', $employee->cabang_id)
+                    ->update(['price_grosir' => $request->price_grosir]);
+            }
+        }
+        
 
         if ($stock->quantity_tbh > $request->quantity) {
             $res_quantity = $stock->quantity_tbh - $request->quantity;
@@ -128,8 +162,8 @@ class StockDistributionController extends Controller
             'stock_id' => $request->stock_id,
             'cabang_id' => $employee->cabang_id,
             'quantity' => $request->quantity,
-            'price_sell' => $request->price_sell,
-            'price_grosir' => $request->price_grosir,
+            'price_sell' => $res_price[0],
+            'price_grosir' => $res_price[1],
             'status' => 'submission',
             'information' => $request->information
         ]);
@@ -181,6 +215,30 @@ class StockDistributionController extends Controller
             })->rawColumns(['action'])->addIndexColumn()->make(true);
 
         return $data;
+    }
+
+    public function checkStock(Request $request)
+    {
+        $employee = \App\Employee::where("user_id", Auth::id())->first();
+        $sd = StockDistribution::where('stock_id', $request->sid)->where('cabang_id', $employee->cabang_id)->where('status', '!=', 'submission')->where('status', '!=', 'rejected')->get();
+        if (count($sd) > 0) {
+            $old_sd = DB::table('stock_distributions')
+                    ->select('stock_id', 'price_sell', 'price_grosir', DB::raw('SUM(quantity) AS quantity'))
+                    ->groupBy('stock_id', 'price_sell', 'price_grosir')
+                    ->where('stock_id', $request->sid)
+                    ->where('cabang_id', $employee->cabang_id)
+                    ->where('status', '!=', 'submission')
+                    ->where('status', '!=', 'rejected')
+                    ->first();
+            return response()->json([
+                'stock_id' => $old_sd->stock_id,
+                'price_sell' => $old_sd->price_sell,
+                'price_grosir' => $old_sd->price_grosir,
+                'qty' => $old_sd->quantity,
+            ], 200);
+        }else{
+            return "new";
+        }
     }
 
     public function findStock()

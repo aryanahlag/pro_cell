@@ -1,0 +1,12 @@
+.loaded {
+  animation: crescendo .5s alternate infinite ease-in;
+}
+
+.hide{
+	display: none;
+}
+
+@keyframes crescendo {
+  0%   {transform: scale(.8);}
+  100% {transform: scale(1.5);}
+}

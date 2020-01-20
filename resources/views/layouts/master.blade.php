@@ -17,6 +17,7 @@
     <link href="{{ asset('assets/css/sb-admin-2.min.css') }}" rel="stylesheet">
     {{-- select 2 --}}
     <link rel="stylesheet" href="{{ asset('assets/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/general.css') }}">
     @stack('css')
 </head>
 

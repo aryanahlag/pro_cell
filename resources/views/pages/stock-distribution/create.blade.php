@@ -16,25 +16,27 @@
 		<label for="name">
 			Stok
 		</label>
-		<select id="stock_id" class="form-control" style="width: 100%"></select>
+		<select id="stock_id" class="form-control" style="width: 100%" data-url-check="{{ route('stock-distribution.check') }}"></select>
 	</div>
 	<div class="form-group">
-		<label for="name">
-			Qyt
+		<label for="quantity" class="d-flex justify-content-between">
+			<span>Qyt</span> 
+            <b id="sisa"></b>
 		</label>
-		<input type="number" name="quantity" class="form-control" id="quantity" autocomplete="off">
+		<input type="number" min="1" name="quantity" class="form-control" id="quantity" autocomplete="off">
 	</div>
 	<div class="form-group">
-		<label for="price_sell">
-			Harga Jual
+		<label for="price_sell" class="d-flex justify-content-between">
+			<span>Harga Jual</span> 
+            <a href="javascript:void(0)" class="float-right" id="jual"></a>
 		</label>
-		<input type="number" name="price_sell" class="form-control" id="price_sell" autocomplete="off">
+		<input type="number" min="1" name="price_sell" class="form-control" id="price_sell" autocomplete="off">
 	</div>
 	<div class="form-group">
-		<label for="price_grosir">
-			Harga Grosir
+		<label for="price_grosir" class="d-flex justify-content-between">
+			<span>Harga Grosir</span> <a href="javascript:void(0)" class="float-right" id="grosir"></a>
 		</label>
-		<input type="number" name="price_grosir" class="form-control" id="price_grosir" autocomplete="off">
+		<input type="number" min="1" name="price_grosir" class="form-control" id="price_grosir" autocomplete="off">
 	</div>
     <div class="form-group">
         <label for="information">

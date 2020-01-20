@@ -20,8 +20,9 @@ class CreateStockDistributionsTable extends Migration
             $table->unsignedInteger('stock_id');
             $table->foreign('stock_id')->references('id')->on('stocks')->onDelete('cascade');
             $table->integer('quantity');
-            $table->integer('price_sell')->nullable();
-            $table->integer('price_grosir');
+            $table->integer('price_sell');
+            $table->string('req_price')->nullable();
+            $table->integer('price_grosir')->nullable();
             $table->enum('status', ['submission', 'accepted', 'rejected', 'shipment']);
             $table->text('information')->nullable();
             $table->timestamps();

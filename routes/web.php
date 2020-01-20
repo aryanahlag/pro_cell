@@ -79,8 +79,6 @@ Route::middleware('auth')->group(function () {
         Route::get('sd/shipment/create', 'StockDistributionController@createShipment')->name('stock-distribution.shipment.create');
         Route::post('sd/shipment/create', 'StockDistributionController@storeShipment')->name('stock-distribution.storeShipment');
         Route::get('sd/sm/data', 'StockDistributionController@shipmentData')->name('stock-distribution.shipment.data');
-
-
     });
     //Report Karyawan
     Route::get('/makeEmployee/excel', 'MakeEmController@excel')->name('makeEmployee.excel');
@@ -124,6 +122,8 @@ Route::middleware('auth')->group(function () {
     Route::match(['put', 'post'], 'sd/verify/{stock}', 'StockDistributionController@stockDistributionVerify')->name('stock-distribution.verify');
     // select 2
     Route::get('sd/sel2', "StockDistributionController@findStock")->name("stock-distribution.sel2");
+    // select 2 on change
+    Route::post('sd/sel2/change', "StockDistributionController@checkStock")->name("stock-distribution.check");
 
     // selling
     Route::get('s/stock', "sellingController@stockDataSelling")->name("selling.stockDataSelling");
