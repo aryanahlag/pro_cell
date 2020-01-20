@@ -13,7 +13,7 @@ $('body').on('click', '#btn-create', function (e) {
 		url: url,
 		dataType: 'html',
 		success: function (res) {
-			$('#myModal .modal-title').html(`Tambah Stok &nbsp; <i class="fa fa-retweet loaded hide"></i>`);
+			$('#myModal .modal-title').html(`Tambah Stok &nbsp; <i class="fa fa-spinner loaded hide"></i>`);
 			$('#myModal .modal-body').html(res);
 			$('#myModal').modal('show');
 		}

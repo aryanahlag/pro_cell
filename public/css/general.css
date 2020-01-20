@@ -1,12 +1,28 @@
 .loaded {
-  animation: crescendo .5s alternate infinite ease-in;
+    -webkit-animation: rotation .8s infinite linear;
+    animation: rotation .8s infinite linear;
 }
 
-.hide{
-	display: none;
+.hide {
+    display: none;
 }
 
 @keyframes crescendo {
-  0%   {transform: scale(.8);}
-  100% {transform: scale(1.5);}
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(359deg);
+    }
+}
+
+@-webkit-keyframes rotation {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+
+    to {
+        -webkit-transform: rotate(359deg);
+    }
 }

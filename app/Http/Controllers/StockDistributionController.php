@@ -89,8 +89,11 @@ class StockDistributionController extends Controller
 
         $stock = Stock::where('id', $request->stock_id)->first();
         $employee = \App\Employee::where("user_id", Auth::id())->first();
-        $sd = StockDistribution::where('stock_id', $request->stock_id)->where('cabang_id', $employee->cabang_id)->where('status', '!=', 'submission')->where('status', '!=', 'rejected')->get();
-        
+        $sd = StockDistribution::where('stock_id', $request->stock_id)
+                ->where('cabang_id', $employee->cabang_id)
+                ->where('status', '!=', 'submission')
+                ->where('status', '!=', 'rejected')
+                ->get();
 
 
         if (!$stock) {
@@ -114,56 +117,58 @@ class StockDistributionController extends Controller
         // =================================================================== //
         // jika ada request harga
         $res_price = [$request->price_sell, $request->price_grosir];
-        if (count($sd)) {
-            dd(true);
-            $old_sd = DB::table('stock_distributions')
-                    ->select('stock_id', 'price_sell', 'price_grosir', DB::raw('SUM(quantity) AS quantity'))
-                    ->groupBy('stock_id', 'price_sell', 'price_grosir')
-                    ->where('stock_id', $request->stock_id)
-                    ->where('cabang_id', $employee->cabang_id)
-                    ->where('status', '!=', 'submission')
-                    ->where('status', '!=', 'rejected')
-                    ->first();
-            if ($request->price_sell != $old_sd->price_sell) {
-                $res_price[0] = $request->price_sell;
-                DB::table('stock_distributions')
-                    ->where('stock_id', $request->stock_id)
-                    ->where('cabang_id', $employee->cabang_id)
-                    ->update(['price_sell' => $request->price_sell]);
-            }
+        // if (count($sd)) {
+        //     dd(true);
+        //     $old_sd = DB::table('stock_distributions')
+        //             ->select('stock_id', 'price_sell', 'price_grosir', DB::raw('SUM(quantity) AS quantity'))
+        //             ->groupBy('stock_id', 'price_sell', 'price_grosir')
+        //             ->where('stock_id', $request->stock_id)
+        //             ->where('cabang_id', $employee->cabang_id)
+        //             ->where('status', '!=', 'submission')
+        //             ->where('status', '!=', 'rejected')
+        //             ->first();
+        //     if ($request->price_sell != $old_sd->price_sell) {
+        //         $res_price[0] = $request->price_sell;
+        //         DB::table('stock_distributions')
+        //             ->where('stock_id', $request->stock_id)
+        //             ->where('cabang_id', $employee->cabang_id)
+        //             ->update(['price_sell' => $request->price_sell]);
+        //     }
 
-            if ($request->price_grosir != $old_sd->price_grosir) {
-                $res_price[1] = $request->price_grosir;
-                DB::table('stock_distributions')
-                    ->where('stock_id', $request->stock_id)
-                    ->where('cabang_id', $employee->cabang_id)
-                    ->update(['price_grosir' => $request->price_grosir]);
-            }
-        }
+        //     if ($request->price_grosir != $old_sd->price_grosir) {
+        //         $res_price[1] = $request->price_grosir;
+        //         DB::table('stock_distributions')
+        //             ->where('stock_id', $request->stock_id)
+        //             ->where('cabang_id', $employee->cabang_id)
+        //             ->update(['price_grosir' => $request->price_grosir]);
+        //     }
+        // }
+        // dd($request);
         
 
-        if ($stock->quantity_tbh > $request->quantity) {
-            $res_quantity = $stock->quantity_tbh - $request->quantity;
-            // dd($res_quantity. '====='.  $request->quantity);
-            $stock->update([
-                "quantity_tbh" => $res_quantity,
-            ]);
-        }else {
-            $res_quantity = $request->quantity - $stock->quantity_tbh;
-            $res_quantity = $stock->quantity_p - $res_quantity;
-            // dd($res_quantity. '====='.  $request->quantity);
-            $stock->update([
-                "quantity_tbh" => 0,
-                "quantity_p" => $res_quantity,
-            ]);
-        }
+        // if ($stock->quantity_tbh > $request->quantity) {
+        //     $res_quantity = $stock->quantity_tbh - $request->quantity;
+        //     // dd($res_quantity. '====='.  $request->quantity);
+        //     $stock->update([
+        //         "quantity_tbh" => $res_quantity,
+        //     ]);
+        // }else {
+        //     $res_quantity = $request->quantity - $stock->quantity_tbh;
+        //     $res_quantity = $stock->quantity_p - $res_quantity;
+        //     // dd($res_quantity. '====='.  $request->quantity);
+        //     $stock->update([
+        //         "quantity_tbh" => 0,
+        //         "quantity_p" => $res_quantity,
+        //     ]);
+        // }
         
         $sd = StockDistribution::create([
             'stock_id' => $request->stock_id,
             'cabang_id' => $employee->cabang_id,
             'quantity' => $request->quantity,
-            'price_sell' => $res_price[0],
-            'price_grosir' => $res_price[1],
+            'price_sell' => 0,
+            'price_grosir' => 0,
+            'req_price' => "$res_price[0]|$res_price[1]",
             'status' => 'submission',
             'information' => $request->information
         ]);
@@ -307,11 +312,13 @@ class StockDistributionController extends Controller
         $stock_dis = StockDistribution::find($sd);
         $stock = Stock::find($stock_dis->stock_id);
         if ($stock_dis->status == "accepted") {
-            return response()->json(['msg' => "Sudah Terverifikasi"], 401);
+            return response()->json(['msg' => "Sudah Diverifikasi"], 401);
         }
         if ($stock_dis->status == "rejected") {
             return response()->json(['msg' => "Sudah Ditolak"], 401);
         }
+        // diterima
+        $req_price = explode('|', $stock_dis->req_price);
         if (request()->isMethod("PUT")) {
             $res_quantity = 0;
             $all_stock = $stock->quantity_p + $stock->quantity_tbh;
@@ -341,10 +348,23 @@ class StockDistributionController extends Controller
 
             $stock_dis->update([
                 "status" => "accepted",
+                "price_sell" => $req_price[0],
+                "price_grosir" => $req_price[1],
             ]);
+
+            DB::table('stock_distributions')
+                ->where('stock_id', $stock_dis->stock_id)
+                ->where('cabang_id', $stock_dis->cabang_id)
+                ->where('status', '!=', 'submission')
+                ->where('status', '!=', 'rejected')
+                ->update([
+                    "price_sell" => $req_price[0],
+                    "price_grosir" => $req_price[1],
+                ]);
 
             return response()->json(["msg" => "{$stock->name} Sudah Terverifikasi"], 200);
         }
+        // ditolak
         if (request()->isMethod("POST")) {
             $stock_dis->update([
                 "status" => "rejected",

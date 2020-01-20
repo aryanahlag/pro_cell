@@ -31,10 +31,23 @@ class SellingController extends Controller
         $employee = \App\Employee::where("user_id", Auth::id())->first();
         $sell = DB::table('stock_distributions')
             ->join('stocks', 'stock_distributions.stock_id', '=', 'stocks.id')
-            ->select('stocks.id', 'stocks.code', 'stock_distributions.cabang_id','stocks.name', 'stock_distributions.price_sell', 'stock_distributions.price_grosir', 'stock_distributions.id', 'stock_distributions.stock_id')
+            ->select('stocks.id', 
+                    'stocks.code', 
+                    'stock_distributions.cabang_id',
+                    'stocks.name', 
+                    'stock_distributions.price_sell', 
+                    'stock_distributions.price_grosir', 
+                    // 'stock_distributions.id', 
+                    'stock_distributions.stock_id')
             ->where('cabang_id', $employee->cabang_id)
             ->where('stock_distributions.status', 'shipment')
             ->orWhere('stock_distributions.status', 'accepted')
+            ->groupBy('stocks.code', 
+                    'stock_distributions.cabang_id',
+                    'stocks.name', 
+                    'stock_distributions.price_sell', 
+                    'stock_distributions.price_grosir', 
+                    'stock_distributions.stock_id')
             ->get();
         return response()->json(['data' => $sell]);
     }

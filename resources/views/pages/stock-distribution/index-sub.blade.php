@@ -49,8 +49,14 @@ $(document).ready(function() {
         columns: [
             { data: "DT_RowIndex", orderable: false, searchable: false },
             { data: "stock.name" },
-            { data: "price_sell" },
-            { data: "price_grosir" },
+            { data: "price_sell", render: function (a,b,c) {
+                let sell = c.req_price.split("|")
+                return sell[0]
+            } },
+            { data: "price_grosir", render: function (a,b,c) {
+                 let grosir = c.req_price.split("|")
+                return grosir[1]
+            } },
             { data: "quantity" },
             { data: "status" },
             { data: 'action', orderable: false, searchable: false },

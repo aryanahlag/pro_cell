@@ -45,10 +45,36 @@ $(document).ready(function() {
             { data: "DT_RowIndex", orderable: false, searchable: false },
             { data: "stock.name" },
             { data: "cabang.name" },
-            { data: "price_sell" },
-            { data: "price_grosir" },
+            { data: "price_sell", render: function (a,b,c) {
+                if (c.req_price != "") {
+                    let sell = c.req_price.split("|")
+                    return sell[0]
+                }else{
+                    return c.price_sell
+                }
+            } },
+            { data: "price_grosir", render: function (a,b,c) {
+                if (c.req_price != "") {
+                     let grosir = c.req_price.split("|")
+                    return grosir[1]
+                }else{
+                    return c.price_grosir
+                }
+            } },
             { data: "quantity" },
-            { data: "status" },
+            { data: "status", render : function (a,b,c) {
+                let stts = c.status ;
+                if (stts == "submission") {
+                    return `<span class="badge badge-info">Pengajuan</span>`
+                }
+                if (stts == "accepted") {
+                    return `<span class="badge badge-success">Diterima</span>`
+                }
+
+                if (stts == "rejected") {
+                    return `<span class="badge badge-danger">Ditolak</span>`
+                }
+            } },
             { data: 'action', orderable: false, searchable: false },
         ]
     });
