@@ -91,7 +91,7 @@
                     <th>Qty</th>
                     <th>Harga</th>
                     <th>Sub Total</th>
-                    <th>Grosir</th>
+                    {{-- <th>Grosir</th> --}}
                     <th></th>
                 </tr>
             </thead>

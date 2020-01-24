@@ -55,7 +55,7 @@ $(document).ready(function() {
             { data: "price_grosir" },
             { data: "quantity" },
             { data: "status", render: function (a,b,c) {
-                return 'Kiriman'
+                return `<span class="badge badge-primary">Dikirim</span>`
             }},
             { data: 'action', orderable: false, searchable: false },
         ]

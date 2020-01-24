@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Stock;
 use App\StockDistribution;
+use App\Order;
 use Auth;
 use Date;
 use DataTables;
@@ -51,6 +52,26 @@ class SellingController extends Controller
             ->get();
         return response()->json(['data' => $sell]);
     }
+
+    public function codeOr()
+    {
+        $max_query = DB::table('orders')->max('code');
+        // $kodeB = Inventaris::all();
+        $date = date("ymdh");
+
+        if ($max_query != null) {
+            $nilai = substr($max_query, 11, 11);
+            $kode = (int) $nilai;
+            // tambah 1
+            $kode = $kode + 1;
+            $auto_kode = "ZSL". $date . str_pad($kode, 4, "0",  STR_PAD_LEFT);
+        } else {
+            $auto_kode = "ZSL". $date . "0001";
+        }
+
+        return $auto_kode;
+    }
+
     public function store(Request $request)
     {
         $customMessages = [
@@ -65,11 +86,23 @@ class SellingController extends Controller
             'qty' => 'required',
         ], $customMessages);
 
-        // return response()->json('okok');
         if ($validator->fails()) {
             return response()->json(["errors" => $validator->errors()], 422);
         }
-        // dd($request);
+
+        $employee = \App\Employee::where("user_id", Auth::id())->first();
+
+        $ord = Order::create([
+            'date' => date('Y/m/d'),
+            'code' => $this->codeOr(),
+            'total_price' => $request->total,
+            'pay' => $request->cash,
+            'cabang_id' => $employee->cabang_id,
+        ]);
+
+        foreach ($request->code as $key => $value) {
+            # code...
+        }
     }
     public function show($id)
     {

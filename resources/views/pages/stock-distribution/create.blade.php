@@ -2,9 +2,9 @@
 <form action="{{ route('admin.stock-distribution.storeShipment') }}" class="form-horizontal" method="POST" id="form-store">
     <div class="form-group">
         <label for="cabang">Cabang</label>
-        <select name="cabang" class="form-control">
+        <select name="cabang" class="form-control" id="cabang" data-url-check="{{ route('stock-distribution.check') }}">
             @foreach(\App\Cabang::orderBy('name', 'asc')->get() as $q)
-            <option value="{{ $q->id }}">{{ $q->name }}</option>
+            <option value="{{ $q->id }}" {{ $loop->index == 1 ? 'selected' : '' }}>{{ $q->name }}</option>
             @endforeach
         </select>
     </div>

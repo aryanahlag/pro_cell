@@ -21,8 +21,13 @@
     @stack('css')
 </head>
 
-<body id="page-top">
+<body id="page-top" onload="load()">
     <!-- Page Wrapper -->
+    @if($activePage != 'penjualan')
+    <div class="preload-full">
+        <i class="fa fa-spinner loading-full"></i>
+    </div>
+    @endif
     <div id="wrapper">
         <!-- Sidebar -->
         @include('layouts.sidebar.sidebar')
@@ -70,6 +75,13 @@
     <script src="{{asset('assets/datatables/dataTables.bootstrap4.min.js')}}"></script>
     <script src="{{ asset('assets/swal/sweetalert2.all.js') }}"></script>
     <script src="{{ asset('assets/select2/js/select2.min.js') }}"></script>
+    <script >
+        function load() {
+            setTimeout(() => {
+                $('.preload-full').fadeOut();
+            }, 1000);
+        }
+    </script>
     <!-- Page level custom scripts -->
     <!-- <script src="js/demo/chart-area-demo.js"></script> -->
     <!-- <script src="js/demo/chart-pie-demo.js"></script> -->

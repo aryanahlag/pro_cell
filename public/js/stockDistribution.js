@@ -23,35 +23,127 @@ $('body').on('click', '#btn-create', function (e) {
 
 $('body').on('change', '#stock_id', function () {
 	let data = $(this).val();
+	let adm = $(this).data('adm');
+	$('#cabang').attr('data-s', data);
 	$('.loaded').removeClass('hide')
-	$.ajax({
-		url: $(this).data('url-check'),
-		type: 'POST',
-		data: {
-			sid: data
-		},
-		success: function (res) {
-			$('.loaded').addClass('hide')
-			if (res == 'new') {
-				$('#sisa').html('')
-				$('#price_sell').val(''); $('#price_sell').removeAttr('readonly'); 
-				$('#price_grosir').val(''); $('#price_grosir').removeAttr('readonly'); 
-				$('#jual').html('');
-				$('#grosir').html('');
-			}else {
-				$('#sisa').html('<i class="fa fa-long-arrow-right"></i>Sisa Barang Di Toko '+ res.qty)
-				$('#price_sell').val(res.price_sell); $('#price_sell').attr('readonly', ''); 
-				$('#price_grosir').val(res.price_grosir); $('#price_grosir').attr('readonly', ''); 
-				$('#jual').html('Rubah Harga Jual ?');
-				$('#grosir').html('Rubah Harga Grosir ?');
+	if (adm == null) {
+		$.ajax({
+			url: $(this).data('url-check'),
+			type: 'POST',
+			data: {
+				sid: data
+			},
+			success: function (res) {
+				$('.loaded').addClass('hide')
+				if (res == 'new') {
+					$('#sisa').html('')
+					$('#price_sell').val(''); $('#price_sell').removeAttr('readonly'); 
+					$('#price_grosir').val(''); $('#price_grosir').removeAttr('readonly'); 
+					$('#jual').html('');
+					$('#grosir').html('');
+				}else {
+					$('#sisa').html('<i class="fa fa-long-arrow-right"></i>Sisa Barang Di Toko '+ res.qty)
+					$('#price_sell').val(res.price_sell); $('#price_sell').attr('readonly', ''); 
+					$('#price_grosir').val(res.price_grosir); $('#price_grosir').attr('readonly', ''); 
+					$('#jual').html('Rubah Harga Jual ?');
+					$('#grosir').html('Rubah Harga Grosir ?');
+				}
+			},
+			error: function (xhr) {
+				$('.loaded').addClass('hide')
 			}
-		},
-		error: function (xhr) {
-			$('.loaded').addClass('hide')
-		}
-	})
+		});
+	}else{
+		$.ajax({
+			url: $(this).data('url-check'),
+			type: 'POST',
+			data: {
+				sid: data,
+				adm: adm,
+			},
+			success: function (res) {
+				$('.loaded').addClass('hide')
+				if (res == 'new') {
+					$('#sisa').html('')
+					$('#price_sell').val(''); $('#price_sell').removeAttr('readonly'); 
+					$('#price_grosir').val(''); $('#price_grosir').removeAttr('readonly'); 
+					$('#jual').html('');
+					$('#grosir').html('');
+				}else {
+					$('#sisa').html('<i class="fa fa-long-arrow-right"></i>Sisa Barang Di Toko '+ res.qty)
+					$('#price_sell').val(res.price_sell); $('#price_sell').attr('readonly', ''); 
+					$('#price_grosir').val(res.price_grosir); $('#price_grosir').attr('readonly', ''); 
+					$('#jual').html('Rubah Harga Jual ?');
+					$('#grosir').html('Rubah Harga Grosir ?');
+				}
+			},
+			error: function (xhr) {
+				$('.loaded').addClass('hide')
+			}
+		});
+	}
+
 	$('#stockTarget').val(data);
 });
+
+$('body').on('change', '#cabang', function () {
+	let value = $(this).val();
+	let s = $(this).data('s');
+	let url = $(this).data('url-check');
+	$('#stock_id').attr('data-adm', value);
+	$('.loaded').removeClass('hide')
+	if (s == null) {
+		$('#sisa').html('')
+		$('#price_sell').val(''); $('#price_sell').removeAttr('readonly'); 
+		$('#price_grosir').val(''); $('#price_grosir').removeAttr('readonly'); 
+		$('#jual').html('');
+		$('#grosir').html('');
+		$('.loaded').addClass('hide');
+
+	}else{
+		$.ajax({
+			url: url,
+			type: 'post',
+			data: {
+				sid: s,
+				adm: value,
+			},
+			success: function (res) {
+				$('.loaded').addClass('hide')
+				if (res == 'new') {
+					$('#sisa').html('')
+					$('#price_sell').val(''); $('#price_sell').removeAttr('readonly'); 
+					$('#price_grosir').val(''); $('#price_grosir').removeAttr('readonly'); 
+					$('#jual').html('');
+					$('#grosir').html('');
+				}else {
+					$('#sisa').html('<i class="fa fa-long-arrow-right"></i>Sisa Barang Di Toko '+ res.qty)
+					$('#price_sell').val(res.price_sell); $('#price_sell').attr('readonly', ''); 
+					$('#price_grosir').val(res.price_grosir); $('#price_grosir').attr('readonly', ''); 
+					$('#jual').html('Rubah Harga Jual ?');
+					$('#grosir').html('Rubah Harga Grosir ?');
+				}
+
+			},
+			error: function (xhr) {
+				const errors = xhr.responseJSON;
+				$('.loaded').addClass('hide');
+				if (xhr.status === 401) {
+					Swal.fire({
+						title:'Peringatan !',
+						type:'warning',
+						text:errors.msg,
+					});
+				}
+			}
+		})
+	}
+
+});
+
+setInterval(() => {
+	$('#stock_id').attr('data-adm', $('#cabang').val());
+},200)
 
 $('body').on('click', '#jual', function (e) {
 	e.preventDefault();

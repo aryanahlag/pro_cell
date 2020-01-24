@@ -109,6 +109,7 @@ findCode.on('change', function () {
 			stockName.val(res.name);
 			price.val(res.price);
 			sid.val(res.sd);
+			inputBar();
 		},
 		error: function (xhr) {
 			$('.loaded').addClass('hide');
@@ -268,13 +269,13 @@ function toTable() {
 	                <input type="text" name="sub-tot[]" class="cl-line sub-tot" value="${qty.val() * price.val()}" readonly>
 	            </td>
 	            <td>
-	                <input type="checkbox" name="grosir[]" value="0" class=""grosir>
-	            </td>
-	            <td>
 	                <a href="javascript:void(0)" class="rmv"><i class="fa fa-times text-danger"></i></a>
 	            </td>
 	        </tr>
 		`);
+	            // <td>
+	            //     <input type="checkbox" name="grosir[]" value="0" class=""grosir>
+	            // </td>
 	}
 	findCode.val('');
 	stockName.val('');

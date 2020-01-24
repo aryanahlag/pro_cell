@@ -74,6 +74,10 @@ $(document).ready(function() {
                 if (stts == "rejected") {
                     return `<span class="badge badge-danger">Ditolak</span>`
                 }
+
+                if (stts == "shipment") {
+                    return `<span class="badge badge-primary">Dikirim</span>`
+                }
             } },
             { data: 'action', orderable: false, searchable: false },
         ]
