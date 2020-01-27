@@ -23,10 +23,10 @@
 
 <body id="page-top" onload="load()">
     <!-- Page Wrapper -->
-    @if($activePage != 'penjualan')
-    <div class="preload-full">
+    @if($activePage != 'penjualan' || $activePage != 'pembelian')
+    {{-- <div class="preload-full">
         <i class="fa fa-spinner loading-full"></i>
-    </div>
+    </div> --}}
     @endif
     <div id="wrapper">
         <!-- Sidebar -->
@@ -42,6 +42,7 @@
                 <!-- End of Topbar -->
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+                    {{-- {{ $activePage }} --}}
                 @yield('content')
                 </div>
                 <!-- /.container-fluid -->

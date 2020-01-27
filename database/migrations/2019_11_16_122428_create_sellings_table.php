@@ -22,8 +22,8 @@ class CreateSellingsTable extends Migration
             // $table->unsignedInteger('stock_distribution_id');
             // $table->foreign('stock_distribution_id')->references('id')->on('stock_distributions')->onDelete('cascade');
 
-            $table->string('code_stock', 15);
-            $table->foreign('code_stock')->references('code')->on('stocks')->onDelete('cascade');
+            $table->unsignedInteger('stock_id')->unsigned();
+            $table->foreign('stock_id')->references('id')->on('stocks')->onDelete('cascade');
 
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

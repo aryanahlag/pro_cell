@@ -10,9 +10,9 @@ class Selling extends Model
 
     protected $guarded = [];
 
-    public function stockDistribution()
+    public function stock()
     {
-        return $this->hasMany('App\StockDistribution');
+        return $this->belongsTo('App\Stock');
     }
 
     public function user()

@@ -39,11 +39,11 @@ $(document).ready(function() {
 			key == 114 || //f3 x
 			key == 115 || //f4 x
 			key == 116 || //f5 x
-			key == 117 || //f6
-			key == 118 || //f7
+			key == 117 || //f6 
+			key == 118 || //f7 x potongan
 			key == 119 || //f8
 			key == 120 || //f9 x
-			key == 121 || //f10 x
+			//key == 121 || //f10 
 			key == 122 || //f11
 			key == 123 || //f12
 			key == 107 // plus di keyboard komputer di atas enter
@@ -89,6 +89,9 @@ $(document).ready(function() {
 					}, 100)
 
 					break;
+				case 118 :
+					$('#potongan').focus();
+					break;
 
 			}
 		}
@@ -113,6 +116,7 @@ findCode.on('change', function () {
 		},
 		error: function (xhr) {
 			$('.loaded').addClass('hide');
+			findCode.val('');
 			if (xhr.status === 500) {
 				Swal.fire({
 					title:'Peringatan !',
@@ -120,6 +124,7 @@ findCode.on('change', function () {
 					text:"Terjadi Kesalahan",
 				});
 			}
+
 
 
 			const errors = xhr.responseJSON;
@@ -205,7 +210,11 @@ $('body').on('submit', '#form', function (e) {
 			type: 'post',
 			data: data,
 			success: function (res) {
-				console.log('ok')
+				Swal.fire({
+                    title: 'Sukses !',
+                    type: 'success',
+                    text: res.msg,
+                });
 			},
 			error: function (xhr) {
 				errors = xhr.responseJSON;
@@ -234,9 +243,17 @@ $('body').on('submit', '#form', function (e) {
 
 $('body').on('change', '.qty', function () {
 	let qty = $(this).val();
-	let price = $(this).parent().parent().find('.price').val()
-	$(this).parent().parent().find('.sub-tot').val(qty*price);
-	total()
+	if (qty == '' || qty == '0') {
+		Swal.fire({
+			title:'Peringatan !',
+			type:'warning',
+			text: "Qty Tidak Valid",
+		});
+	}else{
+		let price = $(this).parent().parent().find('.price').val()
+		$(this).parent().parent().find('.sub-tot').val(qty*price);
+		total();
+	}
 });
 
 i = 1;
@@ -266,7 +283,7 @@ function toTable() {
 	                <input type="text" name="price[]" class="cl-line price" value="${price.val()}" readonly>
 	            </td>
 	            <td>
-	                <input type="text" name="sub-tot[]" class="cl-line sub-tot" value="${qty.val() * price.val()}" readonly>
+	                <input type="text" name="sub_tot[]" class="cl-line sub-tot" value="${qty.val() * price.val()}" readonly>
 	            </td>
 	            <td>
 	                <a href="javascript:void(0)" class="rmv"><i class="fa fa-times text-danger"></i></a>
@@ -328,6 +345,7 @@ setInterval(()=> {
 	// console.log(1)
 	$('#hd_cash').val(cash.val())
 	$('#hd_total').val($("#total").val())
+	$('#hd_potongan').val($("#potongan").val())
 	
 },300)
 

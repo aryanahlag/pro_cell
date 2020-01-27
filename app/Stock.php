@@ -39,4 +39,9 @@ class Stock extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    public function selling()
+    {
+        return $this->hasMany('App\Selling');
+    }
 }

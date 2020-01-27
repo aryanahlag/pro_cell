@@ -7,7 +7,7 @@
     <div class="card-header py-3">
         <div class="row">
             <div class="col-md-4">
-                <h4>Buat Stok</h4>
+                <h4>Buat Stok </h4>
             </div>
             <div class="col-md-8 d-flex justify-content-end">
                 <button type="submit"class="btn btn-primary btn-sm"><i class="fa fa-save"></i> Save</button>

@@ -11,6 +11,7 @@ use Date;
 use DataTables;
 use DB;
 use Validator;
+use App\Selling;
 
 
 class SellingController extends Controller
@@ -91,18 +92,72 @@ class SellingController extends Controller
         }
 
         $employee = \App\Employee::where("user_id", Auth::id())->first();
-
+        $res_total = $request->total - $request->potong;
+        // dd($res_total);
         $ord = Order::create([
-            'date' => date('Y/m/d'),
+            'date' => Date::now()->format('Y/m/d H:i:s'),
             'code' => $this->codeOr(),
-            'total_price' => $request->total,
+            'total_price' => "$request->total|$request->potong",
             'pay' => $request->cash,
             'cabang_id' => $employee->cabang_id,
         ]);
+        $ssst = '';
+        $qty_container = 0;
+        if (count($request->code) > 0) {
+            foreach ($request->code as $key => $value) {
+                $ssst = Stock::where('code', $request->code[$key])->first();
 
-        foreach ($request->code as $key => $value) {
-            # code...
+                $sd = StockDistribution::where('stock_id', $ssst->id)
+                                        ->where('cabang_id', $employee->cabang_id)
+                                        ->where('status', '!=', 'rejected') 
+                                        ->where('status', '!=', 'submission')
+                                        ->orderBy('quantity', 'ASC')
+                                        ->get();
+                foreach ($sd as $q) {
+                    if ($qty_container == 0) {
+                        if ($q['quantity'] >= $request->qty[$key]) {
+                            $sd_qty_res = $q['quantity'] - $request->qty[$key];
+
+                            // dd($sd_qty_res);
+
+                            StockDistribution::find($q['id'])->update(['quantity' => $sd_qty_res]);
+                            break;
+                        }else{
+                            $qty_container += $request->qty[$key] - $q['quantity'];              
+
+                            // dd($qty_container);
+
+                            StockDistribution::find($q['id'])->update(['quantity' => 0]);
+                        }
+                    }else{
+                        if ($q['quantity'] >= $qty_container) {
+                            // dd($q['quantity']);
+                            $sd_qty_res = $q['quantity'] - $qty_container;
+
+                            // dd($sd_qty_res);
+
+                            StockDistribution::find($q['id'])->update(['quantity' => $sd_qty_res]);
+                            break;
+                        }else{
+                            // dd(false);
+                            $qty_container += - $q['quantity'];              
+
+                            // dd($qty_container);
+
+                            StockDistribution::find($q['id'])->update(['quantity' => 0]);
+                        }
+                    }
+                }
+            }
         }
+
+        // $tot_price = DB::table('sellings')
+        //             ->select( DB::raw("SUM(sub_total) as total"))
+        //             ->where('order_id', $ord->id)
+        //             ->first();
+        $kembalian =  $request->cash - $res_total;
+        return response()->json(['msg' => "Kembalian $kembalian"], 200);
+
     }
     public function show($id)
     {
@@ -120,6 +175,12 @@ class SellingController extends Controller
     {
         //
     }
+
+    public function checkQty()
+    {
+        
+    }
+
     public function findSdByCode(Request $request)
     {
         $employee = \App\Employee::where("user_id", Auth::id())->first();

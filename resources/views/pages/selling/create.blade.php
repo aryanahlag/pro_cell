@@ -16,14 +16,15 @@
             <br>
             <div class="row">
                 <div class="col-md-6">
-                    <p class="badge badge-warning" style="color:black;">F1 = Cari Barcode</p>
-                    <p class="badge badge-warning" style="color:black;">F3 = Masukan Qty</p>
-                    <p class="badge badge-warning" style="color:black;">F8 = Cash</p>
+                    <p class="badge badge-warning" style="color:black;">(F1) = Cari Barcode</p>
+                    <p class="badge badge-warning" style="color:black;">(F3) = Masukan Qty</p>
+                    <p class="badge badge-warning" style="color:black;">(F8) = Cash</p>
                 </div>
                 <div class="col-md-6">
-                    <p class="badge badge-warning" style="color:black;">F2 = Cari Barang</p>
-                    <p class="badge badge-warning" style="color:black;">F4 = Input Barang</p>
-                    <p class="badge badge-warning" style="color:black;">F10 = Bayar</p>
+                    <p class="badge badge-warning" style="color:black;">(F2) = Cari Barang</p>
+                    <p class="badge badge-warning" style="color:black;">(F4) = Input Barang</p>
+                    <p class="badge badge-warning" style="color:black;">(F7) = Potongan</p>
+                    <p class="badge badge-warning" style="color:black;">(+) = Bayar</p>
                 </div>
             </div>
         </div>
@@ -42,7 +43,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control" data-url="{{ route('employee.selling.fsbc') }}" aria-describedby="basic-addon2" id="findCode">
                                 <div class="input-group-append">
-                                    <span class="input-group-text" id="basic-addon2">F1 Cari Kode</span>
+                                    <span class="input-group-text" id="basic-addon2">Cari Kode (F1) <i class="ml-3 fa fa-spinner loaded hide"></i></span>
                                 </div>
                             </div>
                             <input type="text" name="stockName" id="stockName" class="form-control form-control-sm" placeholder="Nama Barang" readonly>
@@ -61,9 +62,12 @@
                         {{--  --}}
                         <!--  -->
                         <div class="col-md-6 text-center">
-                            <i class="fa fa-retweet loaded hide"></i>
+                            {{-- <i class="fa fa-spinner loaded hide"></i> --}}
                             <div class="form-group mb-3">
                                 <input type="text" name="cash" id="cash" placeholder="Cash (F8)" class="form-control">
+                            </div>
+                            <div class="form-group mb-3">
+                                <input type="text" name="potongan" id="potongan" placeholder="Potongan (F7)" value="0" class="form-control">
                             </div>
                             <div class="form-group">
                                 <input type="text" name="change" id="change" placeholder="Kembalian" class="form-control" readonly>
@@ -81,6 +85,7 @@
         <form action="{{ route('employee.selling.store') }}" id="form" method="post">
         <input type="hidden" name="cash" id="hd_cash">
         <input type="hidden" name="total" id="hd_total">
+        <input type="hidden" name="potong" id="hd_potongan">
         @csrf
         <table class="table">
             <thead>

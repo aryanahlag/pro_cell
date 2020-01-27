@@ -15,11 +15,6 @@ class StockDistribution extends Model
         return $this->belongsTo('App\Cabang');
     }
 
-    public function selling()
-    {
-        return $this->hasMany('App\Selling');
-    }
-
     public function stock()
     {
         return $this->belongsTo('App\Stock');

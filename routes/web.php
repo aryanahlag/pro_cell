@@ -127,6 +127,7 @@ Route::middleware('auth')->group(function () {
 
     // selling
     Route::get('s/stock', "sellingController@stockDataSelling")->name("selling.stockDataSelling");
+    Route::get('s/ch/qty', "sellingController@checkQty")->name("selling.checkQty");
 
 
     Route::group(['prefix' => '/employee/{cabang}', 'as' => 'employee.', 'middleware' => 'employee'], function () {

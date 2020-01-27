@@ -15,9 +15,9 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('date');
+            $table->dateTime('date');
             $table->string('code')->unique();
-            $table->integer("total_price")->nullable();
+            $table->string("total_price")->nullable();
             $table->integer("pay")->nullable();
             $table->unsignedInteger('cabang_id');
             $table->foreign('cabang_id')->references('id')->on('cabangs')->onDelete('cascade');
