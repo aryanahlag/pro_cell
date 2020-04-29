@@ -148,6 +148,16 @@ class SellingController extends Controller
                         }
                     }
                 }
+
+                $data = [
+                    'stock_id' => $ssst->id,
+                    'order_id' => $ord->id,
+                    'user_id' => $employee->cabang_id,
+                    'type' => 'satuan',
+                    'quantity' =>  $request->qty[$key],
+                    'sub_total' => $request->sub_tot[$key],
+                ];
+                Selling::create($data);
             }
         }
 

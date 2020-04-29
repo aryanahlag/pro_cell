@@ -22,6 +22,7 @@ class CreateServiceOrdersTable extends Migration
             $table->date("date_out")->nullable();
             $table->enum("status", ['lunas', 'belum lunas'])->nullable()->default('belum lunas');
             $table->integer("dp");
+            $table->integer("service_price")->nullable();
             $table->integer("total_price")->nullable();
             $table->integer("pay")->nullable();
             $table->unsignedInteger('user_id');

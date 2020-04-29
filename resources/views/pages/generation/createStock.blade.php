@@ -86,7 +86,10 @@
 @endsection
 @push('js')
     <script>
-        window.onload = init();
+        $('body').on('load', function () {
+           init(); 
+        })
+        // window.onload = init();
         let no = 1;
         function init() {
             const name = $('input[name="name[]"]');

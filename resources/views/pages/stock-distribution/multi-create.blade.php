@@ -1,4 +1,4 @@
-@extends('layouts.master', ["activePage" => Auth::user()->role == 'employee' ? "stock-distribution" : "pengiriman", "titlePage" => "Stock Distribution" ])
+@extends('layouts.master', ["activePage" => Auth::user()->role == 'employee' ? "stock-distribution" : "pengiriman", "titlePage" => "Stock Distribution Banyak" ])
 @section('content')
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex">
@@ -46,11 +46,8 @@
 @endsection
 @push('js')
 <script>
-    let no = 1;
-    window.onload = init();
-    function init() {
-        $('#total').html('Total Barang : '+no)
-    }
+let no = 1;
+$('#total').html('Total Barang : '+no)
 $('.addRow').on('click', function(e) {
     e.preventDefault();
     addRow();

@@ -23,10 +23,16 @@
 
 <body id="page-top" onload="load()">
     <!-- Page Wrapper -->
-    @if($activePage != 'penjualan' || $activePage != 'pembelian')
-    {{-- <div class="preload-full">
+    {{-- @php
+    $a = 1;
+    $b = 2;
+    @endphp --}}
+    @if($activePage == 'penjualan' || $titlePage == 'Stock Distribution Banyak' || $activePage == 'Buat Stok')
+
+    @else
+    <div class="preload-full">
         <i class="fa fa-spinner loading-full"></i>
-    </div> --}}
+    </div>
     @endif
     <div id="wrapper">
         <!-- Sidebar -->

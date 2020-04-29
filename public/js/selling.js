@@ -98,59 +98,61 @@ $(document).ready(function() {
 	}
 });
 
-findCode.on('change', function () {
-	$('.loaded').removeClass('hide')
+findCode.on('keyup', function (e) {
 	const url = $(this).data('url');
 	const data = $(this).val();
-	$.ajax({
-		url: url,
-		type: "post",
-		data: {
-			code: data,
-		},
-		success: function (res) {
-			stockName.val(res.name);
-			price.val(res.price);
-			sid.val(res.sd);
-			inputBar();
-		},
-		error: function (xhr) {
+	if (e.keyCode == 13) {
+		$('.loaded').removeClass('hide')
+		$.ajax({
+			url: url,
+			type: "post",
+			data: {
+				code: data,
+			},
+			success: function (res) {
+				stockName.val(res.name);
+				price.val(res.price);
+				sid.val(res.sd);
+				inputBar();
+			},
+			error: function (xhr) {
+				$('.loaded').addClass('hide');
+				findCode.val('');
+				if (xhr.status === 500) {
+					Swal.fire({
+						title:'Peringatan !',
+						type:'warning',
+						text:"Terjadi Kesalahan",
+					});
+				}
+
+
+
+				const errors = xhr.responseJSON;
+
+				if (xhr.status === 401) {
+					Swal.fire({
+						title:'Peringatan !',
+						type:'warning',
+						text:errors.msg,
+					});
+				}
+
+				// $.each(errors.errors, function(key, value){
+				// 	$('#' + key)
+				// 	.closest('.form-group .form-control')
+				// 	.addClass('is-invalid')
+				// 	$('#' + key)
+				// 	.closest('.form-group')
+				// 	.append(
+				// 		`<span class="help-block">`+value+`</span>`
+				// 	)
+				// });
+			}
+		}).done(function () {
 			$('.loaded').addClass('hide');
-			findCode.val('');
-			if (xhr.status === 500) {
-				Swal.fire({
-					title:'Peringatan !',
-					type:'warning',
-					text:"Terjadi Kesalahan",
-				});
-			}
-
-
-
-			const errors = xhr.responseJSON;
-
-			if (xhr.status === 401) {
-				Swal.fire({
-					title:'Peringatan !',
-					type:'warning',
-					text:errors.msg,
-				});
-			}
-
-			// $.each(errors.errors, function(key, value){
-			// 	$('#' + key)
-			// 	.closest('.form-group .form-control')
-			// 	.addClass('is-invalid')
-			// 	$('#' + key)
-			// 	.closest('.form-group')
-			// 	.append(
-			// 		`<span class="help-block">`+value+`</span>`
-			// 	)
-			// });
-		}
-	}).done(function () {
-		$('.loaded').addClass('hide');
-	})
+		})
+	}
 });
 
 $('body').on('click', '#bayar', function (e) {
@@ -187,7 +189,7 @@ $('body').on('click', '.rmv', function (e) {
 	e.preventDefault();
 	$(this).parent().parent().remove();
 	total();
-})
+});
 
 $('body').on('submit', '#form', function (e) {
 	// console.log(e.keyCode);
@@ -314,14 +316,8 @@ function toTable() {
     });
 }
 
-function total() {
-	let total_price = 0;
-	$('.sub-tot').each(function(i, e) {
-		var sub = $(this).val() - 0;
-		total_price += sub;
-	});
-	totalShow.val(total_price);
-}
+
+
 
 function inputBar() {
 	if (qty.val() == '') {
